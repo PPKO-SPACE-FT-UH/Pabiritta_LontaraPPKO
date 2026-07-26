@@ -16,18 +16,44 @@ function initPeta(elementId, opts = {}) {
     maxBoundsViscosity: 1.0,
   }).setView(opts.center || [-5.263, 119.735], opts.zoom || 14);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  // Basemap: Default (OpenStreetMap)
+  const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
     minZoom: 13,
     maxZoom: 19,
     bounds: LONJOBOKO_BOUNDS,
-  }).addTo(map);
+  });
+
+  // Basemap: Satelit (Esri World Imagery)
+  const satelliteLayer = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+      attribution: 'Tiles © Esri | Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, dan komunitas GIS',
+      minZoom: 13,
+      maxZoom: 19,
+      bounds: LONJOBOKO_BOUNDS,
+    }
+  );
+
+  osmLayer.addTo(map);
+
+  // Toggle basemap di pojok kanan atas peta
+  L.control.layers(
+    { 'Default': osmLayer, 'Satelit': satelliteLayer },
+    null,
+    { position: 'topright', collapsed: true }
+  ).addTo(map);
 
   return map;
 }
 
+/** Layer-layer map yang bisa di-toggle */
 const LAYERS = {};
 
+/** Pasangan layer yang tidak boleh aktif bersamaan (biar tidak numpuk visual) */
+const EXCLUSIVE_PAIRS = { zona: 'gunalahan', gunalahan: 'zona' };
+
+/** Helper: bikin blok foto untuk popup. */
 function popupFoto(filename) {
   const src = `/static/img/lokasi/${filename}`;
   return `<img src="${src}" alt=""
@@ -36,15 +62,17 @@ function popupFoto(filename) {
 }
 
 async function fetchAndRenderLayers(map) {
-  // ZONA RAWAN LONGSOR
+  // ZONA RAWAN LONGSOR — dari data PWK
   try {
     const res = await fetch('/static/data/kelas_rawan_longsor.geojson');
     const gj = await res.json();
+
     const styleKelas = (kelas) => {
       if (kelas === 'Tinggi') return { fillColor: '#DC2626', weight: 0, stroke: false, fillOpacity: 0.55 };
       if (kelas === 'Sedang') return { fillColor: '#F97316', weight: 0, stroke: false, fillOpacity: 0.45 };
       return                       { fillColor: '#EAB308', weight: 0, stroke: false, fillOpacity: 0.35 };
     };
+
     LAYERS.zona = L.geoJSON(gj, {
       style: (feature) => styleKelas(feature.properties.Kelas),
       onEachFeature: (feature, layer) => {
@@ -61,98 +89,6 @@ async function fetchAndRenderLayers(map) {
   } catch (e) {
     console.warn('Gagal load zona rawan longsor:', e);
     LAYERS.zona = L.layerGroup();
-  }
-
-  LAYERS.kemiringan = L.layerGroup([
-    L.polygon([
-      [-5.258, 119.715],
-      [-5.258, 119.728],
-      [-5.268, 119.730],
-      [-5.270, 119.717],
-    ], { color: '#F97316', weight: 2, fillOpacity: 0.2 })
-      .bindPopup('<strong>Zona Kemiringan Lereng</strong><br>Lereng curam sekitar Desa Lonjoboko'),
-  ]);
-
-  LAYERS.posko = L.layerGroup([
-    L.circleMarker([-5.260, 119.722], { color: '#16A34A', fillColor: '#16A34A', fillOpacity: 0.9, radius: 8 })
-      .bindPopup(`
-        <div style="min-width:200px;">
-          ${popupFoto('posko-balai-desa.jpg')}
-          <strong>Posko Siaga Desa</strong><br>
-          Balai Desa Lonjoboko<br>
-          <a href="tel:08112233445" style="color:#DC2626;font-weight:600;">0811-2233-4455</a>
-        </div>`),
-    L.circleMarker([-5.253, 119.748], { color: '#16A34A', fillColor: '#16A34A', fillOpacity: 0.9, radius: 8 })
-      .bindPopup(`
-        <div style="min-width:200px;">
-          ${popupFoto('puskesmas-parangloe.jpg')}
-          <strong>Puskesmas Parangloe</strong><br>
-          <a href="tel:08223344556" style="color:#DC2626;font-weight:600;">0822-3344-5566</a>
-        </div>`),
-    L.circleMarker([-5.275, 119.760], { color: '#16A34A', fillColor: '#16A34A', fillOpacity: 0.9, radius: 8 })
-      .bindPopup(`
-        <div style="min-width:200px;">
-          ${popupFoto('bpbd-gowa.jpg')}
-          <strong>Pos BPBD Kab. Gowa</strong><br>
-          Hotline: <a href="tel:112" style="color:#DC2626;font-weight:600;">112</a>
-        </div>`),
-  ]);
-
-  LAYERS.evakuasi = L.layerGroup([
-    L.polyline(
-      [[-5.268, 119.720], [-5.263, 119.728], [-5.258, 119.738], [-5.255, 119.748]],
-      { color: '#374151', weight: 4, dashArray: '6, 8' })
-      .bindPopup('<strong>Jalur Evakuasi</strong><br>Menuju titik kumpul dan puskesmas'),
-    L.polyline(
-      [[-5.272, 119.750], [-5.268, 119.755], [-5.263, 119.755]],
-      { color: '#374151', weight: 4, dashArray: '6, 8' })
-      .bindPopup('<strong>Jalur Evakuasi</strong><br>Menuju pos BPBD'),
-  ]);
-
-  // TITIK KUMPUL — dari data PWK
-  try {
-    const res = await fetch('/static/data/titik_kumpul.geojson');
-    const gj = await res.json();
-    LAYERS.kumpul = L.geoJSON(gj, {
-      pointToLayer: (feat, latlng) => L.circleMarker(latlng, {
-        radius: 8, color: '#10B981', fillColor: '#10B981', fillOpacity: 0.9, weight: 2,
-      }),
-      onEachFeature: (feat, layer) => {
-        const p = feat.properties || {};
-        layer.bindPopup(`
-          <div style="min-width:180px;">
-            <strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
-          </div>`);
-      },
-    });
-  } catch (e) {
-    console.warn('Gagal load titik kumpul:', e);
-    LAYERS.kumpul = L.layerGroup();
-  }
-
-  // HISTORIS LONGSOR — titik kejadian longsor masa lalu
-  try {
-    const res = await fetch('/static/data/historis_longsor.geojson');
-    const gj = await res.json();
-    LAYERS.historis = L.geoJSON(gj, {
-      pointToLayer: (feat, latlng) => L.circleMarker(latlng, {
-        radius: 6, color: '#7C2D12', fillColor: '#B45309', fillOpacity: 0.85, weight: 2,
-      }),
-      onEachFeature: (feat, layer) => {
-        const p = feat.properties || {};
-        const tahun = p.Tahun && p.Tahun > 0 ? p.Tahun : '-';
-        layer.bindPopup(`
-          <div style="min-width:180px;">
-            <strong>${p.Keterangan || 'Titik Longsor'}</strong><br>
-            Tahun kejadian: <b>${tahun}</b><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
-          </div>`);
-      },
-    });
-  } catch (e) {
-    console.warn('Gagal load historis longsor:', e);
-    LAYERS.historis = L.layerGroup();
   }
 
   // GUNA LAHAN — polygon fungsi lahan
@@ -188,6 +124,52 @@ async function fetchAndRenderLayers(map) {
     LAYERS.gunalahan = L.layerGroup();
   }
 
+  // HISTORIS TITIK LONGSOR
+  try {
+    const res = await fetch('/static/data/historis_longsor.geojson');
+    const gj = await res.json();
+    LAYERS.historis = L.geoJSON(gj, {
+      pointToLayer: (feat, latlng) => L.circleMarker(latlng, {
+        radius: 6, color: '#7C2D12', fillColor: '#B45309', fillOpacity: 0.85, weight: 2,
+      }),
+      onEachFeature: (feat, layer) => {
+        const p = feat.properties || {};
+        const tahun = p.Tahun && p.Tahun > 0 ? p.Tahun : '-';
+        layer.bindPopup(`
+          <div style="min-width:180px;">
+            <strong>${p.Keterangan || 'Titik Longsor'}</strong><br>
+            Tahun kejadian: <b>${tahun}</b><br>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`);
+      },
+    });
+  } catch (e) {
+    console.warn('Gagal load historis longsor:', e);
+    LAYERS.historis = L.layerGroup();
+  }
+
+  // TITIK KUMPUL
+  try {
+    const res = await fetch('/static/data/titik_kumpul.geojson');
+    const gj = await res.json();
+    LAYERS.kumpul = L.geoJSON(gj, {
+      pointToLayer: (feat, latlng) => L.circleMarker(latlng, {
+        radius: 8, color: '#10B981', fillColor: '#10B981', fillOpacity: 0.9, weight: 2,
+      }),
+      onEachFeature: (feat, layer) => {
+        const p = feat.properties || {};
+        layer.bindPopup(`
+          <div style="min-width:180px;">
+            <strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`);
+      },
+    });
+  } catch (e) {
+    console.warn('Gagal load titik kumpul:', e);
+    LAYERS.kumpul = L.layerGroup();
+  }
+
   // SENSOR IoT (live)
   try {
     const res = await fetch('/api/sensor/list');
@@ -211,7 +193,7 @@ async function fetchAndRenderLayers(map) {
     LAYERS.sensor = L.layerGroup();
   }
 
-  // PERSEBARAN TITIK LONGSOR (laporan warga)
+  // LAPORAN WARGA (dari laporan yang diverifikasi)
   try {
     const res = await fetch('/api/sensor/laporan-titik');
     const data = await res.json();
@@ -238,13 +220,26 @@ async function fetchAndRenderLayers(map) {
     LAYERS.laporan = L.layerGroup();
   }
 
+  // Hubungkan checkbox ke layer + logika mutually exclusive
   document.querySelectorAll('[data-layer]').forEach(cb => {
     const key = cb.dataset.layer;
     if (!LAYERS[key]) return;
     if (cb.checked) LAYERS[key].addTo(map);
     cb.addEventListener('change', () => {
-      if (cb.checked) LAYERS[key].addTo(map);
-      else map.removeLayer(LAYERS[key]);
+      if (cb.checked) {
+        LAYERS[key].addTo(map);
+        // Jika layer punya "musuh", matikan yang satunya
+        const opposite = EXCLUSIVE_PAIRS[key];
+        if (opposite) {
+          const oppCb = document.querySelector(`[data-layer="${opposite}"]`);
+          if (oppCb && oppCb.checked) {
+            oppCb.checked = false;
+            if (LAYERS[opposite]) map.removeLayer(LAYERS[opposite]);
+          }
+        }
+      } else {
+        map.removeLayer(LAYERS[key]);
+      }
     });
   });
 
