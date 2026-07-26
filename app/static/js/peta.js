@@ -31,11 +31,12 @@ function initPeta(elementId, opts = {}) {
   // Pastikan poligon tidak menghalangi klik (pointer events) ke peta
   map.getPane('shadowPane').style.pointerEvents = 'none';
 
+  // Tile TANPA bounds — supaya viewport yang lebih lebar tetap terisi tile,
+  // tidak muncul area abu-abu di kiri/kanan. Panning tetap dibatasi maxBounds.
   const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
     minZoom: 13,
     maxZoom: 19,
-    bounds: LONJOBOKO_BOUNDS,
   });
 
   const satelliteLayer = L.tileLayer(
@@ -44,7 +45,6 @@ function initPeta(elementId, opts = {}) {
       attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, dan komunitas GIS',
       minZoom: 13,
       maxZoom: 19,
-      bounds: LONJOBOKO_BOUNDS,
     }
   );
 
@@ -322,13 +322,13 @@ async function fetchAndRenderLayers(map) {
   document.querySelectorAll('[data-layer]').forEach(cb => {
     const key = cb.dataset.layer;
     if (!LAYERS[key]) return;
-    
+
     if (cb.checked) LAYERS[key].addTo(map);
-    
+
     cb.addEventListener('change', () => {
       if (cb.checked) {
         LAYERS[key].addTo(map);
-        
+
         // Logika Toggle Exclusive (Misal: Zona <--> Guna Lahan)
         const opposite = EXCLUSIVE_PAIRS[key];
         if (opposite) {
