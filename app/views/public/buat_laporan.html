@@ -88,7 +88,7 @@
 
       <div id="lokasi-accuracy-info" class="hidden mt-2 text-xs px-3 py-2 rounded-lg"></div>
 
-      <label class="block text-sm font-medium mb-2">Klik peta untuk tandai lokasi <span class="text-red-500">*</span></label>
+      <label class="block text-sm font-medium mb-2 mt-2">Klik peta untuk tandai lokasi <span class="text-red-500">*</span></label>
       <div id="map-pilih" class="h-80 rounded-lg border border-gray-200 mb-3"></div>
       <div class="grid grid-cols-2 gap-3">
         <input type="text" name="latitude" id="lat-field" placeholder="Latitude" readonly
@@ -181,28 +181,50 @@
       }
     }
   });
-  
+
   const TOTAL_STEPS = 5;
   let currentStep = 1;
-  let hasAutoDetectedLocation = false; // Penanda agar deteksi otomatis hanya berjalan 1x
+  let hasAutoDetectedLocation = false;
 
   // --- MAP SETUP ---
-  const LONJOBOKO_BOUNDS = L.latLngBounds([-5.34, 119.44], [-5.21, 119.54]);
+  // Bounds diperbaiki: dulu di [-5.34, 119.44]-[-5.21, 119.54] (area Manuju/
+  // Rindam Hasanuddin, BUKAN Lonjoboko), makanya setView ke user (yang ada
+  // di longitude 119.7-an) ke-clamp balik oleh maxBoundsViscosity dan pin
+  // jadi off-screen. Sekarang bounds cover Lonjoboko + Parangloe (sesuai
+  // peta.js), dilonggarkan sedikit ke luar biar pin tetap kelihatan
+  // kalau user melapor dari pinggiran desa.
+  const LONJOBOKO_BOUNDS = L.latLngBounds([-5.320, 119.640], [-5.200, 119.820]);
   const mapPilih = L.map('map-pilih', {
     maxBounds: LONJOBOKO_BOUNDS,
     maxBoundsViscosity: 0.9,
     minZoom: 12,
-  }).setView([-5.275, 119.488], 13);
+  }).setView([-5.263, 119.735], 14);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
   }).addTo(mapPilih);
+
+  // Pin merah SVG (divIcon) — pengganti default L.marker icon yang butuh
+  // file PNG bawaan Leaflet.
+  const pinIcon = L.divIcon({
+    className: 'custom-pin-icon',
+    html: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" width="32" height="40"
+           style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));">
+        <path fill="#DC2626" stroke="#FFFFFF" stroke-width="2"
+              d="M16 2C9.925 2 5 6.925 5 13c0 8 11 25 11 25s11-17 11-25c0-6.075-4.925-11-11-11z"/>
+        <circle cx="16" cy="13" r="4" fill="#FFFFFF"/>
+      </svg>`,
+    iconSize: [32, 40],
+    iconAnchor: [16, 40],
+    popupAnchor: [0, -36],
+  });
 
   let marker = null;
 
   function setMarker(lat, lng) {
     const latlng = L.latLng(lat, lng);
     if (marker) marker.setLatLng(latlng);
-    else marker = L.marker(latlng).addTo(mapPilih);
+    else marker = L.marker(latlng, { icon: pinIcon }).addTo(mapPilih);
     document.getElementById('lat-field').value = lat.toFixed(6);
     document.getElementById('lng-field').value = lng.toFixed(6);
   }
@@ -219,23 +241,22 @@
   // --- AUTO LOCATION ---
   let accuracyCircle = null;
 
-  // Memisahkan logika lokasi ke dalam fungsi mandiri agar bisa dipanggil otomatis
   function deteksiLokasiOtomatis() {
     const btn = document.getElementById('btn-lokasi-otomatis');
     if (!navigator.geolocation) {
       showStepError('Browser Anda tidak mendukung geolokasi.');
       return;
     }
-    
+
     btn.disabled = true;
     btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Mengambil lokasi...';
-    
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
-        
+
         setMarker(lat, lng);
         mapPilih.setView([lat, lng], 16);
 
@@ -286,7 +307,6 @@
     );
   }
 
-  // Tombol lokasi tetap bisa diklik manual jika pengguna ingin memuat ulang posisinya
   document.getElementById('btn-lokasi-otomatis').addEventListener('click', deteksiLokasiOtomatis);
 
   // --- STEP ERROR ---
@@ -374,17 +394,15 @@
     document.getElementById('btn-prev').disabled = currentStep === 1;
     document.getElementById('btn-next').classList.toggle('hidden', currentStep === TOTAL_STEPS);
     document.getElementById('btn-submit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
-    
+
     if (currentStep === 5) buildReview();
-    
-    // Logika tambahan saat masuk ke Step 2
+
     if (currentStep === 2) {
       setTimeout(() => mapPilih.invalidateSize(), 100);
-      
-      // Deteksi lokasi secara otomatis jika belum pernah terdeteksi sebelumnya
+
       if (!hasAutoDetectedLocation) {
         deteksiLokasiOtomatis();
-        hasAutoDetectedLocation = true; // Mengubah status agar tidak berulang
+        hasAutoDetectedLocation = true;
       }
     }
   }
