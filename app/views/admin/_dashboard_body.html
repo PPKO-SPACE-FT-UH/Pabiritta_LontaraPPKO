@@ -3,12 +3,12 @@
   <!-- Statistik -->
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     {% set tiles = [
-      ('Total Laporan', stats.total, 'blue', 'fa-document', '+12% dari bulan lalu'),
-      ('Menunggu Verifikasi', stats.menunggu, 'yellow', 'fa-clock', None),
-      ('Selesai Ditangani', stats.selesai, 'green', 'fa-check', '+5% dari bulan lalu'),
-      ('Sensor Aktif', stats.sensor_aktif|string + '/' + stats.sensor_total|string, 'purple', 'fa-activity', None),
+      ('Total Laporan', stats.total, 'blue', 'fa-document'),
+      ('Menunggu Verifikasi', stats.menunggu, 'yellow', 'fa-clock'),
+      ('Selesai Ditangani', stats.selesai, 'green', 'fa-check'),
+      ('Sensor Aktif', stats.sensor_aktif|string + '/' + stats.sensor_total|string, 'purple', 'fa-activity'),
     ] %}
-    {% for label, val, color, ic, sub in tiles %}
+    {% for label, val, color, ic in tiles %}
     <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
       <div class="flex justify-between items-start">
         <div>
@@ -23,7 +23,6 @@
           {% endif %}
         </div>
       </div>
-      {% if sub %}<div class="text-xs mt-2"><span class="text-{{ color }}-600 font-semibold">{{ sub.split(' ')[0] }}</span> <span class="text-gray-500">{{ ' '.join(sub.split(' ')[1:]) }}</span></div>{% endif %}
     </div>
     {% endfor %}
   </div>
