@@ -23,16 +23,23 @@
 
 <div class="flex min-h-screen">
   <!-- MOBILE OVERLAY -->
-  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
   <!-- SIDEBAR -->
-  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-gradient-to-b from-primary-dark to-red-900 text-white flex-col overflow-y-auto hidden md:flex">
-    <div class="px-5 py-4 border-b border-red-800/50">
-      <div class="flex items-center gap-3">
-        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" alt="Logo" class="w-20 h-20 object-contain flex-shrink-0">
+  <!-- Sidebar diset ke z-50 agar pasti di atas navbar putih mobile (z-10) -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-primary-dark to-red-900 text-white flex-col overflow-y-auto hidden md:flex shadow-xl">
+    
+<!-- HEADER SIDEBAR -->
+    <!-- h-16 untuk Mobile agar sejajar navbar mobile, md:h-20 untuk Desktop agar sejajar navbar desktop -->
+    <div class="h-16 md:h-20 px-3 md:px-4 border-b border-red-800/50 flex items-center shrink-0 box-border overflow-hidden">
+      <div class="flex items-center gap-2 md:gap-3">
+        <!-- PERUBAHAN: Ukuran diset mentok ke w-16 h-16 & w-20 h-20. 
+             Ditambah 'transform scale-125' untuk nge-zoom logo agar mengabaikan ruang kosong bawaan gambarnya -->
+        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 object-contain flex-shrink-0 transform scale-125">
+        
         <div class="min-w-0">
-          <div class="font-bold text-2xl leading-tight">Pa'<span class="text-red-200">Biritta</span></div>
-          <div class="text-xs text-red-200 mt-1">Desa Tangguh Bencana</div>
+          <div class="font-bold text-xl md:text-2xl leading-tight">Pa'<span class="text-red-200">Biritta</span></div>
+          <div class="text-[10px] md:text-[11px] text-red-200 mt-0.5 md:mt-1">Desa Tangguh Bencana</div>
         </div>
       </div>
     </div>
@@ -50,7 +57,7 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Manajemen Laporan
       </a>
-            <a href="{{ url_for('admin.riwayat_aktivitas') }}"
+      <a href="{{ url_for('admin.riwayat_aktivitas') }}"
          class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.riwayat_aktivitas' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         Riwayat Aktivitas
@@ -65,7 +72,7 @@
     </nav>
 
     <div class="px-4 py-3 border-t border-red-800/50 space-y-2">
-      <!-- User info (desktop only, since header is hidden on md+) -->
+      <!-- User info -->
       <div class="flex items-center gap-3 px-2 py-2 rounded-lg bg-white/10">
         <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
           {{ current_user.nama[0]|upper }}
@@ -95,8 +102,9 @@
   <div class="flex-1 flex flex-col min-w-0 md:ml-72">
 
     <!-- MOBILE HEADER (hidden on desktop) -->
-    <header class="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10">
-      <div class="px-4 h-16 flex items-center justify-between">
+    <!-- z-10 aman ditimpa oleh sidebar yang z-50. h-16 memastikan tingginya klop dengan sidebar HP -->
+    <header class="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10 box-border h-16">
+      <div class="px-4 h-full flex items-center justify-between">
         <div class="flex items-center gap-3">
           <button id="sidebar-toggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -115,8 +123,8 @@
     </header>
 
     <!-- DESKTOP TITLE BAR (hidden on mobile) -->
-    <!-- PERBAIKAN 3: Header Kanan diberi tinggi h-[104px] (menggantikan py-4) agar persis sejajar dengan sidebar -->
-    <div class="hidden md:flex items-center justify-between px-8 h-[104px] bg-white border-b sticky top-0 z-20 box-border">
+    <!-- md:h-20 memastikan tingginya 80px, klop persis dengan tinggi sidebar PC -->
+    <div class="hidden md:flex items-center justify-between px-8 h-20 bg-white border-b border-gray-200 sticky top-0 z-20 box-border">
       <div>
         <h1 class="text-2xl font-bold">{{ self.page_title() }}</h1>
         <p class="text-xs text-gray-500 mt-0.5">{% block page_subtitle %}Ringkasan sistem manajemen kebencanaan desa{% endblock %}</p>
