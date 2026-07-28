@@ -5,11 +5,14 @@
       "src": "run.py",
       "use": "@vercel/python",
       "config": {
-        "includeFiles": "app/**"
+        "includeFiles": ["app/**"]
       }
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "run.py" }
+    {
+      "src": "/(.*)",
+      "dest": "run.py"
+    }
   ]
 }

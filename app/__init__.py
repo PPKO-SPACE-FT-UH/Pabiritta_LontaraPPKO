@@ -21,8 +21,11 @@ def create_app(config_class=None):
     )
     app.config.from_object(config_class or get_config())
 
-    # Pastikan folder upload ada
-    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    # Pastikan folder upload ada (di Vercel filesystem read-only, ignore error)
+    try:
+        os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    except OSError:
+        pass
 
     # Konfigurasi Cloudinary
     cloudinary.config(
