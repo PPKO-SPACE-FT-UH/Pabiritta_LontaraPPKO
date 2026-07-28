@@ -14,10 +14,18 @@ csrf = CSRFProtect()
 
 
 def create_app(config_class=None):
+    # 1. Dapatkan lokasi absolut dari folder 'app'
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    
+    # 2. Tentukan lokasi absolut untuk views dan static
+    template_dir = os.path.join(base_dir, 'views')
+    static_dir = os.path.join(base_dir, 'static')
+
+    # 3. Masukkan ke dalam inisialisasi Flask
     app = Flask(
         __name__,
-        template_folder="views",
-        static_folder="static",
+        template_folder=template_dir,
+        static_folder=static_dir,
     )
     app.config.from_object(config_class or get_config())
 
@@ -84,8 +92,6 @@ def create_app(config_class=None):
         return render_template("errors/500.html"), 500
 
     # Jinja filter — strftime cross-platform + nama bulan Bahasa Indonesia.
-    # %-d / %-m tidak jalan di Windows, dan strftime %b/%B tergantung locale OS,
-    # jadi kita render token sendiri dengan mapping tetap ke Bahasa Indonesia.
     BULAN_PANJANG = [
         "", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember",
@@ -113,7 +119,6 @@ def create_app(config_class=None):
             "%B": BULAN_PANJANG[value.month],
         }
         out = fmt
-        # Urutan: token yang lebih panjang dulu (%-d sebelum %d)
         for k in sorted(token_map.keys(), key=len, reverse=True):
             out = out.replace(k, token_map[k])
         return out
