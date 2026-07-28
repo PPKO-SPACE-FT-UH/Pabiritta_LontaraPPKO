@@ -14,12 +14,16 @@ csrf = CSRFProtect()
 
 
 def create_app(config_class=None):
-    # 1. Dapatkan lokasi absolut dari folder 'app'
+    # 1. Dapatkan lokasi absolut untuk static saja
     base_dir = os.path.abspath(os.path.dirname(__file__))
-    
-    # 2. Tentukan lokasi absolut untuk views dan static
-    template_dir = os.path.join(base_dir, 'views')
     static_dir = os.path.join(base_dir, 'static')
+
+    # 2. Inisialisasi Flask (otomatis akan mendeteksi folder 'templates' di sebelahnya)
+    app = Flask(
+        __name__,
+        static_folder=static_dir
+    )
+    app.config.from_object(config_class or get_config())
 
     # 3. Masukkan ke dalam inisialisasi Flask
     app = Flask(
