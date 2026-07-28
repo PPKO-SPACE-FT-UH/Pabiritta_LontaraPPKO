@@ -25,7 +25,10 @@ class Config:
     }
 
     # Upload
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, "app", "static", "uploads")
+    UPLOAD_FOLDER = os.environ.get(
+        "UPLOAD_FOLDER",
+        "/tmp/uploads" if os.environ.get("VERCEL") else os.path.join(BASE_DIR, "app", "static", "uploads"),
+    )
     MAX_UPLOAD_MB = int(os.environ.get("MAX_UPLOAD_MB", 5))
     MAX_CONTENT_LENGTH = MAX_UPLOAD_MB * 1024 * 1024
     ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
