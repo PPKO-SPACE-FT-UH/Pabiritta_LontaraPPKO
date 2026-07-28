@@ -25,14 +25,6 @@ def create_app(config_class=None):
     )
     app.config.from_object(config_class or get_config())
 
-    # 3. Masukkan ke dalam inisialisasi Flask
-    app = Flask(
-        __name__,
-        template_folder=template_dir,
-        static_folder=static_dir,
-    )
-    app.config.from_object(config_class or get_config())
-
     # Pastikan folder upload ada (di Vercel filesystem read-only, ignore error)
     try:
         os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
