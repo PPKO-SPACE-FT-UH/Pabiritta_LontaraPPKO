@@ -5,10 +5,7 @@
       "src": "run.py",
       "use": "@vercel/python",
       "config": {
-        "includeFiles": [
-          "app/views/**/*.html",
-          "app/static/**/*"
-        ]
+        "includeFiles": ["app/templates/**", "app/static/**"]
       }
     }
   ],
