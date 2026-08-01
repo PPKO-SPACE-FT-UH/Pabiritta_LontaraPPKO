@@ -20,7 +20,7 @@ def beranda():
     sensors = Sensor.query.filter_by(is_active=True).all()
     stats = _hitung_statistik_publik()
     return render_template(
-        "public/beranda.html",
+        "publik/beranda.html",
         laporan_terbaru=laporan_terbaru,
         sensors=sensors,
         stats=stats,

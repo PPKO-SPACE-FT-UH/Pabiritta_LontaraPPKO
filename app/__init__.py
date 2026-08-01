@@ -14,15 +14,18 @@ csrf = CSRFProtect()
 
 
 def create_app(config_class=None):
-    # Path root project (satu level di atas folder app/)
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    template_dir = os.path.join(project_root, 'templates')
-    static_dir = os.path.join(project_root, 'static')
+    # 1. Dapatkan lokasi absolut folder 'app'
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    
+    # 2. Tentukan lokasi absolut untuk static DAN templates
+    static_dir = os.path.join(base_dir, 'static')
+    template_dir = os.path.join(base_dir, 'templates')
 
+    # 3. Inisialisasi Flask dengan template_folder yang eksplisit
     app = Flask(
         __name__,
-        template_folder=template_dir,
         static_folder=static_dir,
+        template_folder=template_dir  # <-- Ini kunci utamanya agar Vercel tidak nyasar
     )
     app.config.from_object(config_class or get_config())
 
