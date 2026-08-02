@@ -80,7 +80,7 @@ def buat():
         if errors:
             for e in errors:
                 flash(e, "error")
-            return render_template("public/buat_laporan.html", form=request.form)
+            return render_template("publik/buat_laporan.html", form=request.form)
 
         laporan = Laporan(
             foto_url=foto_url,
@@ -102,7 +102,7 @@ def buat():
         flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
         return redirect(url_for("laporan.daftar"))
 
-    return render_template("public/buat_laporan.html", form={})
+    return render_template("publik/buat_laporan.html", form={})
 
 
 @laporan_bp.route("/")
@@ -144,7 +144,7 @@ def daftar():
     )
 
     return render_template(
-        "public/laporan_warga.html",
+        "publik/laporan_warga.html",
         laporans=laporans,
         q=q,
         kategori=kategori,
@@ -169,4 +169,4 @@ def detail(laporan_id):
     if laporan.status == Laporan.STATUS_MENUNGGU:
         from flask import abort
         abort(404)
-    return render_template("public/detail_laporan.html", laporan=laporan)
+    return render_template("publik/detail_laporan.html", laporan=laporan)
