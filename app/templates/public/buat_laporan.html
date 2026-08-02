@@ -55,19 +55,30 @@
     <!-- STEP 1: Foto -->
     <section data-step="1">
       <h2 class="text-lg font-bold mb-4">Bukti Foto</h2>
-      <label class="block border-2 border-dashed border-gray-300 rounded-xl py-12 text-center cursor-pointer hover:border-primary transition">
-        <div id="foto-preview" class="hidden mb-4">
-          <img id="foto-img" class="max-h-64 mx-auto rounded-lg" alt="">
+      
+      <!-- PERBAIKAN: Kotak Unggah dipisah dari gambar Preview -->
+      <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-8 text-center hover:border-primary transition">
+        
+        <!-- Preview Foto (Disembunyikan secara default) -->
+        <div id="foto-preview" class="hidden relative inline-block">
+          <img id="foto-img" class="max-h-64 mx-auto rounded-lg shadow-sm" alt="Preview Foto">
+          
+          <!-- Tombol Hapus X -->
+          <button type="button" id="btn-hapus-foto" class="absolute -top-3 -right-3 bg-red-600 text-white rounded-full p-1.5 shadow-md hover:bg-red-700 transition-colors" title="Hapus Foto">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
         </div>
-        <div id="foto-placeholder">
+
+        <!-- Area Klik untuk Upload (Tampil secara default) -->
+        <label id="foto-placeholder" class="block cursor-pointer py-4">
           <div class="w-14 h-14 mx-auto mb-3 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           </div>
           <p class="font-medium text-gray-700">Klik untuk unggah atau ambil foto <span class="text-red-500">*</span></p>
           <p class="text-xs text-gray-400 mt-1">Wajib. Maksimal 5MB (JPG, PNG)</p>
-        </div>
-        <input type="file" name="foto" id="input-foto" accept="image/jpeg,image/png" class="hidden">
-      </label>
+          <input type="file" name="foto" id="input-foto" accept="image/jpeg,image/png" class="hidden">
+        </label>
+      </div>
     </section>
 
     <!-- STEP 2: Lokasi -->
@@ -157,13 +168,15 @@
     <div id="step-error" class="hidden mt-6 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3"></div>
 
     <!-- Navigation -->
-    <div class="flex justify-between items-center mt-8 pt-6 border-t">
+    <div class="flex items-center mt-8 pt-6 border-t w-full">
       <button type="button" id="btn-prev"
-              class="px-6 py-2.5 rounded-lg bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 disabled:opacity-50" disabled>Sebelumnya</button>
-      <button type="button" id="btn-next"
-              class="px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark">Selanjutnya</button>
-      <button type="submit" id="btn-submit"
-              class="hidden px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark">Kirim Laporan</button>
+              class="hidden px-6 py-2.5 rounded-lg bg-gray-100 text-gray-600 font-medium hover:bg-red-50 hover:text-primary transition-colors">Sebelumnya</button>
+      <div class="ml-auto flex gap-3">
+        <button type="button" id="btn-next"
+                class="px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors">Selanjutnya</button>
+        <button type="submit" id="btn-submit"
+                class="hidden px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors">Kirim Laporan</button>
+      </div>
     </div>
   </form>
 </div>
@@ -186,13 +199,6 @@
   let currentStep = 1;
   let hasAutoDetectedLocation = false;
 
-  // --- MAP SETUP ---
-  // Bounds diperbaiki: dulu di [-5.34, 119.44]-[-5.21, 119.54] (area Manuju/
-  // Rindam Hasanuddin, BUKAN Lonjoboko), makanya setView ke user (yang ada
-  // di longitude 119.7-an) ke-clamp balik oleh maxBoundsViscosity dan pin
-  // jadi off-screen. Sekarang bounds cover Lonjoboko + Parangloe (sesuai
-  // peta.js), dilonggarkan sedikit ke luar biar pin tetap kelihatan
-  // kalau user melapor dari pinggiran desa.
   const LONJOBOKO_BOUNDS = L.latLngBounds([-5.320, 119.640], [-5.200, 119.820]);
   const mapPilih = L.map('map-pilih', {
     maxBounds: LONJOBOKO_BOUNDS,
@@ -203,8 +209,6 @@
     attribution: '© OpenStreetMap',
   }).addTo(mapPilih);
 
-  // Pin merah SVG (divIcon) — pengganti default L.marker icon yang butuh
-  // file PNG bawaan Leaflet.
   const pinIcon = L.divIcon({
     className: 'custom-pin-icon',
     html: `
@@ -238,7 +242,6 @@
     mapPilih.setView([_lat0, _lng0], 15);
   }
 
-  // --- AUTO LOCATION ---
   let accuracyCircle = null;
 
   function deteksiLokasiOtomatis() {
@@ -309,7 +312,6 @@
 
   document.getElementById('btn-lokasi-otomatis').addEventListener('click', deteksiLokasiOtomatis);
 
-  // --- STEP ERROR ---
   function showStepError(msg) {
     const el = document.getElementById('step-error');
     el.textContent = msg;
@@ -317,7 +319,6 @@
     setTimeout(() => el.classList.add('hidden'), 6000);
   }
 
-  // --- VALIDATION ---
   function validateStep() {
     const f = document.forms['form-laporan'];
     if (currentStep === 1) {
@@ -368,7 +369,6 @@
     return true;
   }
 
-  // --- STEPPER ---
   function updateStepper() {
     document.getElementById('step-error').classList.add('hidden');
     document.querySelectorAll('[data-step]').forEach(s => {
@@ -391,7 +391,9 @@
     });
     const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
     document.getElementById('stepper-progress').style.width = pct + '%';
-    document.getElementById('btn-prev').disabled = currentStep === 1;
+    
+    document.getElementById('btn-prev').classList.toggle('hidden', currentStep === 1);
+    
     document.getElementById('btn-next').classList.toggle('hidden', currentStep === TOTAL_STEPS);
     document.getElementById('btn-submit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
 
@@ -431,7 +433,6 @@
     if (currentStep > 1) { currentStep--; updateStepper(); }
   });
 
-  // --- HP: hanya angka + validasi real-time ---
   const hpInput = document.getElementById('input-hp');
   const hpError = document.getElementById('hp-error');
   const hpHint  = document.getElementById('hp-hint');
@@ -476,16 +477,31 @@
     validateHp(false);
   });
 
-  document.getElementById('input-foto').addEventListener('change', (e) => {
+  // PERBAIKAN SCRIPT UNTUK FILE FOTO
+  const inputFoto = document.getElementById('input-foto');
+  const fotoPreview = document.getElementById('foto-preview');
+  const fotoPlaceholder = document.getElementById('foto-placeholder');
+  const fotoImg = document.getElementById('foto-img');
+  const btnHapusFoto = document.getElementById('btn-hapus-foto');
+
+  inputFoto.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => {
-      document.getElementById('foto-img').src = ev.target.result;
-      document.getElementById('foto-preview').classList.remove('hidden');
-      document.getElementById('foto-placeholder').classList.add('hidden');
+      fotoImg.src = ev.target.result;
+      fotoPreview.classList.remove('hidden');
+      fotoPlaceholder.classList.add('hidden');
     };
     reader.readAsDataURL(file);
+  });
+
+  // Menambahkan Event Listener untuk menghapus foto
+  btnHapusFoto.addEventListener('click', () => {
+    inputFoto.value = ''; // Reset nilai input file
+    fotoImg.src = ''; // Kosongkan source gambar
+    fotoPreview.classList.add('hidden'); // Sembunyikan preview
+    fotoPlaceholder.classList.remove('hidden'); // Tampilkan kembali placeholder
   });
 
   updateStepper();
