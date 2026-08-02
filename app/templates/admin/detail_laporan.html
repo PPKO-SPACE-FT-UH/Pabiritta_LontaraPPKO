@@ -7,8 +7,9 @@
 
 <!-- Header: Back + Admin badge -->
 <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+  <!-- PERUBAHAN: Hover disesuaikan ke bg-red-50, text-primary, dan border-primary -->
   <a href="{{ url_for('admin.manajemen_laporan') }}"
-     class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition shadow-sm">
+     class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-primary hover:border-primary transition-colors shadow-sm">
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
     Kembali ke Manajemen Laporan
   </a>
@@ -35,10 +36,10 @@
       {% endif %}
       <div class="p-6">
         <div class="flex flex-wrap gap-2 mb-4">
-          <span class="text-xs px-3 py-1 rounded-full bg-{{ laporan.kategori_color }}-100 text-{{ laporan.kategori_color }}-700 font-medium">{{ laporan.kategori }}</span>
-          <span class="text-xs px-3 py-1 rounded-full bg-{{ laporan.status_color }}-100 text-{{ laporan.status_color }}-700 font-medium">{{ laporan.status }}</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-{{ laporan.kategori_color }}-100 text-{{ laporan.kategori_color }}-700 font-medium border border-{{ laporan.kategori_color }}-200">{{ laporan.kategori }}</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-{{ laporan.status_color }}-100 text-{{ laporan.status_color }}-700 font-medium border border-{{ laporan.status_color }}-200">{{ laporan.status }}</span>
         </div>
-        <h2 class="text-xl font-bold mb-2">{{ laporan.lokasi_label or ('Dusun ' + laporan.dusun) }}</h2>
+        <h2 class="text-xl font-bold mb-2 text-gray-800">{{ laporan.lokasi_label or ('Dusun ' + laporan.dusun) }}</h2>
         <p class="text-gray-700 whitespace-pre-wrap">{{ laporan.deskripsi }}</p>
       </div>
     </div>
@@ -47,23 +48,23 @@
     <div class="bg-white rounded-xl border-2 border-red-200 shadow-sm p-6">
       <div class="flex items-center gap-2 mb-4">
         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-        <h3 class="font-bold">Data Sensitif Pelapor</h3>
+        <h3 class="font-bold text-gray-800">Data Sensitif Pelapor</h3>
         <span class="ml-auto text-xs text-gray-400">Hanya visible untuk admin</span>
       </div>
       <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
         <div>
-          <dt class="text-gray-500 text-xs mb-1">Nama Pelapor</dt>
+          <dt class="text-gray-500 text-xs mb-1 uppercase tracking-wide">Nama Pelapor</dt>
           <dd class="font-semibold text-gray-800">{{ laporan.nama_pelapor }}</dd>
         </div>
         <div>
-          <dt class="text-gray-500 text-xs mb-1">Dusun</dt>
+          <dt class="text-gray-500 text-xs mb-1 uppercase tracking-wide">Dusun</dt>
           <dd class="font-semibold text-gray-800">Dusun {{ laporan.dusun }}</dd>
         </div>
         <div>
-          <dt class="text-gray-500 text-xs mb-1">Nomor HP</dt>
+          <dt class="text-gray-500 text-xs mb-1 uppercase tracking-wide">Nomor HP</dt>
           <dd>
             {% if laporan.no_hp %}
-              <a href="tel:{{ laporan.no_hp }}" class="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline">
+              <a href="tel:{{ laporan.no_hp }}" class="inline-flex items-center gap-1.5 font-semibold text-primary hover:text-primary-dark hover:underline transition-colors">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 {{ laporan.no_hp }}
               </a>
@@ -73,29 +74,29 @@
           </dd>
         </div>
         <div>
-          <dt class="text-gray-500 text-xs mb-1">Koordinat GPS</dt>
+          <dt class="text-gray-500 text-xs mb-1 uppercase tracking-wide">Koordinat GPS</dt>
           <dd>
             <a href="https://www.google.com/maps?q={{ laporan.latitude }},{{ laporan.longitude }}"
                target="_blank" rel="noopener"
-               class="inline-flex items-center gap-1.5 font-semibold text-primary hover:underline">
+               class="inline-flex items-center gap-1.5 font-semibold text-primary hover:text-primary-dark hover:underline transition-colors">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               {{ '%.5f, %.5f' % (laporan.latitude, laporan.longitude) }}
             </a>
           </dd>
         </div>
         <div>
-          <dt class="text-gray-500 text-xs mb-1">Dilaporkan</dt>
+          <dt class="text-gray-500 text-xs mb-1 uppercase tracking-wide">Dilaporkan</dt>
           <dd class="font-medium text-gray-700">{{ laporan.created_at|tgl('%-d %b %Y, %H:%M') }}</dd>
         </div>
         <div>
-          <dt class="text-gray-500 text-xs mb-1">Update Terakhir</dt>
+          <dt class="text-gray-500 text-xs mb-1 uppercase tracking-wide">Update Terakhir</dt>
           <dd class="font-medium text-gray-700">{{ laporan.updated_at|tgl('%-d %b %Y, %H:%M') }}</dd>
         </div>
       </dl>
     </div>
 
     <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-      <h3 class="font-bold mb-4">Lokasi di Peta</h3>
+      <h3 class="font-bold mb-4 text-gray-800">Lokasi di Peta</h3>
       <div id="map-detail"
            class="h-72 rounded-lg border border-gray-200"
            data-lat="{{ laporan.latitude }}"
@@ -109,28 +110,43 @@
     <div class="bg-white rounded-xl border-2 border-red-300 p-6 shadow-md">
       <div class="flex items-center gap-2 mb-4">
         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-        <h3 class="font-bold text-base">Ubah Status Laporan</h3>
+        <h3 class="font-bold text-base text-gray-800">Ubah Status Laporan</h3>
       </div>
-      <p class="text-xs text-gray-500 mb-4">Perubahan status akan dicatat di log aktivitas dan terlihat oleh publik jika status bukan "Menunggu" atau "Ditolak".</p>
+      <p class="text-xs text-gray-500 mb-4 leading-relaxed">Perubahan status akan dicatat di log aktivitas dan terlihat oleh publik jika status bukan "Menunggu" atau "Ditolak".</p>
 
-      <form method="POST" action="{{ url_for('admin.ubah_status', laporan_id=laporan.id) }}" class="space-y-4" id="form-ubah-status">
+      <form method="POST" action="{{ url_for('admin.ubah_status', laporan_id=laporan.id) }}" class="space-y-5" id="form-ubah-status">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <!-- PERUBAHAN: Custom Dropdown Status Baru -->
         <div>
-          <label class="block text-sm font-medium mb-2">Status Baru <span class="text-red-500">*</span></label>
-          <select name="status" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-            {% for s in status_choices %}
-              <option value="{{ s }}" {% if laporan.status == s %}selected{% endif %}>{{ s }}</option>
-            {% endfor %}
-          </select>
-          <p class="text-xs text-gray-500 mt-1">Status saat ini: <strong class="text-{{ laporan.status_color }}-600">{{ laporan.status }}</strong></p>
+          <label class="block text-sm font-medium mb-2 text-gray-700">Status Baru <span class="text-red-500">*</span></label>
+          <div class="relative w-full custom-dropdown">
+            <!-- Hidden input for form submission -->
+            <input type="hidden" name="status" value="{{ laporan.status }}" required>
+            
+            <div class="dropdown-selected px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
+              <span class="selected-text truncate text-gray-800">{{ laporan.status }}</span>
+              <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            
+            <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+              {% for s in status_choices %}
+                <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if laporan.status == s %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ s }}">{{ s }}</div>
+              {% endfor %}
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">Status saat ini: <strong class="text-{{ laporan.status_color }}-600">{{ laporan.status }}</strong></p>
         </div>
+
+        <!-- Textarea Catatan -->
         <div>
-          <label class="block text-sm font-medium mb-2">Catatan Admin</label>
+          <label class="block text-sm font-medium mb-2 text-gray-700">Catatan Admin</label>
           <textarea name="catatan_admin" rows="4" placeholder="Catatan tindak lanjut, penjelasan status, dll..."
-                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">{{ laporan.catatan_admin or '' }}</textarea>
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm">{{ laporan.catatan_admin or '' }}</textarea>
         </div>
+        
         <button type="submit"
-                class="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary-dark transition flex items-center justify-center gap-2">
+                class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 shadow-sm text-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
           Simpan Perubahan
         </button>
@@ -138,28 +154,28 @@
     </div>
 
     {% if laporan.catatan_admin %}
-    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5">
+    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5 shadow-sm">
       <h4 class="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z"/></svg>
         Catatan Admin Saat Ini
       </h4>
-      <p class="text-sm text-yellow-900 whitespace-pre-wrap">{{ laporan.catatan_admin }}</p>
+      <p class="text-sm text-yellow-900 whitespace-pre-wrap leading-relaxed">{{ laporan.catatan_admin }}</p>
     </div>
     {% endif %}
 
     {% if current_user.is_superadmin %}
-    <div class="bg-white rounded-xl border border-red-200 p-5">
-      <h4 class="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+    <div class="bg-white rounded-xl border border-red-200 p-5 shadow-sm">
+      <h4 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
         Hapus Laporan
       </h4>
-      <p class="text-xs text-gray-500 mb-3">Menghapus laporan ini permanen dan tidak bisa dibatalkan.</p>
+      <p class="text-xs text-gray-500 mb-4 leading-relaxed">Menghapus laporan ini permanen dan tidak bisa dibatalkan.</p>
       <form method="POST" action="{{ url_for('admin.hapus_laporan', laporan_id=laporan.id) }}" id="form-hapus">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="button" onclick="konfirmasiHapus()"
-                class="w-full bg-red-600 text-white font-semibold py-2.5 rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2 text-sm">
+                class="w-full bg-red-600 text-white font-semibold py-2.5 rounded-lg hover:bg-red-800 transition-colors flex items-center justify-center gap-2 text-sm shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-          Hapus
+          Hapus Permanen
         </button>
       </form>
     </div>
@@ -175,6 +191,68 @@
       document.getElementById('form-hapus').submit();
     }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- LOGIKA KUSTOM SELECT DROPDOWN ---
+    const customDropdowns = document.querySelectorAll('.custom-dropdown');
+
+    customDropdowns.forEach(dropdown => {
+      const selectedArea = dropdown.querySelector('.dropdown-selected');
+      const optionsArea = dropdown.querySelector('.dropdown-options');
+      const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+      const selectedText = dropdown.querySelector('.selected-text');
+      const options = dropdown.querySelectorAll('.option-item');
+
+      // Buka/Tutup dropdown saat di-klik
+      selectedArea.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        // Tutup semua dropdown lain jika ada
+        document.querySelectorAll('.dropdown-options').forEach(opt => {
+          if (opt !== optionsArea) opt.classList.add('hidden');
+        });
+
+        // Toggle dropdown ini
+        optionsArea.classList.toggle('hidden');
+        selectedArea.classList.toggle('border-primary');
+        selectedArea.classList.toggle('ring-1');
+        selectedArea.classList.toggle('ring-primary');
+      });
+
+      // Pilih opsi
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const value = option.getAttribute('data-value');
+          const text = option.textContent;
+
+          // Update teks & nilai input tersembunyi
+          selectedText.textContent = text;
+          hiddenInput.value = value;
+
+          // Hapus gaya aktif dari semua opsi, berikan ke opsi terpilih
+          options.forEach(opt => {
+            opt.classList.remove('bg-red-50', 'text-primary', 'font-medium');
+          });
+          option.classList.add('bg-red-50', 'text-primary', 'font-medium');
+
+          // Tutup dropdown dan hilangkan gaya border aktif
+          optionsArea.classList.add('hidden');
+          selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
+        });
+      });
+    });
+
+    // --- TUTUP DROPDOWN JIKA KLIK DI LUAR AREA ---
+    document.addEventListener('click', (e) => {
+      customDropdowns.forEach(dropdown => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.querySelector('.dropdown-options').classList.add('hidden');
+          dropdown.querySelector('.dropdown-selected').classList.remove('border-primary', 'ring-1', 'ring-primary');
+        }
+      });
+    });
+  });
 
   const el = document.getElementById('map-detail');
   if (el) {

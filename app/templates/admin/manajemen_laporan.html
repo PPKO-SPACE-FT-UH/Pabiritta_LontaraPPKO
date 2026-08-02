@@ -6,25 +6,57 @@
 {% block content %}
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm">
   <!-- Filter -->
-  <form method="get" class="p-4 border-b flex flex-col md:flex-row gap-3">
-    <div class="relative flex-1">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input type="text" name="q" value="{{ q }}" placeholder="Cari laporan..."
-             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm">
+  <form method="get" id="searchForm" class="p-4 border-b flex flex-col md:flex-row gap-3 items-start md:items-center">
+    
+    <!-- 1. KOTAK PENCARIAN & RIWAYAT -->
+    <div class="relative flex-1 w-full group">
+      <!-- Ikon kaca pembesar (hover menjadi maroon karena group-hover) -->
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-primary group-focus-within:text-primary transition-colors z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      
+      <!-- Input pencarian (autocomplete="off" untuk mematikan bawaan browser) -->
+      <input type="text" name="q" id="searchInput" autocomplete="off" value="{{ q }}" placeholder="Cari laporan..."
+             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm hover:border-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white relative z-0">
+             
+      <!-- Dropdown Riwayat Pencarian Kustom (Gradasi Hitam ke Maroon) -->
+      <div id="searchHistoryDropdown" class="hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-gradient-to-br from-gray-900 to-red-900 rounded-lg shadow-xl z-50 overflow-hidden border border-gray-800">
+        <div class="px-4 py-2 text-xs font-semibold text-gray-300 border-b border-gray-700/50 uppercase tracking-wider">Terakhir Dicari</div>
+        <div id="historyList" class="flex flex-col">
+          <!-- Item riwayat akan dimasukkan lewat JavaScript -->
+        </div>
+      </div>
     </div>
-    <select name="kategori" class="px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white">
-      <option value="">Semua Kategori</option>
-      {% for k in kategori_choices %}
-        <option value="{{ k }}" {% if kategori == k %}selected{% endif %}>{{ k }}</option>
-      {% endfor %}
-    </select>
-    <select name="status" class="px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white">
-      <option value="">Semua Status</option>
-      {% for s in status_choices %}
-        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
-      {% endfor %}
-    </select>
-    <button class="px-5 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark">Terapkan</button>
+
+    <!-- 2. KUSTOM SELECT KATEGORI -->
+    <div class="relative w-full md:w-48 custom-dropdown">
+      <input type="hidden" name="kategori" value="{{ kategori }}">
+      <div class="dropdown-selected px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
+        <span class="selected-text truncate text-gray-700">{{ kategori if kategori else 'Semua Kategori' }}</span>
+        <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+        <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not kategori %}bg-red-50 text-primary font-medium{% endif %}" data-value="">Semua Kategori</div>
+        {% for k in kategori_choices %}
+          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if kategori == k %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ k }}">{{ k }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- 3. KUSTOM SELECT STATUS -->
+    <div class="relative w-full md:w-40 custom-dropdown">
+      <input type="hidden" name="status" value="{{ status }}">
+      <div class="dropdown-selected px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
+        <span class="selected-text truncate text-gray-700">{{ status if status else 'Semua Status' }}</span>
+        <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+        <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not status %}bg-red-50 text-primary font-medium{% endif %}" data-value="">Semua Status</div>
+        {% for s in status_choices %}
+          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if status == s %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ s }}">{{ s }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button type="submit" class="w-full md:w-auto px-6 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors shadow-sm">Terapkan</button>
   </form>
 
   <!-- Tabel -->
@@ -43,28 +75,155 @@
       </thead>
       <tbody class="divide-y divide-gray-100">
         {% for l in laporans %}
-        <tr class="hover:bg-gray-50">
+        <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-500">#{{ l.id }}</td>
           <td class="px-4 py-3">
-            <div class="font-medium">{{ l.lokasi_label or l.dusun }}</div>
-            <div class="text-xs text-gray-500">Dusun {{ l.dusun }}</div>
+            <div class="font-medium text-gray-800">{{ l.lokasi_label or l.dusun }}</div>
+            <div class="text-xs text-gray-500 mt-0.5">Dusun {{ l.dusun }}</div>
           </td>
-          <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-{{ l.kategori_color }}-100 text-{{ l.kategori_color }}-700">{{ l.kategori }}</span></td>
-          <td class="px-4 py-3">{{ l.nama_pelapor }}</td>
+          <td class="px-4 py-3"><span class="inline-block text-xs px-2.5 py-1 rounded-full bg-{{ l.kategori_color }}-50 text-{{ l.kategori_color }}-700 font-medium border border-{{ l.kategori_color }}-100">{{ l.kategori }}</span></td>
+          <td class="px-4 py-3 font-medium text-gray-700">{{ l.nama_pelapor }}</td>
           <td class="px-4 py-3 text-gray-500">{{ l.created_at|tgl('%-d %b %Y') }}</td>
-          <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-{{ l.status_color }}-100 text-{{ l.status_color }}-700">{{ l.status }}</span></td>
+          <td class="px-4 py-3"><span class="inline-block text-xs px-2.5 py-1 rounded-full bg-{{ l.status_color }}-50 text-{{ l.status_color }}-700 font-medium border border-{{ l.status_color }}-100">{{ l.status }}</span></td>
           <td class="px-4 py-3 text-right">
             <a href="{{ url_for('admin.detail_laporan', laporan_id=l.id) }}"
-               class="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-primary text-white text-xs font-medium hover:bg-primary-dark">
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary text-white text-xs font-medium hover:bg-primary-dark transition-colors shadow-sm">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               Detail
             </a>
           </td>
         </tr>
         {% else %}
-        <tr><td colspan="7" class="text-center py-12 text-gray-400">Belum ada laporan.</td></tr>
+        <tr><td colspan="7" class="text-center py-16 text-gray-400">Belum ada laporan yang sesuai pencarian.</td></tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. LOGIKA RIWAYAT PENCARIAN (LOCAL STORAGE) ---
+    const searchInput = document.getElementById('searchInput');
+    const historyDropdown = document.getElementById('searchHistoryDropdown');
+    const historyList = document.getElementById('historyList');
+    const searchForm = document.getElementById('searchForm');
+
+    function getSearchHistory() {
+      const history = localStorage.getItem('paBirittaSearchHistory');
+      return history ? JSON.parse(history) : [];
+    }
+
+    function saveSearchHistory(query) {
+      if (!query.trim()) return;
+      let history = getSearchHistory();
+      // Hapus jika sudah ada agar naik ke urutan pertama
+      history = history.filter(item => item.toLowerCase() !== query.toLowerCase());
+      history.unshift(query.trim());
+      // Batasi maksimal 6 pencarian terakhir
+      if (history.length > 6) history.pop();
+      localStorage.setItem('paBirittaSearchHistory', JSON.stringify(history));
+    }
+
+    function renderHistory() {
+      const history = getSearchHistory();
+      if (history.length === 0) {
+        historyDropdown.classList.add('hidden');
+        return;
+      }
+
+      historyList.innerHTML = '';
+      history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'px-4 py-2.5 text-sm text-gray-100 cursor-pointer hover:bg-white/10 hover:text-white transition-colors flex items-center gap-3 border-l-2 border-transparent hover:border-red-400';
+        div.innerHTML = `
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span class="truncate">${item}</span>
+        `;
+        div.onclick = () => {
+          searchInput.value = item;
+          historyDropdown.classList.add('hidden');
+          searchForm.submit(); // Langsung submit form saat di-klik
+        };
+        historyList.appendChild(div);
+      });
+      historyDropdown.classList.remove('hidden');
+    }
+
+    searchInput.addEventListener('focus', renderHistory);
+    
+    // Simpan pencarian ke riwayat saat form disubmit
+    searchForm.addEventListener('submit', () => {
+      saveSearchHistory(searchInput.value);
+    });
+
+    // --- 2. LOGIKA KUSTOM SELECT DROPDOWN ---
+    const customDropdowns = document.querySelectorAll('.custom-dropdown');
+
+    customDropdowns.forEach(dropdown => {
+      const selectedArea = dropdown.querySelector('.dropdown-selected');
+      const optionsArea = dropdown.querySelector('.dropdown-options');
+      const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+      const selectedText = dropdown.querySelector('.selected-text');
+      const options = dropdown.querySelectorAll('.option-item');
+
+      // Buka/Tutup dropdown saat di-klik
+      selectedArea.addEventListener('click', (e) => {
+        e.stopPropagation(); // Mencegah event klik menyebar ke dokumen
+        
+        // Tutup semua dropdown lain terlebih dahulu
+        document.querySelectorAll('.dropdown-options').forEach(opt => {
+          if (opt !== optionsArea) opt.classList.add('hidden');
+        });
+        historyDropdown.classList.add('hidden'); // Tutup juga riwayat search
+
+        // Toggle dropdown ini
+        optionsArea.classList.toggle('hidden');
+        selectedArea.classList.toggle('border-primary');
+        selectedArea.classList.toggle('ring-1');
+        selectedArea.classList.toggle('ring-primary');
+      });
+
+      // Pilih opsi
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const value = option.getAttribute('data-value');
+          const text = option.textContent;
+
+          // Update teks & nilai input tersembunyi
+          selectedText.textContent = text;
+          hiddenInput.value = value;
+
+          // Hapus gaya aktif dari semua opsi, berikan ke opsi terpilih
+          options.forEach(opt => {
+            opt.classList.remove('bg-red-50', 'text-primary', 'font-medium');
+          });
+          option.classList.add('bg-red-50', 'text-primary', 'font-medium');
+
+          // Tutup dropdown dan hilangkan gaya border aktif
+          optionsArea.classList.add('hidden');
+          selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
+        });
+      });
+    });
+
+    // --- 3. TUTUP SEMUA DROPDOWN JIKA KLIK DI LUAR AREA ---
+    document.addEventListener('click', (e) => {
+      // Tutup riwayat pencarian
+      if (!searchInput.contains(e.target) && !historyDropdown.contains(e.target)) {
+        historyDropdown.classList.add('hidden');
+      }
+      // Tutup kustom select
+      customDropdowns.forEach(dropdown => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.querySelector('.dropdown-options').classList.add('hidden');
+          dropdown.querySelector('.dropdown-selected').classList.remove('border-primary', 'ring-1', 'ring-primary');
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}
