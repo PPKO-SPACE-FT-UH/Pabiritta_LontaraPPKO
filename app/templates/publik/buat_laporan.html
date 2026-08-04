@@ -56,7 +56,7 @@
     <section data-step="1">
       <h2 class="text-lg font-bold mb-4 text-gray-800">Bukti Foto</h2>
       
-      <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-8 text-center hover:border-primary hover:bg-red-50/50 transition-colors">
+      <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-8 text-center hover:border-primary hover:bg-red-50/50 transition-colors group">
         
         <!-- Preview Foto -->
         <div id="foto-preview" class="hidden relative inline-block">
@@ -68,8 +68,8 @@
         </div>
 
         <!-- Area Klik untuk Upload -->
-        <label id="foto-placeholder" class="block cursor-pointer py-4 group">
-          
+        <div id="foto-placeholder" role="button" tabindex="0" class="block cursor-pointer py-4">
+
           <!-- UI Teks Upload Default -->
           <div id="foto-ui-default">
             <div class="w-14 h-14 mx-auto mb-3 rounded-full border-2 border-gray-300 group-hover:border-primary group-hover:text-primary flex items-center justify-center text-gray-400 transition-colors">
@@ -84,9 +84,56 @@
             <svg class="w-8 h-8 animate-spin mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span class="text-sm font-medium">Mengoptimalkan ukuran foto...</span>
           </div>
+        </div>
 
-          <input type="file" name="foto" id="input-foto" accept="image/*" class="hidden">
-        </label>
+        <input type="file" name="foto" id="input-foto" accept="image/*" class="hidden">
+
+        <!-- Modal Pilihan Sumber Foto -->
+        <div id="foto-choice-modal" class="hidden fixed inset-0 z-[9999] bg-black/50 items-end sm:items-center justify-center sm:p-4">
+          <div class="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-sm p-5 space-y-2 shadow-xl">
+            <h3 class="text-base font-bold text-center text-gray-800 mb-4">Pilih Sumber Foto</h3>
+            <button type="button" id="btn-foto-kamera" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200 hover:bg-primary hover:text-white hover:border-primary transition-colors text-left">
+              <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <div>
+                <div class="font-semibold">Ambil Foto</div>
+                <div class="text-xs opacity-80">Gunakan kamera perangkat</div>
+              </div>
+            </button>
+            <button type="button" id="btn-foto-galeri" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200 hover:bg-primary hover:text-white hover:border-primary transition-colors text-left">
+              <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <div>
+                <div class="font-semibold">Pilih dari Galeri</div>
+                <div class="text-xs opacity-80">Unggah foto dari perangkat</div>
+              </div>
+            </button>
+            <button type="button" id="btn-foto-batal" class="w-full py-2.5 mt-2 text-sm text-gray-500 hover:text-gray-700">Batal</button>
+          </div>
+        </div>
+        <!-- Modal Kamera Live (untuk desktop & fallback) -->
+        <div id="camera-modal" class="hidden fixed inset-0 z-[9999] bg-black flex-col">
+          <div class="flex-1 relative overflow-hidden">
+            <video id="camera-video" autoplay playsinline muted style="transform: none;" class="absolute inset-0 w-full h-full object-cover"></video>
+            <canvas id="camera-canvas" class="hidden"></canvas>
+            <button type="button" id="btn-camera-close" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <button type="button" id="btn-camera-flip" class="absolute top-4 left-4 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80" title="Putar Kamera">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 4v5h-.582m0 0a8.001 8.001 0 00-15.356-1.5M19.418 9H15M4 20v-5h.582m0 0a8.003 8.003 0 0015.357 1.5M4.582 15H9"/>
+                <circle cx="12" cy="12" r="2.5"/>
+              </svg>
+            </button>
+            <div id="camera-error" class="hidden absolute inset-0 flex items-center justify-center p-6 text-center text-white bg-black/80">
+              <div>
+                <p class="font-semibold mb-2">Tidak dapat mengakses kamera</p>
+                <p id="camera-error-msg" class="text-sm text-gray-300"></p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-black py-6 flex items-center justify-center">
+            <button type="button" id="btn-camera-snap" class="w-16 h-16 rounded-full bg-white border-4 border-gray-400 active:scale-95 transition-transform" aria-label="Ambil foto"></button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -514,6 +561,126 @@
     const text = (e.clipboardData || window.clipboardData).getData('text');
     hpInput.value = text.replace(/\D/g, '').slice(0, 13);
     validateHp(false);
+  });
+
+    // === Modal Pilihan Sumber Foto (Kamera / Galeri) ===
+  const fotoPlaceholderBtn = document.getElementById('foto-placeholder');
+  const fotoChoiceModal = document.getElementById('foto-choice-modal');
+  const btnFotoKamera = document.getElementById('btn-foto-kamera');
+  const btnFotoGaleri = document.getElementById('btn-foto-galeri');
+  const btnFotoBatal = document.getElementById('btn-foto-batal');
+
+  function openFotoModal() {
+    fotoChoiceModal.classList.remove('hidden');
+    fotoChoiceModal.classList.add('flex');
+  }
+  function closeFotoModal() {
+    fotoChoiceModal.classList.add('hidden');
+    fotoChoiceModal.classList.remove('flex');
+  }
+
+  fotoPlaceholderBtn?.addEventListener('click', openFotoModal);
+  fotoPlaceholderBtn?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFotoModal(); }
+  });
+
+  // Helper: buka kamera pakai getUserMedia (desktop + mobile modern)
+  const cameraModal = document.getElementById('camera-modal');
+  const cameraVideo = document.getElementById('camera-video');
+  const cameraCanvas = document.getElementById('camera-canvas');
+  const cameraError = document.getElementById('camera-error');
+  const cameraErrorMsg = document.getElementById('camera-error-msg');
+  const btnCameraSnap = document.getElementById('btn-camera-snap');
+  const btnCameraClose = document.getElementById('btn-camera-close');
+  let cameraStream = null;
+  let currentFacingMode = 'environment';
+
+  async function startCameraStream(facingMode) {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+    }
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: facingMode } },
+      audio: false,
+    });
+    cameraVideo.srcObject = cameraStream;
+    currentFacingMode = facingMode;
+  }
+
+  async function openCamera() {
+    cameraError.classList.add('hidden');
+    cameraModal.classList.remove('hidden');
+    cameraModal.classList.add('flex');
+    try {
+      await startCameraStream('environment');
+    } catch (err) {
+      cameraErrorMsg.textContent = err.message || 'Izin kamera ditolak atau perangkat tidak mendukung.';
+      cameraError.classList.remove('hidden');
+    }
+  }
+
+  async function flipCamera() {
+    const next = currentFacingMode === 'environment' ? 'user' : 'environment';
+    try {
+      await startCameraStream(next);
+    } catch (err) {
+      // Fallback: kembalikan ke mode sebelumnya
+      try { await startCameraStream(currentFacingMode); } catch (_) {}
+      alert('Kamera lain tidak tersedia di perangkat ini.');
+    }
+  }
+
+  function closeCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+    }
+    cameraVideo.srcObject = null;
+    cameraModal.classList.add('hidden');
+    cameraModal.classList.remove('flex');
+  }
+
+  function snapPhoto() {
+    if (!cameraVideo.videoWidth) return;
+    cameraCanvas.width = cameraVideo.videoWidth;
+    cameraCanvas.height = cameraVideo.videoHeight;
+    cameraCanvas.getContext('2d').drawImage(cameraVideo, 0, 0);
+    cameraCanvas.toBlob((blob) => {
+      if (!blob) return;
+      const file = new File([blob], `kamera-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      const input = document.getElementById('input-foto');
+      input.files = dt.files;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      closeCamera();
+    }, 'image/jpeg', 0.92);
+  }
+
+  btnCameraClose?.addEventListener('click', closeCamera);
+  document.getElementById('btn-camera-flip')?.addEventListener('click', flipCamera);
+  btnCameraSnap?.addEventListener('click', snapPhoto);
+
+  btnFotoKamera?.addEventListener('click', () => {
+    closeFotoModal();
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      openCamera();
+    } else {
+      const input = document.getElementById('input-foto');
+      input.setAttribute('capture', 'environment');
+      input.click();
+    }
+  });
+  btnFotoGaleri?.addEventListener('click', () => {
+    const input = document.getElementById('input-foto');
+    input.removeAttribute('capture');
+    input.click();
+    closeFotoModal();
+  });
+  btnFotoBatal?.addEventListener('click', closeFotoModal);
+  fotoChoiceModal?.addEventListener('click', (e) => {
+    if (e.target === fotoChoiceModal) closeFotoModal();
   });
 
   // --- LOGIKA KOMPRESI AMAN TANPA MERUSAK INPUT FILE ---
