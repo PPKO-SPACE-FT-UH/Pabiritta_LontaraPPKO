@@ -6,13 +6,11 @@ from app import db
 class Laporan(db.Model):
     __tablename__ = "laporan"
 
-    # Kategori
     KAT_POTENSI = "Potensi Longsor"
     KAT_KEJADIAN = "Kejadian Longsor"
     KAT_DAMPAK = "Dampak Longsor"
     KATEGORI_CHOICES = [KAT_POTENSI, KAT_KEJADIAN, KAT_DAMPAK]
 
-    # Status
     STATUS_MENUNGGU = "Menunggu"
     STATUS_PROSES = "Proses"
     STATUS_TINDAK_LANJUT = "Tindak Lanjut"
@@ -32,7 +30,7 @@ class Laporan(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     kategori = db.Column(db.String(40), nullable=False)
     deskripsi = db.Column(db.Text, nullable=False)
-    lokasi_label = db.Column(db.String(200), nullable=True)  # e.g. "Jl. Poros Desa"
+    lokasi_label = db.Column(db.String(200), nullable=True)
     nama_pelapor = db.Column(db.String(120), nullable=False)
     dusun = db.Column(db.String(80), nullable=False)
     no_hp = db.Column(db.String(30), nullable=True)
@@ -41,6 +39,17 @@ class Laporan(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
+
+    # Riwayat penanganan = semua Aktivitas yang link ke laporan ini,
+    # urut kronologis. Sekaligus jadi source of truth timeline transparansi.
+    aktivitas = db.relationship(
+        "Aktivitas",
+        backref="laporan",
+        primaryjoin="Aktivitas.laporan_id == Laporan.id",
+        foreign_keys="Aktivitas.laporan_id",
+        order_by="Aktivitas.created_at.asc()",
+        lazy="select",
     )
 
     @property

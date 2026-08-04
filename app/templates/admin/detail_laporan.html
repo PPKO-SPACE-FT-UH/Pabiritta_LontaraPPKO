@@ -7,7 +7,6 @@
 
 <!-- Header: Back + Admin badge -->
 <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-  <!-- PERUBAHAN: Hover disesuaikan ke bg-red-50, text-primary, dan border-primary -->
   <a href="{{ url_for('admin.manajemen_laporan') }}"
      class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-primary hover:border-primary transition-colors shadow-sm">
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
@@ -95,40 +94,88 @@
       </dl>
     </div>
 
+    <!-- RIWAYAT PENANGANAN LAPORAN (Timeline lengkap untuk admin) -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 sm:p-6">
+      <div class="flex items-center gap-2 mb-5">
+        <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <h3 class="font-bold text-gray-800">Riwayat Penanganan Laporan</h3>
+        <span class="ml-auto text-xs text-gray-400">{{ laporan.aktivitas|length }} entri</span>
+      </div>
+
+      {% if laporan.aktivitas %}
+      <ol class="relative border-l-2 border-gray-200 ml-2 space-y-6">
+        {% for r in laporan.aktivitas %}
+        <li class="ml-5">
+          <span class="absolute -left-[9px] w-4 h-4 rounded-full ring-4 ring-white bg-{{ r.status_color }}-500"></span>
+          <div class="flex flex-wrap items-center gap-2 mb-1">
+            {% if r.status_lama %}
+              <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 line-through">{{ r.status_lama }}</span>
+              <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            {% endif %}
+            {% if r.status_baru %}
+              <span class="text-xs px-2 py-0.5 rounded-full bg-{{ r.status_color }}-100 text-{{ r.status_color }}-700 font-semibold">{{ r.status_baru }}</span>
+            {% else %}
+              <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">{{ r.aksi }}</span>
+            {% endif %}
+          </div>
+          <div class="text-xs text-gray-500 mb-2">
+            oleh <span class="font-medium text-gray-700">{{ r.aktor }}</span>
+            {% if r.peran %}
+              <span class="capitalize text-gray-500">({{ r.peran }})</span>
+            {% endif %}
+            <span class="mx-1">•</span>
+            {{ r.created_at|tgl('%-d %b %Y, %H.%M') }} WITA
+          </div>
+          {% if r.keterangan %}
+            <p class="text-sm text-gray-700 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 leading-relaxed whitespace-pre-line">{{ r.keterangan }}</p>
+          {% else %}
+            <p class="text-xs text-gray-400 italic">(tanpa catatan tambahan)</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+      {% else %}
+        <p class="text-sm text-gray-400 text-center py-6">Belum ada riwayat penanganan.</p>
+      {% endif %}
+    </div>
+
+    <!-- Titik Lokasi -->
     <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-      <h3 class="font-bold mb-4 text-gray-800">Lokasi di Peta</h3>
+      <h3 class="font-bold mb-4 text-gray-800">Titik Lokasi</h3>
       <div id="map-detail"
            class="h-72 rounded-lg border border-gray-200"
            data-lat="{{ laporan.latitude }}"
            data-lng="{{ laporan.longitude }}"
            data-label="{{ (laporan.lokasi_label or laporan.dusun)|e }}"></div>
     </div>
+
   </div>
+  <!-- /KIRI -->
 
   <!-- KANAN: STATUS CHANGE FORM -->
   <div class="space-y-6">
     <div class="bg-white rounded-xl border-2 border-red-300 p-6 shadow-md">
       <div class="flex items-center gap-2 mb-4">
         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-        <h3 class="font-bold text-base text-gray-800">Ubah Status Laporan</h3>
+        <h3 class="font-bold text-base text-gray-800">Ubah Status &amp; Tambah Catatan</h3>
       </div>
-      <p class="text-xs text-gray-500 mb-4 leading-relaxed">Perubahan status akan dicatat di log aktivitas dan terlihat oleh publik jika status bukan "Menunggu" atau "Ditolak".</p>
+      <p class="text-xs text-gray-500 mb-4 leading-relaxed">
+        Setiap perubahan status atau catatan baru <strong>tersimpan sebagai entri riwayat</strong> — tidak menimpa yang lama. Semua entri terlihat oleh publik.
+      </p>
 
       <form method="POST" action="{{ url_for('admin.ubah_status', laporan_id=laporan.id) }}" class="space-y-5" id="form-ubah-status">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        
-        <!-- PERUBAHAN: Custom Dropdown Status Baru -->
+
         <div>
           <label class="block text-sm font-medium mb-2 text-gray-700">Status Baru <span class="text-red-500">*</span></label>
           <div class="relative w-full custom-dropdown">
-            <!-- Hidden input for form submission -->
             <input type="hidden" name="status" value="{{ laporan.status }}" required>
-            
+
             <div class="dropdown-selected px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
               <span class="selected-text truncate text-gray-800">{{ laporan.status }}</span>
               <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </div>
-            
+
             <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
               {% for s in status_choices %}
                 <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if laporan.status == s %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ s }}">{{ s }}</div>
@@ -138,30 +185,20 @@
           <p class="text-xs text-gray-500 mt-2">Status saat ini: <strong class="text-{{ laporan.status_color }}-600">{{ laporan.status }}</strong></p>
         </div>
 
-        <!-- Textarea Catatan -->
         <div>
-          <label class="block text-sm font-medium mb-2 text-gray-700">Catatan Admin</label>
-          <textarea name="catatan_admin" rows="4" placeholder="Catatan tindak lanjut, penjelasan status, dll..."
-                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm">{{ laporan.catatan_admin or '' }}</textarea>
+          <label class="block text-sm font-medium mb-2 text-gray-700">Catatan Tindak Lanjut</label>
+          <textarea name="catatan_admin" rows="4" placeholder="Jelaskan tindakan yang diambil, alasan perubahan status, dll..."
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm"></textarea>
+          <p class="text-xs text-gray-500 mt-1.5">Kosongkan jika hanya ingin ubah status tanpa catatan tambahan.</p>
         </div>
-        
+
         <button type="submit"
                 class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 shadow-sm text-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-          Simpan Perubahan
+          Simpan sebagai Entri Riwayat Baru
         </button>
       </form>
     </div>
-
-    {% if laporan.catatan_admin %}
-    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5 shadow-sm">
-      <h4 class="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z"/></svg>
-        Catatan Admin Saat Ini
-      </h4>
-      <p class="text-sm text-yellow-900 whitespace-pre-wrap leading-relaxed">{{ laporan.catatan_admin }}</p>
-    </div>
-    {% endif %}
 
     {% if current_user.is_superadmin %}
     <div class="bg-white rounded-xl border border-red-200 p-5 shadow-sm">
@@ -169,7 +206,7 @@
         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
         Hapus Laporan
       </h4>
-      <p class="text-xs text-gray-500 mb-4 leading-relaxed">Menghapus laporan ini permanen dan tidak bisa dibatalkan.</p>
+      <p class="text-xs text-gray-500 mb-4 leading-relaxed">Menghapus laporan ini permanen (beserta seluruh riwayatnya) dan tidak bisa dibatalkan.</p>
       <form method="POST" action="{{ url_for('admin.hapus_laporan', laporan_id=laporan.id) }}" id="form-hapus">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="button" onclick="konfirmasiHapus()"
@@ -181,19 +218,21 @@
     </div>
     {% endif %}
   </div>
+  <!-- /KANAN -->
+
 </div>
+<!-- /GRID -->
 {% endblock %}
 
 {% block scripts %}
 <script>
   function konfirmasiHapus() {
-    if (confirm('Yakin ingin menghapus laporan ini? Tindakan ini tidak bisa dibatalkan.')) {
+    if (confirm('Yakin ingin menghapus laporan ini beserta seluruh riwayatnya? Tindakan ini tidak bisa dibatalkan.')) {
       document.getElementById('form-hapus').submit();
     }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    // --- LOGIKA KUSTOM SELECT DROPDOWN ---
     const customDropdowns = document.querySelectorAll('.custom-dropdown');
 
     customDropdowns.forEach(dropdown => {
@@ -203,47 +242,34 @@
       const selectedText = dropdown.querySelector('.selected-text');
       const options = dropdown.querySelectorAll('.option-item');
 
-      // Buka/Tutup dropdown saat di-klik
       selectedArea.addEventListener('click', (e) => {
         e.stopPropagation();
-        
-        // Tutup semua dropdown lain jika ada
         document.querySelectorAll('.dropdown-options').forEach(opt => {
           if (opt !== optionsArea) opt.classList.add('hidden');
         });
-
-        // Toggle dropdown ini
         optionsArea.classList.toggle('hidden');
         selectedArea.classList.toggle('border-primary');
         selectedArea.classList.toggle('ring-1');
         selectedArea.classList.toggle('ring-primary');
       });
 
-      // Pilih opsi
       options.forEach(option => {
         option.addEventListener('click', (e) => {
           e.stopPropagation();
           const value = option.getAttribute('data-value');
           const text = option.textContent;
-
-          // Update teks & nilai input tersembunyi
           selectedText.textContent = text;
           hiddenInput.value = value;
-
-          // Hapus gaya aktif dari semua opsi, berikan ke opsi terpilih
           options.forEach(opt => {
             opt.classList.remove('bg-red-50', 'text-primary', 'font-medium');
           });
           option.classList.add('bg-red-50', 'text-primary', 'font-medium');
-
-          // Tutup dropdown dan hilangkan gaya border aktif
           optionsArea.classList.add('hidden');
           selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
         });
       });
     });
 
-    // --- TUTUP DROPDOWN JIKA KLIK DI LUAR AREA ---
     document.addEventListener('click', (e) => {
       customDropdowns.forEach(dropdown => {
         if (!dropdown.contains(e.target)) {
@@ -254,26 +280,57 @@
     });
   });
 
+  // ==================== Titik Lokasi (locked map, disamakan dengan publik) ====================
   const el = document.getElementById('map-detail');
   if (el) {
     const lat = parseFloat(el.dataset.lat);
     const lng = parseFloat(el.dataset.lng);
     const label = el.dataset.label;
-    const BOUNDS = L.latLngBounds([-5.300, 119.680], [-5.220, 119.790]);
+
     const map = L.map('map-detail', {
-      maxBounds: BOUNDS,
-      maxBoundsViscosity: 1.0,
-      minZoom: 13,
-      maxZoom: 18,
+      zoomControl: false,
       scrollWheelZoom: false,
-    }).setView([lat, lng], 16);
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      dragging: false,
+      touchZoom: false,
+      tap: false,
+      minZoom: 16,
+      maxZoom: 16,
+    }).setView([lat + 0.0015, lng], 16);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap',
-      minZoom: 13,
-      maxZoom: 19,
-      bounds: BOUNDS,
     }).addTo(map);
-    L.marker([lat, lng]).addTo(map).bindPopup(label).openPopup();
+
+    const pinIcon = L.divIcon({
+      className: 'custom-pin-icon',
+      html: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" width="32" height="40"
+             style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));">
+          <path fill="#DC2626" stroke="#FFFFFF" stroke-width="2"
+                d="M16 2C9.925 2 5 6.925 5 13c0 8 11 25 11 25s11-17 11-25c0-6.075-4.925-11-11-11z"/>
+          <circle cx="16" cy="13" r="4" fill="#FFFFFF"/>
+        </svg>`,
+      iconSize: [32, 40],
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -36],
+    });
+
+    L.marker([lat, lng], { icon: pinIcon, draggable: false, keyboard: false })
+      .addTo(map)
+      .bindPopup(
+        `<div style="font-weight:600;font-size:13px;color:#1f2937;line-height:1.45;padding:2px 4px;">${label}</div>`,
+        {
+          autoPan: false,
+          closeButton: false,
+          closeOnClick: false,
+          autoClose: false,
+          maxWidth: 260,
+        }
+      )
+      .openPopup();
   }
 </script>
 {% endblock %}

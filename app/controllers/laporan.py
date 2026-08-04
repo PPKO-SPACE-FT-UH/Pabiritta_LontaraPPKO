@@ -96,7 +96,18 @@ def buat():
         )
         db.session.add(laporan)
         db.session.flush()  # assign laporan.id before logging
-        Aktivitas.log("Sistem", "Menerima Laporan Baru", f"Laporan #{laporan.id} dari {nama}")
+
+        # SATU entry Aktivitas: sekaligus jadi entri pertama timeline laporan
+        # dan feed "Aktivitas Sistem Terbaru" di dashboard admin.
+        Aktivitas.log(
+            aktor=nama,
+            peran="warga",
+            aksi="Membuat Laporan Baru",
+            keterangan=f"Laporan #{laporan.id} — {kategori} di {lokasi_label or ('Dusun ' + dusun)}",
+            laporan_id=laporan.id,
+            status_lama=None,
+            status_baru=Laporan.STATUS_MENUNGGU,
+        )
         db.session.commit()
 
         flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
@@ -113,8 +124,6 @@ def daftar():
     page = max(1, request.args.get("page", 1, type=int))
     per_page = 10
 
-    # Publik melihat semua laporan yang sudah diproses admin (bukan Menunggu),
-    # termasuk yang Ditolak agar transparan.
     query = Laporan.query.filter(Laporan.status != Laporan.STATUS_MENUNGGU)
 
     if q:

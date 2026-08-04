@@ -130,14 +130,31 @@ def ubah_status(laporan_id):
         return redirect(url_for("admin.detail_laporan", laporan_id=laporan_id))
 
     old_status = laporan.status
-    laporan.status = new_status
-    laporan.catatan_admin = catatan or None
 
-    Aktivitas.log(
-        current_user.nama,
-        f"Mengubah Status Laporan ({new_status})",
-        f"Laporan #{laporan.id}: {old_status} → {new_status}",
+    if new_status == old_status and not catatan:
+        flash("Tidak ada perubahan yang disimpan (status sama & catatan kosong).", "warning")
+        return redirect(url_for("admin.detail_laporan", laporan_id=laporan_id))
+
+    laporan.status = new_status
+    laporan.catatan_admin = catatan or None  # snapshot catatan terbaru
+
+    # SATU entry log — otomatis jadi entri timeline laporan
+    # DAN muncul di feed "Riwayat Aktivitas" admin.
+    aksi = (
+        f"Mengubah Status Laporan ({old_status} → {new_status})"
+        if new_status != old_status
+        else "Menambah Catatan pada Laporan"
     )
+    Aktivitas.log(
+        aktor=current_user.nama,
+        peran=current_user.role,
+        aksi=aksi,
+        keterangan=catatan or None,
+        laporan_id=laporan.id,
+        status_lama=old_status,
+        status_baru=new_status,
+    )
+
     try:
         db.session.commit()
     except Exception as e:
@@ -145,7 +162,10 @@ def ubah_status(laporan_id):
         flash(f"Gagal menyimpan perubahan: {e}", "error")
         return redirect(url_for("admin.detail_laporan", laporan_id=laporan_id))
 
-    flash(f"Status laporan #{laporan.id} berhasil diubah dari '{old_status}' menjadi '{new_status}'.", "success")
+    if new_status == old_status:
+        flash(f"Catatan baru tersimpan untuk laporan #{laporan.id}.", "success")
+    else:
+        flash(f"Status laporan #{laporan.id} berhasil diubah dari '{old_status}' menjadi '{new_status}'.", "success")
     return redirect(url_for("admin.detail_laporan", laporan_id=laporan_id))
 
 # -------------------- RIWAYAT AKTIVITAS SISTEM --------------------

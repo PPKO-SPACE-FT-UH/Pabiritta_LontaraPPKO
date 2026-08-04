@@ -1,12 +1,12 @@
 /**
  * Pa'Biritta — Peta interaktif Leaflet.
  *
- * Strategi layering (Paling Aman / Definitif):
- *   1. Menggunakan pane bawaan Leaflet untuk menghindari bug CSS/Tailwind.
- *   2. Poligon (Zona, Guna Lahan) dimasukkan ke 'shadowPane' (z-index: 250).
- *   3. Titik (Sensor, Laporan, dll) dimasukkan ke 'markerPane' (z-index: 600).
- *   4. Popup otomatis berada di 'popupPane' (z-index: 700).
- *   5. Pemisahan pane ini menjamin poligon SELALU berada di bawah titik dan popup.
+ * Strategi layering:
+ *   1. Poligon (Zona, Guna Lahan) di 'shadowPane' (z-index: 250).
+ *   2. Titik (Sensor, Laporan, dll) di 'markerPane' (z-index: 600).
+ *   3. Popup di 'popupPane' (z-index: 700).
+ *   4. autoPan: false pada semua popup → marker terkunci di titiknya,
+ *      map tidak bergeser saat popup dibuka.
  */
 
 function initPeta(elementId, opts = {}) {
@@ -22,17 +22,13 @@ function initPeta(elementId, opts = {}) {
     maxBoundsViscosity: 1.0,
   }).setView(opts.center || [-5.263, 119.735], opts.zoom || 14);
 
-  // Force (Tegaskan) z-index bawaan agar kebal dari bentrok CSS external
   map.getPane('shadowPane').style.zIndex = '250';
   map.getPane('overlayPane').style.zIndex = '400';
   map.getPane('markerPane').style.zIndex = '600';
   map.getPane('popupPane').style.zIndex = '700';
 
-  // Pastikan poligon tidak menghalangi klik (pointer events) ke peta
   map.getPane('shadowPane').style.pointerEvents = 'none';
 
-  // Tile TANPA bounds — supaya viewport yang lebih lebar tetap terisi tile,
-  // tidak muncul area abu-abu di kiri/kanan. Panning tetap dibatasi maxBounds.
   const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
     minZoom: 13,
@@ -72,6 +68,15 @@ const POINT_STYLE = {
   potensi:     { fill: '#DB2777', border: '#9D174D' },
 };
 
+// Opsi popup terpakai bersama: TIDAK menggeser peta, buka di atas titik.
+const POPUP_OPTS = {
+  autoPan: false,       // <-- map tidak ke-geser saat popup dibuka
+  closeButton: true,
+  closeOnClick: true,
+  keepInView: false,
+  offset: L.point(0, -4),
+};
+
 function popupFoto(filename) {
   const src = `/static/img/lokasi/${filename}`;
   return `<img src="${src}" alt=""
@@ -80,13 +85,11 @@ function popupFoto(filename) {
 }
 
 async function fetchAndRenderLayers(map) {
-  // Siapkan renderer terpisah untuk poligon dan titik
   const polygonRenderer = L.svg({ pane: 'shadowPane' });
   const pointRenderer = L.svg({ pane: 'markerPane' });
 
-  // ====== POLIGON (Berada di Bawah - z-index 250) ======
+  // ====== POLIGON (Bawah - z-index 250) ======
 
-  // ZONA RAWAN LONGSOR
   try {
     const res = await fetch('/static/data/kelas_rawan_longsor.geojson');
     const gj = await res.json();
@@ -106,7 +109,6 @@ async function fetchAndRenderLayers(map) {
     LAYERS.zona = L.layerGroup();
   }
 
-  // GUNA LAHAN
   try {
     const res = await fetch('/static/data/guna_lahan.geojson');
     const gj = await res.json();
@@ -133,9 +135,8 @@ async function fetchAndRenderLayers(map) {
     LAYERS.gunalahan = L.layerGroup();
   }
 
-  // ====== TITIK (Berada di Atas - z-index 600) ======
+  // ====== TITIK (Atas - z-index 600) ======
 
-  // HISTORIS TITIK LONGSOR
   try {
     const res = await fetch('/static/data/historis_longsor.geojson');
     const gj = await res.json();
@@ -153,8 +154,8 @@ async function fetchAndRenderLayers(map) {
           <div style="min-width:180px;">
             <strong>${p.Keterangan || 'Titik Longsor'}</strong><br>
             Tahun kejadian: <b>${tahun}</b><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
-          </div>`);
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`, POPUP_OPTS);
       },
     });
   } catch (e) {
@@ -162,7 +163,6 @@ async function fetchAndRenderLayers(map) {
     LAYERS.historis = L.layerGroup();
   }
 
-  // TITIK KUMPUL
   try {
     const res = await fetch('/static/data/titik_kumpul.geojson');
     const gj = await res.json();
@@ -178,8 +178,8 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:180px;">
             <strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
-          </div>`);
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`, POPUP_OPTS);
       },
     });
   } catch (e) {
@@ -187,7 +187,6 @@ async function fetchAndRenderLayers(map) {
     LAYERS.kumpul = L.layerGroup();
   }
 
-  // SARANA PENDIDIKAN
   try {
     const res = await fetch('/static/data/pendidikan.geojson');
     const gj = await res.json();
@@ -202,8 +201,8 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:160px;">
             <strong>Sarana Pendidikan</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
-          </div>`);
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`, POPUP_OPTS);
       },
     });
   } catch (e) {
@@ -211,7 +210,6 @@ async function fetchAndRenderLayers(map) {
     LAYERS.pendidikan = L.layerGroup();
   }
 
-  // SARANA PERIBADATAN
   try {
     const res = await fetch('/static/data/peribadatan.geojson');
     const gj = await res.json();
@@ -226,8 +224,8 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:160px;">
             <strong>Sarana Peribadatan</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
-          </div>`);
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`, POPUP_OPTS);
       },
     });
   } catch (e) {
@@ -235,7 +233,6 @@ async function fetchAndRenderLayers(map) {
     LAYERS.peribadatan = L.layerGroup();
   }
 
-  // POTENSI DESA
   try {
     const res = await fetch('/static/data/potensi_desa.geojson');
     const gj = await res.json();
@@ -251,8 +248,8 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:180px;">
             <strong>${p.Keterangan || 'Potensi Desa'}</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
-          </div>`);
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+          </div>`, POPUP_OPTS);
       },
     });
   } catch (e) {
@@ -281,14 +278,14 @@ async function fetchAndRenderLayers(map) {
           Status: <b>${s.status}</b><br>
           Kelembapan: ${s.kelembapan ?? '-'}%<br>
           Getaran: ${s.getaran ?? '-'}
-        `);
+        `, POPUP_OPTS);
       })
     );
   } catch (e) {
     LAYERS.sensor = L.layerGroup();
   }
 
-  // LAPORAN WARGA
+  // LAPORAN WARGA — titik dikunci, popup dibuka di atas titik tanpa geser peta
   try {
     const res = await fetch('/api/sensor/laporan-titik');
     const data = await res.json();
@@ -303,6 +300,7 @@ async function fetchAndRenderLayers(map) {
         renderer: pointRenderer,
         pane: 'markerPane',
         radius: 7, color: st.border, fillColor: st.fill, fillOpacity: 0.85, weight: 2,
+        interactive: true,
       }).bindPopup(`
         <div style="min-width:200px;">
           ${foto}
@@ -311,7 +309,7 @@ async function fetchAndRenderLayers(map) {
           Status: <b>${l.status}</b><br>
           <a href="/laporan/${l.id}" style="color:#DC2626;font-weight:600;">Lihat Detail →</a>
         </div>
-      `);
+      `, POPUP_OPTS);
     });
     LAYERS.laporan = L.layerGroup(markers);
   } catch (e) {
@@ -329,7 +327,6 @@ async function fetchAndRenderLayers(map) {
       if (cb.checked) {
         LAYERS[key].addTo(map);
 
-        // Logika Toggle Exclusive (Misal: Zona <--> Guna Lahan)
         const opposite = EXCLUSIVE_PAIRS[key];
         if (opposite) {
           const oppCb = document.querySelector(`[data-layer="${opposite}"]`);
