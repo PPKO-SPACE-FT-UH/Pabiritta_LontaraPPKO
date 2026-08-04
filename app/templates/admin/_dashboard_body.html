@@ -29,13 +29,20 @@
 
   <!-- PETA -->
   <div class="bg-white rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm">
-    <div class="flex items-center gap-2 mb-4">
-      <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-      <h2 class="font-bold text-lg">Peta Digital</h2>
+    <div class="flex items-center justify-between gap-2 mb-4">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+        <h2 class="font-bold text-lg">Peta Digital</h2>
+      </div>
+      <a href="{{ url_for('admin.peta') }}"
+         class="inline-flex items-center gap-2 bg-primary text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg shadow-sm hover:bg-primary-dark transition"
+         title="Perbesar peta ke tampilan layar penuh">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        Perbesar Peta
+      </a>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
       <div id="map-admin" class="lg:col-span-3 h-[400px] sm:h-[480px] rounded-lg overflow-hidden border border-gray-200"></div>
-      <!-- Sidebar legenda + layer: scrollable, tinggi dikunci sejajar peta -->
       <div class="h-[400px] sm:h-[480px] overflow-y-auto pr-1 space-y-4 text-sm border border-gray-100 rounded-lg p-3 bg-gray-50/50">
         <div>
           <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Legenda</div>

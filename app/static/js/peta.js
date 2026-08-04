@@ -153,7 +153,7 @@ async function fetchAndRenderLayers(map) {
           <div style="min-width:180px;">
             <strong>${p.Keterangan || 'Titik Longsor'}</strong><br>
             Tahun kejadian: <b>${tahun}</b><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
           </div>`);
       },
     });
@@ -178,7 +178,7 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:180px;">
             <strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
           </div>`);
       },
     });
@@ -202,7 +202,7 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:160px;">
             <strong>Sarana Pendidikan</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
           </div>`);
       },
     });
@@ -226,7 +226,7 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:160px;">
             <strong>Sarana Peribadatan</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
           </div>`);
       },
     });
@@ -251,7 +251,7 @@ async function fetchAndRenderLayers(map) {
         layer.bindPopup(`
           <div style="min-width:180px;">
             <strong>${p.Keterangan || 'Potensi Desa'}</strong><br>
-            <span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span>
+            <span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span>
           </div>`);
       },
     });

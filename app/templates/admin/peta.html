@@ -1,0 +1,137 @@
+{% extends "base_admin.html" %}
+{% block title %}Peta Digital{% endblock %}
+{% block page_title %}Peta Digital{% endblock %}
+
+{% block content %}
+<!-- Overlay full viewport: menutupi sidebar & top bar admin agar fokus ke peta -->
+<div class="fixed inset-0 z-[9999] bg-white overflow-hidden">
+  <!-- MAP -->
+  <div id="map-full-admin" class="absolute inset-0"></div>
+
+  <!-- BACK BUTTON (icon-only) -->
+  <a href="{{ url_for('admin.dashboard') }}"
+     class="absolute top-4 left-4 z-[10] w-10 h-10 flex items-center justify-center bg-white/95 backdrop-blur rounded-lg shadow-lg border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-primary transition"
+     title="Kembali ke Dashboard" aria-label="Kembali">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+  </a>
+
+  <!-- SIDE PANEL : Legenda + Layer -->
+  <div id="map-panel-admin"
+       class="absolute top-4 right-4 bottom-4 w-72 sm:w-80 max-w-[calc(100%-2rem)] flex flex-col bg-white/95 backdrop-blur rounded-xl shadow-lg border border-gray-200 z-[10] overflow-hidden">
+    <button id="panel-toggle-btn-admin"
+            class="flex items-center justify-between px-4 py-3 border-b border-gray-100 shrink-0 hover:bg-gray-50 transition">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>
+        <span class="font-bold text-sm text-gray-800">Legenda &amp; Layer</span>
+      </div>
+      <svg id="panel-chevron-admin" class="w-4 h-4 text-gray-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    </button>
+
+    <div id="panel-content-admin" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm">
+      <div>
+        <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Legenda</div>
+        <ul class="space-y-1.5 text-xs text-gray-600">
+          <li class="font-medium text-gray-700 mt-1">Zona Rawan Longsor</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(220,38,38,0.55);"></span> Tinggi</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(249,115,22,0.45);"></span> Sedang</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(234,179,8,0.35);"></span> Rendah</li>
+          <li class="font-medium text-gray-700 mt-2">Guna Lahan</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(239,68,68,0.45);"></span> Permukiman</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(34,197,94,0.45);"></span> Persawahan</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(253,230,138,0.55);"></span> Area Terbuka</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(120,113,108,0.55);"></span> Pertambangan</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(22,101,52,0.55);"></span> Hutan</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(59,130,246,0.55);"></span> Daerah Aliran Sungai</li>
+          <li class="border-t border-gray-200 mt-2 pt-2 flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #DC2626; border: 2px solid #991B1B;"></span> Sensor IoT</li>
+          <li class="flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #2563EB; border: 2px solid #1E40AF;"></span> Laporan Warga</li>
+          <li class="flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B45309; border: 2px solid #78350F;"></span> Historis Titik Longsor</li>
+          <li class="flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #059669; border: 2px solid #065F46;"></span> Titik Kumpul</li>
+          <li class="flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #7C3AED; border: 2px solid #5B21B6;"></span> Sarana Pendidikan</li>
+          <li class="flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #0891B2; border: 2px solid #155E75;"></span> Sarana Peribadatan</li>
+          <li class="flex items-center gap-2 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #DB2777; border: 2px solid #9D174D;"></span> Potensi Desa</li>
+        </ul>
+      </div>
+      <div class="border-t border-gray-200 pt-3">
+        <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Layer</div>
+        <div class="space-y-2 text-xs">
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Zona Rawan Longsor</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Guna Lahan</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Sensor IoT</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Laporan Warga</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Historis Titik Longsor</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Titik Kumpul</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Pendidikan</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Peribadatan</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Potensi Desa</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body { overflow: hidden; }
+
+  /* Geser kontrol Zoom (+/-) turun agar tidak ketiban tombol Kembali */
+  .leaflet-top.leaflet-left { top: 64px !important; }
+
+  /* Geser kontrol Layer (Default/Satelit) ke bottom-left agar tidak ketiban panel Legenda */
+  .leaflet-top.leaflet-right {
+    top: auto !important;
+    right: auto !important;
+    bottom: 24px !important;
+    left: 8px !important;
+  }
+
+  /* Pindahkan attribution ke bottom-center */
+  .leaflet-bottom.leaflet-right {
+    left: 0 !important;
+    right: 0 !important;
+    text-align: center;
+  }
+  .leaflet-control-attribution {
+    display: inline-block;
+    float: none !important;
+    background: rgba(255,255,255,0.85) !important;
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/peta.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const map = initPeta('map-full-admin', { center: [-5.263, 119.735], zoom: 14 });
+    fetchAndRenderLayers(map);
+
+    // Lebih elastis saat digeser sampai batas (tidak stuck)
+    map.options.maxBoundsViscosity = 0.5;
+
+    // Auto fit ke area Desa Lonjoboko saat pertama kali dibuka
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    if (map.options.maxBounds) {
+      map.fitBounds(map.options.maxBounds, {
+        paddingTopLeft:     [60, 60],
+        paddingBottomRight: isDesktop ? [340, 40] : [20, 40],
+        animate: false,
+      });
+    }
+
+    const btn = document.getElementById('panel-toggle-btn-admin');
+    const panel = document.getElementById('map-panel-admin');
+    const content = document.getElementById('panel-content-admin');
+    const chev = document.getElementById('panel-chevron-admin');
+    btn?.addEventListener('click', () => {
+      const isCollapsed = content.classList.toggle('hidden');
+      if (isCollapsed) {
+        panel.classList.remove('bottom-4');
+        chev.style.transform = 'rotate(180deg)';
+      } else {
+        panel.classList.add('bottom-4');
+        chev.style.transform = '';
+      }
+      setTimeout(() => map.invalidateSize(), 250);
+    });
+  });
+</script>
+{% endblock %}

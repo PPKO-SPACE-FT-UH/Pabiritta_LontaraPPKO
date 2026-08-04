@@ -65,6 +65,11 @@ def dashboard():
         distribusi=distribusi,
     )
 
+# -------------------- PETA DIGITAL --------------------
+@admin_bp.route("/peta")
+@login_required
+def peta():
+    return render_template("admin/peta.html")
 
 # -------------------- MANAJEMEN LAPORAN --------------------
 @admin_bp.route("/laporan")

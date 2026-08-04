@@ -1,4 +1,4 @@
-"""Blueprint halaman publik (beranda, laporan warga)."""
+"""Blueprint halaman publik (beranda, laporan warga, peta)."""
 from flask import Blueprint, render_template
 from sqlalchemy import desc
 
@@ -25,6 +25,11 @@ def beranda():
         sensors=sensors,
         stats=stats,
     )
+
+
+@public_bp.route("/peta")
+def peta():
+    return render_template("publik/peta.html")
 
 
 def _hitung_statistik_publik():
