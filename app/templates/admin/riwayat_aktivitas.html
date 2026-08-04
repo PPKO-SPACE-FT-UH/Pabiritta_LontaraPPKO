@@ -33,9 +33,12 @@
     
     <!-- 1. KOTAK PENCARIAN & RIWAYAT -->
     <div class="lg:col-span-2 relative w-full group">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-primary group-focus-within:text-primary transition-colors z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <!-- PERBAIKAN: Menghapus z-10 agar tidak tembus ke navbar -->
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-primary group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      
+      <!-- PERBAIKAN: Menghapus relative dan z-0 -->
       <input type="text" name="q" id="searchInput" autocomplete="off" value="{{ q }}" placeholder="Cari aksi, keterangan, atau aktor..."
-             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm hover:border-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white relative z-0">
+             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm hover:border-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white">
              
       <!-- Dropdown Riwayat Pencarian -->
       <div id="searchHistoryDropdown" class="hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-gradient-to-br from-gray-900 to-red-900 rounded-lg shadow-xl z-50 overflow-hidden border border-gray-800">
