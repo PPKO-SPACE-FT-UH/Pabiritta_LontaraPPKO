@@ -99,6 +99,45 @@
       </tbody>
     </table>
   </div>
+    <!-- Pagination -->
+  {% if total_pages > 1 %}
+  {% set base_args = {'q': q, 'kategori': kategori, 'status': status} %}
+  <div class="p-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-sm gap-4">
+    <div class="text-gray-500">
+      Halaman <strong class="text-gray-700">{{ page }}</strong> dari {{ total_pages }} ({{ total }} laporan)
+    </div>
+    <div class="flex items-center gap-1.5 overflow-x-auto">
+      {% if page > 1 %}
+        <a href="{{ url_for('admin.manajemen_laporan', page=page-1, **base_args) }}"
+           class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-red-50 hover:text-primary hover:border-primary transition-colors font-medium whitespace-nowrap">← Sebelumnya</a>
+      {% endif %}
+      {% set start = [1, page - 2]|max %}
+      {% set end   = [total_pages, page + 2]|min %}
+      {% if start > 1 %}
+        <a href="{{ url_for('admin.manajemen_laporan', page=1, **base_args) }}"
+           class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-red-50 hover:text-primary transition-colors">1</a>
+        {% if start > 2 %}<span class="px-1 text-gray-400">…</span>{% endif %}
+      {% endif %}
+      {% for p in range(start, end + 1) %}
+        {% if p == page %}
+          <span class="px-3 py-1.5 bg-primary border border-primary text-white rounded-lg font-semibold shadow-sm">{{ p }}</span>
+        {% else %}
+          <a href="{{ url_for('admin.manajemen_laporan', page=p, **base_args) }}"
+             class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-red-50 hover:text-primary hover:border-primary transition-colors">{{ p }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if end < total_pages %}
+        {% if end < total_pages - 1 %}<span class="px-1 text-gray-400">…</span>{% endif %}
+        <a href="{{ url_for('admin.manajemen_laporan', page=total_pages, **base_args) }}"
+           class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-red-50 hover:text-primary hover:border-primary transition-colors">{{ total_pages }}</a>
+      {% endif %}
+      {% if page < total_pages %}
+        <a href="{{ url_for('admin.manajemen_laporan', page=page+1, **base_args) }}"
+           class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-red-50 hover:text-primary hover:border-primary transition-colors font-medium whitespace-nowrap">Selanjutnya →</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
 

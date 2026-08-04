@@ -61,9 +61,9 @@
       <div class="relative h-48 bg-gray-100">
         {% if l.foto_url %}
           {% if l.foto_url.startswith('http') %}
-            <img src="{{ l.foto_url }}" class="w-full h-full object-cover" alt="">
+            <img src="{{ l.foto_url }}" class="w-full h-full object-cover" loading="lazy" decoding="async" alt="">
           {% else %}
-            <img src="{{ url_for('static', filename=l.foto_url) }}" class="w-full h-full object-cover" alt="">
+            <img src="{{ url_for('static', filename=l.foto_url) }}" class="w-full h-full object-cover" loading="lazy" decoding="async" alt="">
           {% endif %}
         {% else %}
           <div class="w-full h-full flex items-center justify-center text-gray-300">

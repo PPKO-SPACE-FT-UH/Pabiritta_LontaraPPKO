@@ -7,6 +7,13 @@
   <!-- MAP -->
   <div id="map-full" class="absolute inset-0"></div>
 
+  <!-- LOADING OVERLAY -->
+  <div id="map-full-loading"
+       class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm transition-opacity duration-300">
+    <div class="w-12 h-12 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+    <p class="text-base font-semibold text-gray-700">Memuat data peta…</p>
+  </div>
+
   <!-- BACK BUTTON -->
   <a href="{{ url_for('public.beranda') }}"
      class="map-ctl-btn absolute top-3 left-3 sm:top-4 sm:left-4 z-[10]"

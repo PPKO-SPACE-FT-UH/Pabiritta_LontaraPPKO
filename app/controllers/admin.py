@@ -78,6 +78,8 @@ def manajemen_laporan():
     q = request.args.get("q", "").strip()
     kategori = request.args.get("kategori", "").strip()
     status = request.args.get("status", "").strip()
+    page = max(1, request.args.get("page", 1, type=int))
+    per_page = 15
 
     query = Laporan.query
     if q:
@@ -95,7 +97,17 @@ def manajemen_laporan():
     if status and status in Laporan.STATUS_CHOICES:
         query = query.filter_by(status=status)
 
-    laporans = query.order_by(desc(Laporan.created_at)).all()
+    total = query.count()
+    total_pages = max(1, (total + per_page - 1) // per_page)
+    page = min(page, total_pages)
+
+    laporans = (
+        query.order_by(desc(Laporan.created_at))
+        .offset((page - 1) * per_page)
+        .limit(per_page)
+        .all()
+    )
+
     return render_template(
         "admin/manajemen_laporan.html",
         laporans=laporans,
@@ -104,6 +116,10 @@ def manajemen_laporan():
         status=status,
         kategori_choices=Laporan.KATEGORI_CHOICES,
         status_choices=Laporan.STATUS_CHOICES,
+        page=page,
+        total_pages=total_pages,
+        total=total,
+        per_page=per_page,
     )
 
 

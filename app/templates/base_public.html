@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://a.tile.openstreetmap.org" crossorigin>
+    <link rel="preconnect" href="https://b.tile.openstreetmap.org" crossorigin>
+    <link rel="preconnect" href="https://c.tile.openstreetmap.org" crossorigin>
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="dns-prefetch" href="https://server.arcgisonline.com">
     <title>{% block title %}Pa'Biritta{% endblock %} | Sistem Pemantauan Bencana Longsor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,7 +37,7 @@
   <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <a href="{{ url_for('public.beranda') }}" class="flex items-center -ml-4">
-        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" alt="Logo Pa'Biritta" class="w-[88px] h-[88px] object-contain rounded-full">
+        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" loading="lazy" decoding="async" alt="Logo Pa'Biritta" class="w-[88px] h-[88px] object-contain rounded-full">
         <span class="font-bold text-2xl -ml-3 z-10">Pa'<span class="text-primary">Biritta</span></span>
       </a>
 
@@ -95,7 +102,7 @@
   <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
     <div>
       <div class="flex items-center -mt-10">
-        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" alt="Logo Pa'Biritta" class="w-[136px] h-[136px] object-contain rounded-full -ml-9 z-0">
+        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" loading="lazy" decoding="async" alt="Logo Pa'Biritta" class="w-[136px] h-[136px] object-contain rounded-full -ml-9 z-0">
         <span class="font-bold text-xl text-white -ml-6 z-10">Pa'<span class="text-primary">Biritta</span></span>
       </div>
       <p class="text-sm text-gray-400 -mt-6">Sistem Manajemen Bencana Desa berbasis komunitas untuk mitigasi, pemantauan, dan pelaporan potensi bencana longsor.</p>
