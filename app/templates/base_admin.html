@@ -46,7 +46,6 @@
     </div>
 
     <nav class="flex-1 px-4 pt-3 pb-4 space-y-1">
-      <div class="text-xs uppercase text-red-200/70 px-3 py-1.5 tracking-wider">Menu Utama</div>
       {% set ep = request.endpoint %}
       <a href="{{ url_for('admin.dashboard') }}"
          class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.dashboard' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">

@@ -7,84 +7,121 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
   <!-- Form tambah -->
-  <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-    <h3 class="font-bold mb-4">Tambah Admin Baru</h3>
+  <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm h-fit">
+    <h3 class="font-bold mb-4 text-gray-800">Tambah Admin Baru</h3>
     <form method="POST" action="{{ url_for('admin.tambah_pengguna') }}" class="space-y-4">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      
       <div>
-        <label class="block text-sm font-medium mb-2">Nama Lengkap</label>
-        <input type="text" name="nama" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+        <label class="block text-sm font-medium mb-2 text-gray-700">Nama Lengkap</label>
+        <input type="text" name="nama" required 
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors">
       </div>
+      
       <div>
-        <label class="block text-sm font-medium mb-2">Email</label>
-        <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+        <label class="block text-sm font-medium mb-2 text-gray-700">Email</label>
+        <input type="email" name="email" required 
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors">
       </div>
+      
       <div>
-        <label class="block text-sm font-medium mb-2">Password</label>
+        <label class="block text-sm font-medium mb-2 text-gray-700">Password</label>
         <input type="password" name="password" required minlength="6"
-               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors">
       </div>
+      
       <div>
-        <label class="block text-sm font-medium mb-2">Role</label>
-        <select name="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-          <option value="admin">Admin</option>
-          <option value="superadmin">Super Admin</option>
-        </select>
+        <label class="block text-sm font-medium mb-2 text-gray-700">Role</label>
+        <!-- KUSTOM SELECT DROPDOWN -->
+        <div class="relative w-full custom-dropdown">
+          <!-- Nilai default adalah admin -->
+          <input type="hidden" name="role" value="admin" required>
+          <div class="dropdown-selected px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
+            <span class="selected-text truncate text-gray-700">Admin</span>
+            <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+          <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+            <!-- Opsi Admin (Default Terpilih) -->
+            <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors bg-red-50 text-primary font-medium" data-value="admin">Admin</div>
+            <!-- Opsi Super Admin -->
+            <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors" data-value="superadmin">Super Admin</div>
+          </div>
+        </div>
       </div>
-      <button class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary-dark">Tambah Pengguna</button>
+      
+      <button type="submit" class="w-full bg-primary text-white font-semibold py-2.5 rounded-lg hover:bg-primary-dark transition-colors shadow-sm mt-2">
+        Tambah Pengguna
+      </button>
     </form>
   </div>
 
   <!-- Daftar -->
   <div class="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-    <div class="px-6 py-4 border-b">
-      <h3 class="font-bold">Daftar Pengguna ({{ users|length }})</h3>
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="font-bold text-gray-800">Daftar Pengguna</h3>
+      <span class="text-xs font-medium bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">{{ users|length }} Akun</span>
     </div>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
-        <thead class="bg-gray-50 text-gray-600 text-xs uppercase">
+        <thead class="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider">
           <tr>
-            <th class="text-left px-4 py-3">Nama</th>
-            <th class="text-left px-4 py-3">Email</th>
-            <th class="text-left px-4 py-3">Role</th>
-            <th class="text-left px-4 py-3">Status</th>
-            <th class="text-right px-4 py-3">Aksi</th>
+            <th class="text-left px-6 py-4 font-medium whitespace-nowrap">Nama</th>
+            <th class="text-left px-6 py-4 font-medium whitespace-nowrap">Email</th>
+            <th class="text-left px-6 py-4 font-medium whitespace-nowrap">Role</th>
+            <th class="text-left px-6 py-4 font-medium whitespace-nowrap">Status</th>
+            <th class="text-right px-6 py-4 font-medium whitespace-nowrap">Aksi</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
           {% for u in users %}
-          <tr class="hover:bg-gray-50">
-            <td class="px-4 py-3">
+          <!-- Hover tabel menggunakan warna maroon muda agar seragam -->
+          <tr class="hover:bg-red-50/50 transition-colors">
+            <td class="px-6 py-4">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-semibold">{{ u.nama[0]|upper }}</div>
-                <span class="font-medium">{{ u.nama }}</span>
+                <div class="w-9 h-9 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold flex-shrink-0">
+                  {{ u.nama[0]|upper }}
+                </div>
+                <span class="font-semibold text-gray-800 whitespace-nowrap">{{ u.nama }}</span>
               </div>
             </td>
-            <td class="px-4 py-3 text-gray-600">{{ u.email }}</td>
-            <td class="px-4 py-3">
+            <td class="px-6 py-4 text-gray-600">{{ u.email }}</td>
+            <td class="px-6 py-4">
               {% if u.role == 'superadmin' %}
-                <span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Super Admin</span>
+                <!-- PERBAIKAN: Tambah whitespace-nowrap dan inline-block -->
+                <span class="inline-block whitespace-nowrap text-xs px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 font-medium border border-purple-200">Super Admin</span>
               {% else %}
-                <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Admin</span>
+                <!-- PERBAIKAN: Tambah whitespace-nowrap dan inline-block -->
+                <span class="inline-block whitespace-nowrap text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-medium border border-blue-200">Admin</span>
               {% endif %}
             </td>
-            <td class="px-4 py-3">
+            <td class="px-6 py-4">
               {% if u.is_active %}
-                <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">Aktif</span>
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 whitespace-nowrap">
+                  <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Aktif
+                </span>
               {% else %}
-                <span class="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">Nonaktif</span>
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 whitespace-nowrap">
+                  <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Nonaktif
+                </span>
               {% endif %}
             </td>
-            <td class="px-4 py-3 text-right">
+            <td class="px-6 py-4 text-right">
               {% if u.id != current_user.id %}
                 <form method="POST" action="{{ url_for('admin.toggle_pengguna', user_id=u.id) }}" class="inline">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  <button class="text-xs px-3 py-1.5 rounded-md {% if u.is_active %}bg-gray-100 text-gray-700 hover:bg-gray-200{% else %}bg-green-100 text-green-700 hover:bg-green-200{% endif %}">
+                  <!-- PERBAIKAN: Tambah whitespace-nowrap pada tombol -->
+                  <button type="submit" class="whitespace-nowrap text-xs px-3 py-1.5 rounded-lg border font-medium transition-colors
+                                 {% if u.is_active %}
+                                   bg-white border-gray-200 text-red-600 hover:bg-red-50 hover:border-red-200
+                                 {% else %}
+                                   bg-white border-gray-200 text-green-600 hover:bg-green-50 hover:border-green-200
+                                 {% endif %}">
                     {{ 'Nonaktifkan' if u.is_active else 'Aktifkan' }}
                   </button>
                 </form>
               {% else %}
-                <span class="text-xs text-gray-400">(Akun Anda)</span>
+                <!-- PERBAIKAN: Tambah whitespace-nowrap pada label akun Anda -->
+                <span class="whitespace-nowrap text-xs font-medium text-gray-400 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">Akun Anda</span>
               {% endif %}
             </td>
           </tr>
@@ -94,4 +131,70 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- LOGIKA KUSTOM SELECT DROPDOWN ---
+    const customDropdowns = document.querySelectorAll('.custom-dropdown');
+
+    customDropdowns.forEach(dropdown => {
+      const selectedArea = dropdown.querySelector('.dropdown-selected');
+      const optionsArea = dropdown.querySelector('.dropdown-options');
+      const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+      const selectedText = dropdown.querySelector('.selected-text');
+      const options = dropdown.querySelectorAll('.option-item');
+
+      // Buka/Tutup dropdown saat di-klik
+      selectedArea.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        
+        // Tutup semua dropdown lain jika ada lebih dari 1 di halaman ini
+        document.querySelectorAll('.dropdown-options').forEach(opt => {
+          if (opt !== optionsArea) opt.classList.add('hidden');
+        });
+
+        // Toggle dropdown ini
+        optionsArea.classList.toggle('hidden');
+        selectedArea.classList.toggle('border-primary');
+        selectedArea.classList.toggle('ring-1');
+        selectedArea.classList.toggle('ring-primary');
+      });
+
+      // Pilih opsi
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const value = option.getAttribute('data-value');
+          const text = option.textContent;
+
+          // Update teks & nilai input tersembunyi
+          selectedText.textContent = text;
+          hiddenInput.value = value;
+
+          // Hapus gaya aktif dari semua opsi, berikan ke opsi terpilih
+          options.forEach(opt => {
+            opt.classList.remove('bg-red-50', 'text-primary', 'font-medium');
+          });
+          option.classList.add('bg-red-50', 'text-primary', 'font-medium');
+
+          // Tutup dropdown dan hilangkan gaya border aktif
+          optionsArea.classList.add('hidden');
+          selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
+        });
+      });
+    });
+
+    // --- TUTUP SEMUA DROPDOWN JIKA KLIK DI LUAR AREA ---
+    document.addEventListener('click', (e) => {
+      customDropdowns.forEach(dropdown => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.querySelector('.dropdown-options').classList.add('hidden');
+          dropdown.querySelector('.dropdown-selected').classList.remove('border-primary', 'ring-1', 'ring-primary');
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

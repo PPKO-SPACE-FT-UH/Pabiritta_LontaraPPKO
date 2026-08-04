@@ -4,7 +4,7 @@
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
   <div class="mb-6">
-    <h1 class="text-2xl sm:text-3xl font-bold">Buat Laporan Aduan</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Buat Laporan Aduan</h1>
     <p class="text-gray-500 text-sm mt-1">Laporkan kejadian atau potensi longsor di sekitar Anda</p>
   </div>
 
@@ -14,35 +14,35 @@
     <div id="stepper-progress" class="absolute top-6 left-0 h-0.5 bg-primary -z-0 transition-all" style="width:0%"></div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="1">
-      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle">
+      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </div>
       <div class="mt-2 text-xs text-gray-500 step-label">Foto</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="2">
-      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle">
+      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </div>
       <div class="mt-2 text-xs text-gray-500 step-label">Lokasi</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="3">
-      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle">
+      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       </div>
       <div class="mt-2 text-xs text-gray-500 step-label">Detail</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="4">
-      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle">
+      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
       </div>
       <div class="mt-2 text-xs text-gray-500 step-label">Pelapor</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="5">
-      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle">
+      <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       </div>
       <div class="mt-2 text-xs text-gray-500 step-label">Review</div>
@@ -54,27 +54,25 @@
 
     <!-- STEP 1: Foto -->
     <section data-step="1">
-      <h2 class="text-lg font-bold mb-4">Bukti Foto</h2>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Bukti Foto</h2>
       
-      <!-- PERBAIKAN: Kotak Unggah dipisah dari gambar Preview -->
-      <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-8 text-center hover:border-primary transition">
+      <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-8 text-center hover:border-primary hover:bg-red-50/50 transition-colors">
         
-        <!-- Preview Foto (Disembunyikan secara default) -->
+        <!-- Preview Foto -->
         <div id="foto-preview" class="hidden relative inline-block">
           <img id="foto-img" class="max-h-64 mx-auto rounded-lg shadow-sm" alt="Preview Foto">
           
-          <!-- Tombol Hapus X -->
           <button type="button" id="btn-hapus-foto" class="absolute -top-3 -right-3 bg-red-600 text-white rounded-full p-1.5 shadow-md hover:bg-red-700 transition-colors" title="Hapus Foto">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
-        <!-- Area Klik untuk Upload (Tampil secara default) -->
-        <label id="foto-placeholder" class="block cursor-pointer py-4">
-          <div class="w-14 h-14 mx-auto mb-3 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-400">
+        <!-- Area Klik untuk Upload -->
+        <label id="foto-placeholder" class="block cursor-pointer py-4 group">
+          <div class="w-14 h-14 mx-auto mb-3 rounded-full border-2 border-gray-300 group-hover:border-primary group-hover:text-primary flex items-center justify-center text-gray-400 transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           </div>
-          <p class="font-medium text-gray-700">Klik untuk unggah atau ambil foto <span class="text-red-500">*</span></p>
+          <p class="font-medium text-gray-700 group-hover:text-primary transition-colors">Klik untuk unggah atau ambil foto <span class="text-red-500">*</span></p>
           <p class="text-xs text-gray-400 mt-1">Wajib. Maksimal 5MB (JPG, PNG)</p>
           <input type="file" name="foto" id="input-foto" accept="image/*" class="hidden">
         </label>
@@ -83,73 +81,93 @@
 
     <!-- STEP 2: Lokasi -->
     <section data-step="2" class="hidden">
-      <h2 class="text-lg font-bold mb-4">Lokasi Kejadian</h2>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Lokasi Kejadian</h2>
 
       <button type="button" id="btn-lokasi-otomatis"
-              class="mb-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition font-medium">
+              class="mb-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors font-medium">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         Gunakan Lokasi Saya
       </button>
 
-      <label class="block text-sm font-medium mb-2">Label Lokasi <span class="text-red-500">*</span></label>
+      <label class="block text-sm font-medium mb-2 text-gray-700">Label Lokasi <span class="text-red-500">*</span></label>
       <input type="text" name="lokasi_label" id="lokasi-label-input" required
              placeholder="Contoh: Jl. Poros Desa, Dekat Jembatan"
-             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary mb-4"
+             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors mb-4 text-sm"
              value="{{ form.lokasi_label or '' }}">
 
       <div id="lokasi-accuracy-info" class="hidden mt-2 text-xs px-3 py-2 rounded-lg"></div>
 
-      <label class="block text-sm font-medium mb-2 mt-2">Klik peta untuk tandai lokasi <span class="text-red-500">*</span></label>
-      <div id="map-pilih" class="h-80 rounded-lg border border-gray-200 mb-3"></div>
+      <label class="block text-sm font-medium mb-2 mt-2 text-gray-700">Klik peta untuk tandai lokasi <span class="text-red-500">*</span></label>
+      <div id="map-pilih" class="h-80 rounded-lg border border-gray-300 mb-3 z-0 relative"></div>
       <div class="grid grid-cols-2 gap-3">
         <input type="text" name="latitude" id="lat-field" placeholder="Latitude" readonly
-               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-sm" value="{{ form.latitude or '' }}">
+               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:outline-none">
         <input type="text" name="longitude" id="lng-field" placeholder="Longitude" readonly
-               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-sm" value="{{ form.longitude or '' }}">
+               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:outline-none">
       </div>
     </section>
 
     <!-- STEP 3: Detail -->
     <section data-step="3" class="hidden">
-      <h2 class="text-lg font-bold mb-4">Detail Kejadian</h2>
-      <label class="block text-sm font-medium mb-2">Kategori Laporan <span class="text-red-500">*</span></label>
-      <select name="kategori" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg mb-4">
-        <option value="">-- Pilih Kategori --</option>
-        {% for k in ['Potensi Longsor','Kejadian Longsor','Dampak Longsor'] %}
-          <option value="{{ k }}" {% if form.kategori == k %}selected{% endif %}>{{ k }}</option>
-        {% endfor %}
-      </select>
-      <label class="block text-sm font-medium mb-2">Deskripsi Kejadian <span class="text-red-500">*</span></label>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Detail Kejadian</h2>
+      
+      <label class="block text-sm font-medium mb-2 text-gray-700">Kategori Laporan <span class="text-red-500">*</span></label>
+      <div class="relative w-full custom-dropdown mb-4">
+        <input type="hidden" name="kategori" value="{{ form.kategori or '' }}" required>
+        <div class="dropdown-selected px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
+          <span class="selected-text truncate text-gray-700">{% if form.kategori %}{{ form.kategori }}{% else %}-- Pilih Kategori --{% endif %}</span>
+          <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not form.kategori %}bg-red-50 text-primary font-medium{% endif %}" data-value="">-- Pilih Kategori --</div>
+          {% for k in ['Potensi Longsor','Kejadian Longsor','Dampak Longsor'] %}
+            <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if form.kategori == k %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ k }}">{{ k }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <label class="block text-sm font-medium mb-2 text-gray-700">Deskripsi Kejadian <span class="text-red-500">*</span></label>
       <textarea name="deskripsi" rows="5" required
                 placeholder="Jelaskan kondisi yang Anda lihat secara detail..."
-                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">{{ form.deskripsi or '' }}</textarea>
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm">{{ form.deskripsi or '' }}</textarea>
     </section>
 
     <!-- STEP 4: Pelapor -->
     <section data-step="4" class="hidden">
-      <h2 class="text-lg font-bold mb-4">Informasi Pelapor</h2>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Informasi Pelapor</h2>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-          <input type="text" name="nama_pelapor" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg" value="{{ form.nama_pelapor or '' }}">
+          <label class="block text-sm font-medium mb-2 text-gray-700">Nama Lengkap <span class="text-red-500">*</span></label>
+          <input type="text" name="nama_pelapor" required 
+                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm" 
+                 value="{{ form.nama_pelapor or '' }}">
         </div>
+        
         <div>
-          <label class="block text-sm font-medium mb-2">Dusun <span class="text-red-500">*</span></label>
-          <select name="dusun" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg">
-            <option value="">-- Pilih Dusun --</option>
-            {% for d in ['Tombongi','Galesong','Kampung Beru','Bontoloe'] %}
-              <option value="{{ d }}" {% if form.dusun == d %}selected{% endif %}>Dusun {{ d }}</option>
-            {% endfor %}
-          </select>
+          <label class="block text-sm font-medium mb-2 text-gray-700">Dusun <span class="text-red-500">*</span></label>
+          <div class="relative w-full custom-dropdown">
+            <input type="hidden" name="dusun" value="{{ form.dusun or '' }}" required>
+            <div class="dropdown-selected px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
+              <span class="selected-text truncate text-gray-700">{% if form.dusun %}Dusun {{ form.dusun }}{% else %}-- Pilih Dusun --{% endif %}</span>
+              <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+              <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not form.dusun %}bg-red-50 text-primary font-medium{% endif %}" data-value="">-- Pilih Dusun --</div>
+              {% for d in ['Tombongi','Galesong','Kampung Beru','Bontoloe'] %}
+                <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if form.dusun == d %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ d }}">Dusun {{ d }}</div>
+              {% endfor %}
+            </div>
+          </div>
         </div>
+
         <div>
-          <label class="block text-sm font-medium mb-2">No. HP <span class="text-red-500">*</span></label>
+          <label class="block text-sm font-medium mb-2 text-gray-700">No. HP <span class="text-red-500">*</span></label>
           <input type="tel" name="no_hp" id="input-hp" required
                  inputmode="numeric" maxlength="13" pattern="08[0-9]{8,11}"
                  placeholder="08xxxxxxxxxx"
-                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm"
                  value="{{ form.no_hp or '' }}">
-          <p id="hp-error" class="hidden mt-1.5 text-xs text-red-600"></p>
+          <p id="hp-error" class="hidden mt-1.5 text-xs text-red-600 font-medium"></p>
           <p id="hp-hint" class="mt-1.5 text-xs text-gray-500">Hanya angka. Diawali 08, total 10–13 digit. Contoh: 081234567890</p>
         </div>
       </div>
@@ -157,26 +175,33 @@
 
     <!-- STEP 5: Review -->
     <section data-step="5" class="hidden">
-      <h2 class="text-lg font-bold mb-4">Review Laporan</h2>
-      <div id="review-content" class="space-y-3 text-sm bg-gray-50 rounded-lg p-4">
+      <h2 class="text-lg font-bold mb-4 text-gray-800">Review Laporan</h2>
+      <div id="review-content" class="space-y-3 text-sm bg-gray-50 rounded-lg p-5 border border-gray-200">
         <p class="text-gray-500">Periksa kembali laporan Anda sebelum dikirim.</p>
       </div>
-      <p class="mt-4 text-xs text-gray-500">Dengan mengirim, Anda menyetujui bahwa informasi yang diberikan benar.</p>
+      <p class="mt-4 text-xs text-gray-500 font-medium">Dengan mengirim, Anda menyetujui bahwa informasi yang diberikan adalah benar dan dapat dipertanggungjawabkan.</p>
     </section>
 
     <!-- Error -->
-    <div id="step-error" class="hidden mt-6 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3"></div>
+    <div id="step-error" class="hidden mt-6 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3 font-medium"></div>
 
-    <!-- Navigation -->
-    <div class="flex items-center mt-8 pt-6 border-t w-full">
+    <!-- PERBAIKAN: Kontainer Tombol Navigation agar seimbang 50:50 dan tidak meluber -->
+    <div class="flex flex-row gap-3 mt-8 pt-6 border-t border-gray-200 w-full">
       <button type="button" id="btn-prev"
-              class="hidden px-6 py-2.5 rounded-lg bg-gray-100 text-gray-600 font-medium hover:bg-red-50 hover:text-primary transition-colors">Sebelumnya</button>
-      <div class="ml-auto flex gap-3">
-        <button type="button" id="btn-next"
-                class="px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors">Selanjutnya</button>
-        <button type="submit" id="btn-submit"
-                class="hidden px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors">Kirim Laporan</button>
-      </div>
+              class="hidden flex-1 w-full px-2 py-2.5 rounded-lg bg-gray-100 border border-gray-200 text-gray-700 font-medium hover:bg-red-50 hover:text-primary hover:border-primary transition-colors text-sm text-center whitespace-nowrap">
+        Sebelumnya
+      </button>
+      
+      <button type="button" id="btn-next"
+              class="flex-1 w-full px-2 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors shadow-sm text-sm text-center whitespace-nowrap">
+        Selanjutnya
+      </button>
+
+      <button type="submit" id="btn-submit"
+              class="hidden flex-1 w-full px-2 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors shadow-sm text-sm flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        <span class="truncate">Kirim Laporan</span>
+      </button>
     </div>
   </form>
 </div>
@@ -184,7 +209,7 @@
 
 {% block scripts %}
 <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
+  document.querySelector('form').addEventListener('submit', function(e) {
     const fileInput = document.querySelector('input[type="file"]');
     if (fileInput && fileInput.files.length > 0) {
       const maxBytes = 5 * 1024 * 1024;
@@ -379,13 +404,13 @@
       const circle = ind.querySelector('.step-circle');
       const label  = ind.querySelector('.step-label');
       if (n < currentStep) {
-        circle.className = 'w-12 h-12 rounded-full bg-primary border-2 border-primary text-white flex items-center justify-center step-circle';
+        circle.className = 'w-12 h-12 rounded-full bg-primary border-2 border-primary text-white flex items-center justify-center step-circle transition-colors';
         label.className  = 'mt-2 text-xs text-primary font-medium step-label';
       } else if (n === currentStep) {
-        circle.className = 'w-12 h-12 rounded-full bg-primary border-2 border-primary text-white flex items-center justify-center step-circle';
-        label.className  = 'mt-2 text-xs text-primary font-semibold step-label';
+        circle.className = 'w-12 h-12 rounded-full bg-primary border-2 border-primary text-white flex items-center justify-center step-circle transition-colors shadow-md';
+        label.className  = 'mt-2 text-xs text-primary font-bold step-label';
       } else {
-        circle.className = 'w-12 h-12 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center step-circle';
+        circle.className = 'w-12 h-12 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center step-circle transition-colors';
         label.className  = 'mt-2 text-xs text-gray-500 step-label';
       }
     });
@@ -421,7 +446,7 @@
       'No. HP': f.no_hp.value || '-',
     };
     document.getElementById('review-content').innerHTML = Object.entries(rows)
-      .map(([k, v]) => `<div class="flex justify-between border-b border-gray-200 py-2"><span class="font-medium text-gray-600">${k}</span><span class="text-right text-gray-800 max-w-xs truncate">${v}</span></div>`)
+      .map(([k, v]) => `<div class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-200 py-3 gap-1"><span class="font-medium text-gray-500">${k}</span><span class="sm:text-right text-gray-800 font-medium">${v}</span></div>`)
       .join('');
   }
 
@@ -453,14 +478,14 @@
       hpError.textContent = msg;
       hpError.classList.remove('hidden');
       hpHint.classList.add('hidden');
-      hpInput.classList.add('border-red-500');
-      hpInput.classList.remove('border-gray-300');
+      hpInput.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+      hpInput.classList.remove('border-gray-300', 'focus:ring-primary', 'focus:border-primary', 'hover:border-primary');
       return false;
     }
     hpError.classList.add('hidden');
     hpHint.classList.remove('hidden');
-    hpInput.classList.remove('border-red-500');
-    hpInput.classList.add('border-gray-300');
+    hpInput.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+    hpInput.classList.add('border-gray-300', 'focus:ring-primary', 'focus:border-primary', 'hover:border-primary');
     return true;
   }
 
@@ -477,7 +502,6 @@
     validateHp(false);
   });
 
-  // PERBAIKAN SCRIPT UNTUK FILE FOTO
   const inputFoto = document.getElementById('input-foto');
   const fotoPreview = document.getElementById('foto-preview');
   const fotoPlaceholder = document.getElementById('foto-placeholder');
@@ -496,12 +520,59 @@
     reader.readAsDataURL(file);
   });
 
-  // Menambahkan Event Listener untuk menghapus foto
   btnHapusFoto.addEventListener('click', () => {
-    inputFoto.value = ''; // Reset nilai input file
-    fotoImg.src = ''; // Kosongkan source gambar
-    fotoPreview.classList.add('hidden'); // Sembunyikan preview
-    fotoPlaceholder.classList.remove('hidden'); // Tampilkan kembali placeholder
+    inputFoto.value = '';
+    fotoImg.src = '';
+    fotoPreview.classList.add('hidden');
+    fotoPlaceholder.classList.remove('hidden');
+  });
+
+  // --- KUSTOM SELECT DROPDOWN LOGIC ---
+  const customDropdowns = document.querySelectorAll('.custom-dropdown');
+
+  customDropdowns.forEach(dropdown => {
+    const selectedArea = dropdown.querySelector('.dropdown-selected');
+    const optionsArea = dropdown.querySelector('.dropdown-options');
+    const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+    const selectedText = dropdown.querySelector('.selected-text');
+    const options = dropdown.querySelectorAll('.option-item');
+
+    selectedArea.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.dropdown-options').forEach(opt => {
+        if (opt !== optionsArea) opt.classList.add('hidden');
+      });
+      optionsArea.classList.toggle('hidden');
+      selectedArea.classList.toggle('border-primary');
+      selectedArea.classList.toggle('ring-1');
+      selectedArea.classList.toggle('ring-primary');
+    });
+
+    options.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const value = option.getAttribute('data-value');
+        const text = option.textContent;
+
+        selectedText.textContent = text;
+        hiddenInput.value = value;
+
+        options.forEach(opt => opt.classList.remove('bg-red-50', 'text-primary', 'font-medium'));
+        option.classList.add('bg-red-50', 'text-primary', 'font-medium');
+
+        optionsArea.classList.add('hidden');
+        selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
+      });
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    customDropdowns.forEach(dropdown => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.querySelector('.dropdown-options').classList.add('hidden');
+        dropdown.querySelector('.dropdown-selected').classList.remove('border-primary', 'ring-1', 'ring-primary');
+      }
+    });
   });
 
   updateStepper();
