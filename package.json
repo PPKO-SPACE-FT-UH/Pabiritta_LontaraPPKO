@@ -2,17 +2,10 @@
   "name": "pabiritta_lontarappko",
   "version": "1.0.0",
   "description": "Sistem Pemantauan Bencana Longsor berbasis komunitas untuk Desa Lonjoboko, Kabupaten Gowa.",
-  "scripts": {
-    "build:css": "tailwindcss -i ./app/static/src/input.css -o ./app/static/css/tailwind.css --minify",
-    "watch:css": "tailwindcss -i ./app/static/src/input.css -o ./app/static/css/tailwind.css --watch"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ramadani2610/Pabiritta_LontaraPPKO.git"
   },
   "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "tailwindcss": "^3.4.13"
-  }
+  "type": "commonjs"
 }

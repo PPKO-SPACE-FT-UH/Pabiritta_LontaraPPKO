@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://res.cloudinary.com">
     <title>{% block title %}Admin{% endblock %} | Pa'Biritta</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: { DEFAULT: '#DC2626', dark: '#B91C1C', light: '#FEE2E2' },
+            }
+          }
+        }
+      }
+    </script>
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
 
