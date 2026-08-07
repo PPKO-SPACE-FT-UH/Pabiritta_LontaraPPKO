@@ -56,6 +56,7 @@ const POINT_STYLE = {
   laporan:     { fill: '#2563EB', border: '#1E40AF' },
   historis:    { fill: '#B45309', border: '#78350F' },
   kumpul:      { fill: '#059669', border: '#065F46' },
+  evakuasi:    { fill: '#84CC16', border: '#4D7C0F' },
   pendidikan:  { fill: '#7C3AED', border: '#5B21B6' },
   peribadatan: { fill: '#0891B2', border: '#155E75' },
   potensi:     { fill: '#DB2777', border: '#9D174D' },
@@ -92,7 +93,7 @@ async function fetchAndRenderLayers(map) {
 
   // Semua fetch berjalan paralel
   const [
-    zonaRes, lahanRes, historisRes, kumpulRes,
+    zonaRes, lahanRes, historisRes, kumpulRes, evakuasiRes,
     pendidikanRes, peribadatanRes, potensiRes,
     sensorRes, laporanRes,
   ] = await Promise.allSettled([
@@ -100,6 +101,7 @@ async function fetchAndRenderLayers(map) {
     safeJson('/static/data/guna_lahan.geojson'),
     safeJson('/static/data/historis_longsor.geojson'),
     safeJson('/static/data/titik_kumpul.geojson'),
+    safeJson('/static/data/jalur_evakuasi.geojson'),
     safeJson('/static/data/pendidikan.geojson'),
     safeJson('/static/data/peribadatan.geojson'),
     safeJson('/static/data/potensi_desa.geojson'),
@@ -157,19 +159,43 @@ async function fetchAndRenderLayers(map) {
     : L.layerGroup();
 
   LAYERS.kumpul = kumpulRes.status === 'fulfilled'
-    ? makePoint(kumpulRes.value, 'kumpul', (p) => `<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Kumpul'}</strong><br><span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`)
+    ? makePoint(kumpulRes.value, 'kumpul', (p) => {
+        const dusun = (p.Dusun || '').trim();
+        return `<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+      })
+    : L.layerGroup();
+
+  LAYERS.evakuasi = evakuasiRes.status === 'fulfilled'
+    ? makePoint(evakuasiRes.value, 'evakuasi', (p) => {
+        const dusun = (p.Dusun || '').trim();
+        return `<div style="min-width:180px;"><strong>Titik Jalur Evakuasi</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+      })
     : L.layerGroup();
 
   LAYERS.pendidikan = pendidikanRes.status === 'fulfilled'
-    ? makePoint(pendidikanRes.value, 'pendidikan', () => `<div style="min-width:160px;"><strong>Sarana Pendidikan</strong><br><span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`)
+    ? makePoint(pendidikanRes.value, 'pendidikan', (p) => {
+        const nama = (p.Keterangan || '').trim();
+        const dusun = (p.Dusun || '').trim();
+        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Pendidikan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+      })
     : L.layerGroup();
 
   LAYERS.peribadatan = peribadatanRes.status === 'fulfilled'
-    ? makePoint(peribadatanRes.value, 'peribadatan', () => `<div style="min-width:160px;"><strong>Sarana Peribadatan</strong><br><span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`)
+    ? makePoint(peribadatanRes.value, 'peribadatan', (p) => {
+        const nama = (p.Keterangan || '').trim();
+        const dusun = (p.Dusun || '').trim();
+        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Peribadatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+      })
     : L.layerGroup();
 
   LAYERS.potensi = potensiRes.status === 'fulfilled'
-    ? makePoint(potensiRes.value, 'potensi', (p) => `<div style="min-width:180px;"><strong>${p.Keterangan || 'Potensi Desa'}</strong><br><span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`)
+    ? makePoint(potensiRes.value, 'potensi', (p) => {
+        const kategori = (p.Keterangan || '').trim();
+        const nama = (p.Nama || '').trim();
+        const dusun = (p.Dusun || '').trim();
+        const judul = nama || kategori || 'Potensi Desa';
+        return `<div style="min-width:180px;"><strong>${judul}</strong><br>${nama && kategori ? `${kategori}<br>` : ''}${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+      })
     : L.layerGroup();
 
   // SENSOR IoT
