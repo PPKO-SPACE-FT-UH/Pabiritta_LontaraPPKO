@@ -7,5 +7,9 @@
     "url": "git+https://github.com/Ramadani2610/Pabiritta_LontaraPPKO.git"
   },
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0"
+  }
 }

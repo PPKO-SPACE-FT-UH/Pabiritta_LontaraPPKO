@@ -1,172 +1,219 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://res.cloudinary.com">
-    <title>{% block title %}Admin{% endblock %} | Pa'Biritta</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: { DEFAULT: '#DC2626', dark: '#B91C1C', light: '#FEE2E2' },
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://cdn.tailwindcss.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://res.cloudinary.com">
+  <title>{% block title %}Admin{% endblock %} | Pa'Biritta</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#DC2626', dark: '#B91C1C', light: '#FEE2E2' },
           }
         }
       }
-    </script>
+    }
+  </script>
+  <!-- Vercel Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <!-- Vercel Speed Insights -->
+  <script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
+
 <body class="bg-gray-50 text-gray-800 min-h-screen">
 
-<div class="flex min-h-screen">
-  <!-- MOBILE OVERLAY -->
-  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+  <div class="flex min-h-screen">
+    <!-- MOBILE OVERLAY -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
-  <!-- SIDEBAR -->
-  <!-- Sidebar diset ke z-50 agar pasti di atas navbar putih mobile (z-10) -->
-  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-primary-dark to-red-900 text-white flex-col overflow-y-auto hidden md:flex shadow-xl">
-    
-<!-- HEADER SIDEBAR -->
-    <!-- h-16 untuk Mobile agar sejajar navbar mobile, md:h-20 untuk Desktop agar sejajar navbar desktop -->
-    <div class="h-16 md:h-20 px-3 md:px-4 border-b border-red-800/50 flex items-center shrink-0 box-border overflow-hidden">
-      <div class="flex items-center gap-2 md:gap-3">
-        <!-- PERUBAHAN: Ukuran diset mentok ke w-16 h-16 & w-20 h-20. 
+    <!-- SIDEBAR -->
+    <!-- Sidebar diset ke z-50 agar pasti di atas navbar putih mobile (z-10) -->
+    <aside id="sidebar"
+      class="fixed inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-primary-dark to-red-900 text-white flex-col overflow-y-auto hidden md:flex shadow-xl">
+
+      <!-- HEADER SIDEBAR -->
+      <!-- h-16 untuk Mobile agar sejajar navbar mobile, md:h-20 untuk Desktop agar sejajar navbar desktop -->
+      <div
+        class="h-16 md:h-20 px-3 md:px-4 border-b border-red-800/50 flex items-center shrink-0 box-border overflow-hidden">
+        <div class="flex items-center gap-2 md:gap-3">
+          <!-- PERUBAHAN: Ukuran diset mentok ke w-16 h-16 & w-20 h-20. 
              Ditambah 'transform scale-125' untuk nge-zoom logo agar mengabaikan ruang kosong bawaan gambarnya -->
-        <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 object-contain flex-shrink-0 transform scale-125">
-        
-        <div class="min-w-0">
-          <div class="font-bold text-xl md:text-2xl leading-tight">Pa'<span class="text-red-200">Biritta</span></div>
-          <div class="text-[10px] md:text-[11px] text-red-200 mt-0.5 md:mt-1">Desa Tangguh Bencana</div>
+          <img src="{{ url_for('static', filename='img/logo-lontara.png') }}" alt="Logo"
+            class="w-16 h-16 md:w-20 md:h-20 object-contain flex-shrink-0 transform scale-125">
+
+          <div class="min-w-0">
+            <div class="font-bold text-xl md:text-2xl leading-tight">Pa'<span class="text-red-200">Biritta</span></div>
+            <div class="text-[10px] md:text-[11px] text-red-200 mt-0.5 md:mt-1">Desa Tangguh Bencana</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <nav class="flex-1 px-4 pt-3 pb-4 space-y-1">
-      {% set ep = request.endpoint %}
-      <a href="{{ url_for('admin.dashboard') }}"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.dashboard' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Dashboard
-      </a>
-      <a href="{{ url_for('admin.manajemen_laporan') }}"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep in ['admin.manajemen_laporan','admin.detail_laporan'] %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        Manajemen Laporan
-      </a>
-      <a href="{{ url_for('admin.riwayat_aktivitas') }}"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.riwayat_aktivitas' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Riwayat Aktivitas
-      </a>
-      {% if current_user.is_superadmin %}
-      <a href="{{ url_for('admin.manajemen_pengguna') }}"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.manajemen_pengguna' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-        Manajemen Pengguna
-      </a>
-      {% endif %}
-    </nav>
+      <nav class="flex-1 px-4 pt-3 pb-4 space-y-1">
+        {% set ep = request.endpoint %}
+        <a href="{{ url_for('admin.dashboard') }}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.dashboard' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="{{ url_for('admin.manajemen_laporan') }}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep in ['admin.manajemen_laporan','admin.detail_laporan'] %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Manajemen Laporan
+        </a>
+        <a href="{{ url_for('admin.riwayat_aktivitas') }}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.riwayat_aktivitas' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Riwayat Aktivitas
+        </a>
+        {% if current_user.is_superadmin %}
+        <a href="{{ url_for('admin.manajemen_pengguna') }}"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.manajemen_pengguna' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          Manajemen Pengguna
+        </a>
+        {% endif %}
+      </nav>
 
-    <div class="px-4 py-3 border-t border-red-800/50 space-y-2">
-      <!-- User info -->
-      <div class="flex items-center gap-3 px-2 py-2 rounded-lg bg-white/10">
-        <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
-          {{ current_user.nama[0]|upper }}
+      <div class="px-4 py-3 border-t border-red-800/50 space-y-2">
+        <!-- User info -->
+        <div class="flex items-center gap-3 px-2 py-2 rounded-lg bg-white/10">
+          <div
+            class="w-9 h-9 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+            {{ current_user.nama[0]|upper }}
+          </div>
+          <div class="min-w-0">
+            <div class="text-sm font-semibold truncate">{{ current_user.nama }}</div>
+            <div class="text-xs text-red-200 capitalize">{{ current_user.role }}</div>
+          </div>
         </div>
-        <div class="min-w-0">
-          <div class="text-sm font-semibold truncate">{{ current_user.nama }}</div>
-          <div class="text-xs text-red-200 capitalize">{{ current_user.role }}</div>
-        </div>
-      </div>
-      <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-800/50 text-sm">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-        Keluar Sistem
-      </a>
-      <div class="bg-yellow-50/10 border border-yellow-300/30 rounded-lg p-3">
-        <div class="flex items-center gap-2 text-yellow-200 text-xs font-semibold mb-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"/></svg>
-          Status Desa
-        </div>
-        <div class="bg-{{ status_desa.warna }}-600 text-white text-center font-bold py-2 rounded text-sm">
-          {{ status_desa.status_text }}
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <div class="flex-1 flex flex-col min-w-0 md:ml-72">
-
-    <!-- MOBILE HEADER (hidden on desktop) -->
-    <!-- z-10 aman ditimpa oleh sidebar yang z-50. h-16 memastikan tingginya klop dengan sidebar HP -->
-    <header class="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10 box-border h-16">
-      <div class="px-4 h-full flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <button id="sidebar-toggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-          </button>
-          <h1 class="text-lg font-bold truncate">{% block page_title %}Dashboard Admin{% endblock %}</h1>
-        </div>
-        <div class="flex items-center gap-2 flex-shrink-0">
-          <a href="{{ url_for('auth.logout') }}" class="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md" title="Logout">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-          </a>
+        <a href="{{ url_for('auth.logout') }}"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-800/50 text-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Keluar Sistem
+        </a>
+        <div class="bg-yellow-50/10 border border-yellow-300/30 rounded-lg p-3">
+          <div class="flex items-center gap-2 text-yellow-200 text-xs font-semibold mb-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" />
+            </svg>
+            Status Desa
+          </div>
+          <div class="bg-{{ status_desa.warna }}-600 text-white text-center font-bold py-2 rounded text-sm">
+            {{ status_desa.status_text }}
+          </div>
         </div>
       </div>
-    </header>
+    </aside>
 
-    <!-- DESKTOP TITLE BAR (hidden on mobile) -->
-    <!-- md:h-20 memastikan tingginya 80px, klop persis dengan tinggi sidebar PC -->
-    <div class="hidden md:flex items-center justify-between px-8 h-20 bg-white border-b border-gray-200 sticky top-0 z-20 box-border">
-      <div>
-        <h1 class="text-2xl font-bold">{{ self.page_title() }}</h1>
-        <p class="text-xs text-gray-500 mt-0.5">{% block page_subtitle %}Ringkasan sistem manajemen kebencanaan desa{% endblock %}</p>
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col min-w-0 md:ml-72">
+
+      <!-- MOBILE HEADER (hidden on desktop) -->
+      <!-- z-10 aman ditimpa oleh sidebar yang z-50. h-16 memastikan tingginya klop dengan sidebar HP -->
+      <header class="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10 box-border h-16">
+        <div class="px-4 h-full flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button id="sidebar-toggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <h1 class="text-lg font-bold truncate">{% block page_title %}Dashboard Admin{% endblock %}</h1>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <a href="{{ url_for('auth.logout') }}" class="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md"
+              title="Logout">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- DESKTOP TITLE BAR (hidden on mobile) -->
+      <!-- md:h-20 memastikan tingginya 80px, klop persis dengan tinggi sidebar PC -->
+      <div
+        class="hidden md:flex items-center justify-between px-8 h-20 bg-white border-b border-gray-200 sticky top-0 z-20 box-border">
+        <div>
+          <h1 class="text-2xl font-bold">{{ self.page_title() }}</h1>
+          <p class="text-xs text-gray-500 mt-0.5">{% block page_subtitle %}Ringkasan sistem manajemen kebencanaan desa{%
+            endblock %}</p>
+        </div>
       </div>
-    </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div class="px-4 sm:px-6 lg:px-8 pt-4 space-y-2">
-          {% for category, msg in messages %}
-            {% set cls = {'success':'bg-green-50 text-green-800 border-green-200','error':'bg-red-50 text-red-800 border-red-200','warning':'bg-yellow-50 text-yellow-800 border-yellow-200'}.get(category,'bg-blue-50 text-blue-800 border-blue-200') %}
-            <div class="border rounded-lg px-4 py-3 text-sm {{ cls }}">{{ msg }}</div>
-          {% endfor %}
-        </div>
+      <div class="px-4 sm:px-6 lg:px-8 pt-4 space-y-2">
+        {% for category, msg in messages %}
+        {% set cls = {'success':'bg-green-50 text-green-800 border-green-200','error':'bg-red-50 text-red-800
+        border-red-200','warning':'bg-yellow-50 text-yellow-800 border-yellow-200'}.get(category,'bg-blue-50
+        text-blue-800 border-blue-200') %}
+        <div class="border rounded-lg px-4 py-3 text-sm {{ cls }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
       {% endif %}
-    {% endwith %}
+      {% endwith %}
 
-    <main class="flex-1 p-4 sm:p-6 lg:p-8">
-      {% block content %}{% endblock %}
-    </main>
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
   </div>
-</div>
 
-<script>
-  const _sb = document.getElementById('sidebar');
-  const _ov = document.getElementById('sidebar-overlay');
-  function openSidebar() {
-    _sb.classList.remove('hidden'); _sb.classList.add('flex');
-    _ov.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeSidebar() {
-    _sb.classList.add('hidden'); _sb.classList.remove('flex');
-    _ov.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-  document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
-    _sb.classList.contains('hidden') ? openSidebar() : closeSidebar();
-  });
-  _ov?.addEventListener('click', closeSidebar);
-</script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-{% block scripts %}{% endblock %}
+  <script>
+    const _sb = document.getElementById('sidebar');
+    const _ov = document.getElementById('sidebar-overlay');
+    function openSidebar() {
+      _sb.classList.remove('hidden'); _sb.classList.add('flex');
+      _ov.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      _sb.classList.add('hidden'); _sb.classList.remove('flex');
+      _ov.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
+      _sb.classList.contains('hidden') ? openSidebar() : closeSidebar();
+    });
+    _ov?.addEventListener('click', closeSidebar);
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  {% block scripts %}{% endblock %}
 </body>
+
 </html>
