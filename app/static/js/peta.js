@@ -62,8 +62,7 @@ const ICON_FILES = {
   historis:    'titik_longsor.svg',
   kumpul:      'titik_kumpul.svg',
   pendidikan:  'pendidikan.svg',
-  peribadatan: 'peribadatan.svg',
-  kesehatan: 'kesehatan.svg'
+  peribadatan: 'peribadatan.svg'
 };
 
 // Mapping icon per kategori Potensi Desa (berdasarkan properties.Keterangan)
@@ -118,7 +117,7 @@ async function fetchAndRenderLayers(map) {
   const [
     zonaRes, lahanRes, historisRes, kumpulRes, evakuasiRes,
     pendidikanRes, peribadatanRes, potensiRes,
-    sensorRes, laporanRes, kesehatanRes
+    sensorRes, laporanRes
   ] = await Promise.allSettled([
     safeJson('/static/data/kelas_rawan_longsor.geojson'),
     safeJson('/static/data/guna_lahan.geojson'),
@@ -127,7 +126,7 @@ async function fetchAndRenderLayers(map) {
     safeJson('/static/data/jalur_evakuasi.geojson'),
     safeJson('/static/data/pendidikan.geojson'),
     safeJson('/static/data/peribadatan.geojson'),
-    safeJson('/static/data/potensi_desa.geojson'), safeJson('/static/data/kesehatan.geojson'),
+    safeJson('/static/data/potensi_desa.geojson'),
     safeJson('/api/sensor/list'),
     safeJson('/api/sensor/laporan-titik'),
   ]);
@@ -217,15 +216,6 @@ async function fetchAndRenderLayers(map) {
         const nama = (p.Keterangan || '').trim();
         const dusun = (p.Dusun || '').trim();
         return `<div style="min-width:180px;"><strong>${nama || 'Sarana Peribadatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
-      })
-    : L.layerGroup();
-
-  // SARANA KESEHATAN
-  LAYERS.kesehatan = kesehatanRes.status === 'fulfilled'
-    ? makeIconLayer(kesehatanRes.value, ICON_FILES.kesehatan, (p) => {
-        const nama = (p.Keterangan || '').trim();
-        const dusun = (p.Dusun || '').trim();
-        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Kesehatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
       })
     : L.layerGroup();
 
