@@ -52,15 +52,38 @@ const LAYERS = {};
 const EXCLUSIVE_PAIRS = { zona: 'gunalahan', gunalahan: 'zona' };
 
 const POINT_STYLE = {
-  sensor:      { fill: '#DC2626', border: '#991B1B' },
+  sensor:      { fill: '#16A34A', border: '#15803D' },
   laporan:     { fill: '#2563EB', border: '#1E40AF' },
-  historis:    { fill: '#B45309', border: '#78350F' },
-  kumpul:      { fill: '#059669', border: '#065F46' },
   evakuasi:    { fill: '#84CC16', border: '#4D7C0F' },
-  pendidikan:  { fill: '#7C3AED', border: '#5B21B6' },
-  peribadatan: { fill: '#0891B2', border: '#155E75' },
-  potensi:     { fill: '#DB2777', border: '#9D174D' },
 };
+
+// Mapping icon file untuk layer point tunggal
+const ICON_FILES = {
+  historis:    'titik_longsor.svg',
+  kumpul:      'titik_kumpul.svg',
+  pendidikan:  'pendidikan.svg',
+  peribadatan: 'peribadatan.svg',
+  kesehatan: 'kesehatan.svg'
+};
+
+// Mapping icon per kategori Potensi Desa (berdasarkan properties.Keterangan)
+const POTENSI_ICON_MAP = {
+  'Pabrik':        'pabrik.svg',
+  'Tambang':       'tambang.svg',
+  'Bumdes':        'bumdes.svg',
+  'Kopdes':        'kopdes.svg',
+  'Lapangan Desa': 'lapangan_desa.svg',
+  'Pasar':         'pasar.svg',
+};
+
+function makeFileIcon(filename, size = 30) {
+  return L.icon({
+    iconUrl: `/static/img/icons/${filename}`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2],
+  });
+}
 
 // Ambil JSON dgn timeout, aman kalau gagal
 async function safeJson(url, timeoutMs = 15000) {
@@ -95,7 +118,7 @@ async function fetchAndRenderLayers(map) {
   const [
     zonaRes, lahanRes, historisRes, kumpulRes, evakuasiRes,
     pendidikanRes, peribadatanRes, potensiRes,
-    sensorRes, laporanRes,
+    sensorRes, laporanRes, kesehatanRes
   ] = await Promise.allSettled([
     safeJson('/static/data/kelas_rawan_longsor.geojson'),
     safeJson('/static/data/guna_lahan.geojson'),
@@ -104,7 +127,7 @@ async function fetchAndRenderLayers(map) {
     safeJson('/static/data/jalur_evakuasi.geojson'),
     safeJson('/static/data/pendidikan.geojson'),
     safeJson('/static/data/peribadatan.geojson'),
-    safeJson('/static/data/potensi_desa.geojson'),
+    safeJson('/static/data/potensi_desa.geojson'), safeJson('/static/data/kesehatan.geojson'),
     safeJson('/api/sensor/list'),
     safeJson('/api/sensor/laporan-titik'),
   ]);
@@ -120,15 +143,15 @@ async function fetchAndRenderLayers(map) {
     });
   } else { LAYERS.zona = L.layerGroup(); }
 
-  // GUNA LAHAN
+  // GUNA LAHAN — warna dari ArcGIS
   if (lahanRes.status === 'fulfilled') {
     const palette = {
-      'Permukiman':           { fillColor: '#EF4444', fillOpacity: 0.45 },
-      'Persawahan':           { fillColor: '#22C55E', fillOpacity: 0.45 },
-      'Area Terbuka':         { fillColor: '#FDE68A', fillOpacity: 0.55 },
-      'Pertambangan':         { fillColor: '#78716C', fillOpacity: 0.55 },
-      'Hutan':                { fillColor: '#166534', fillOpacity: 0.55 },
-      'Daerah Aliran Sungai': { fillColor: '#3B82F6', fillOpacity: 0.55 },
+      'Permukiman':           { fillColor: '#EB9B3C', fillOpacity: 0.45 },
+      'Persawahan':           { fillColor: '#A3FF73', fillOpacity: 0.45 },
+      'Area Terbuka':         { fillColor: '#006969', fillOpacity: 0.45 },
+      'Pertambangan':         { fillColor: '#5F7391', fillOpacity: 0.45 },
+      'Hutan':                { fillColor: '#C7E0B0', fillOpacity: 0.45 },
+      'Daerah Aliran Sungai': { fillColor: '#CCFFFF', fillOpacity: 0.45 },
     };
     LAYERS.gunalahan = L.geoJSON(lahanRes.value, {
       renderer: polygonRenderer, pane: 'shadowPane', interactive: false,
@@ -139,62 +162,96 @@ async function fetchAndRenderLayers(map) {
     });
   } else { LAYERS.gunalahan = L.layerGroup(); }
 
-  // Helper titik generik
-  const makePoint = (gj, styleKey, popupBuilder) => {
-    const st = POINT_STYLE[styleKey];
-    return L.geoJSON(gj, {
-      pointToLayer: (feat, latlng) => L.circleMarker(latlng, {
-        renderer: pointRenderer, pane: 'markerPane',
-        radius: 7, color: st.border, fillColor: st.fill, fillOpacity: 0.85, weight: 2,
-      }),
-      onEachFeature: (feat, layer) => layer.bindPopup(popupBuilder(feat.properties || {}), { autoPan: false }),
-    });
-  };
+  // Helper: L.marker dgn icon file + popup
+  const makeIconLayer = (data, iconFile, popupBuilder) => L.geoJSON(data, {
+    pointToLayer: (feat, latlng) => L.marker(latlng, { icon: makeFileIcon(iconFile) }),
+    onEachFeature: (feat, layer) => layer.bindPopup(popupBuilder(feat.properties || {}), { autoPan: false }),
+  });
 
+  // HISTORIS TITIK LONGSOR
   LAYERS.historis = historisRes.status === 'fulfilled'
-    ? makePoint(historisRes.value, 'historis', (p) => {
+    ? makeIconLayer(historisRes.value, ICON_FILES.historis, (p) => {
         const tahun = p.Tahun && p.Tahun > 0 ? p.Tahun : '-';
-        return `<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Longsor'}</strong><br>Tahun: <b>${tahun}</b><br><span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+        return `<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Longsor'}</strong><br>Tahun: <b>${tahun}</b><br><span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
       })
     : L.layerGroup();
 
+  // TITIK KUMPUL
   LAYERS.kumpul = kumpulRes.status === 'fulfilled'
-    ? makePoint(kumpulRes.value, 'kumpul', (p) => {
+    ? makeIconLayer(kumpulRes.value, ICON_FILES.kumpul, (p) => {
         const dusun = (p.Dusun || '').trim();
-        return `<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+        return `<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
       })
     : L.layerGroup();
 
+  // JALUR EVAKUASI (belum ada SVG, tetap pakai circleMarker lime)
   LAYERS.evakuasi = evakuasiRes.status === 'fulfilled'
-    ? makePoint(evakuasiRes.value, 'evakuasi', (p) => {
-        const dusun = (p.Dusun || '').trim();
-        return `<div style="min-width:180px;"><strong>Titik Jalur Evakuasi</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+    ? L.geoJSON(evakuasiRes.value, {
+        pointToLayer: (feat, latlng) => {
+          const st = POINT_STYLE.evakuasi;
+          return L.circleMarker(latlng, {
+            renderer: pointRenderer, pane: 'markerPane',
+            radius: 7, color: st.border, fillColor: st.fill, fillOpacity: 0.85, weight: 2,
+          });
+        },
+        onEachFeature: (feat, layer) => {
+          const p = feat.properties || {};
+          const dusun = (p.Dusun || '').trim();
+          layer.bindPopup(`<div style="min-width:180px;"><strong>Titik Jalur Evakuasi</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
+        },
       })
     : L.layerGroup();
 
+  // SARANA PENDIDIKAN
   LAYERS.pendidikan = pendidikanRes.status === 'fulfilled'
-    ? makePoint(pendidikanRes.value, 'pendidikan', (p) => {
+    ? makeIconLayer(pendidikanRes.value, ICON_FILES.pendidikan, (p) => {
         const nama = (p.Keterangan || '').trim();
         const dusun = (p.Dusun || '').trim();
-        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Pendidikan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Pendidikan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
       })
     : L.layerGroup();
 
+  // SARANA PERIBADATAN
   LAYERS.peribadatan = peribadatanRes.status === 'fulfilled'
-    ? makePoint(peribadatanRes.value, 'peribadatan', (p) => {
+    ? makeIconLayer(peribadatanRes.value, ICON_FILES.peribadatan, (p) => {
         const nama = (p.Keterangan || '').trim();
         const dusun = (p.Dusun || '').trim();
-        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Peribadatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Peribadatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
       })
     : L.layerGroup();
 
-  LAYERS.potensi = potensiRes.status === 'fulfilled'
-    ? makePoint(potensiRes.value, 'potensi', (p) => {
-        const kategori = (p.Keterangan || '').trim();
-        const nama = (p.Nama || '').trim();
+  // SARANA KESEHATAN
+  LAYERS.kesehatan = kesehatanRes.status === 'fulfilled'
+    ? makeIconLayer(kesehatanRes.value, ICON_FILES.kesehatan, (p) => {
+        const nama = (p.Keterangan || '').trim();
         const dusun = (p.Dusun || '').trim();
-        const judul = nama || kategori || 'Potensi Desa';
-        return `<div style="min-width:180px;"><strong>${judul}</strong><br>${nama && kategori ? `${kategori}<br>` : ''}${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`;
+        return `<div style="min-width:180px;"><strong>${nama || 'Sarana Kesehatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`;
+      })
+    : L.layerGroup();
+
+  // POTENSI DESA — icon berbeda per kategori
+  LAYERS.potensi = potensiRes.status === 'fulfilled'
+    ? L.geoJSON(potensiRes.value, {
+        pointToLayer: (feat, latlng) => {
+          const keterangan = (feat.properties?.Keterangan || '').trim();
+          const iconFile = POTENSI_ICON_MAP[keterangan];
+          if (iconFile) {
+            return L.marker(latlng, { icon: makeFileIcon(iconFile) });
+          }
+          // Fallback: lingkaran pink kalau kategori tidak dikenali
+          return L.circleMarker(latlng, {
+            renderer: pointRenderer, pane: 'markerPane',
+            radius: 7, color: '#9D174D', fillColor: '#DB2777', fillOpacity: 0.85, weight: 2,
+          });
+        },
+        onEachFeature: (feat, layer) => {
+          const p = feat.properties || {};
+          const kategori = (p.Keterangan || '').trim();
+          const nama = (p.Nama || '').trim();
+          const dusun = (p.Dusun || '').trim();
+          const judul = nama || kategori || 'Potensi Desa';
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${judul}</strong><br>${nama && kategori ? `${kategori}<br>` : ''}${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
+        },
       })
     : L.layerGroup();
 

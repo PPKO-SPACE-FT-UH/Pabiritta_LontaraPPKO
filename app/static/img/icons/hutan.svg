@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 21.31">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: .9;
+      }
+
+      .cls-2 {
+        fill: #c7e0b0;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: .28px;
+      }
+    </style>
+  </defs>
+  <g class="cls-1">
+    <path class="cls-2" d="M.14,5.28h23.72v11.72H.14V5.28Z"/>
+  </g>
+</svg>
