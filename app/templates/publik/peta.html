@@ -35,7 +35,7 @@
 
     <div id="panel-content" class="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-3 sm:p-4 space-y-4 text-sm">
       <div>
-        <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Legenda</div>
+                  <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Legenda</div>
           <ul class="space-y-1.5 text-xs text-gray-600">
             <li class="font-medium text-gray-700 mt-1">Zona Rawan Longsor</li>
             <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(220,38,38,0.55);"></span> Tinggi</li>
@@ -63,27 +63,27 @@
             <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #EAB308; border: 2px solid #854D0E;"></span> Waspada</li>
             <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B91C1C; border: 2px solid #7F1D1D;"></span> Bahaya</li>
 
-            <li class="border-t border-gray-200 mt-2 pt-2 flex items-center gap-2 mt-3 text-gray-700"><svg class="w-4 h-4 flex-shrink-0" fill="#2563EB" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg> Laporan Warga</li>
+            <li class="border-t border-gray-200 pt-3 flex items-center gap-2 mt-3 text-gray-700"><span style="width:18px;height:18px;background:#2563EB;border:1.5px solid #1E40AF;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg></span> Laporan Warga</li>
             <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_longsor.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Historis Titik Longsor</li>
             <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_kumpul.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Titik Kumpul</li>
             <li class="flex items-center gap-2 text-gray-700"><span style="width:18px;height:18px;background:#84CC16;border:1.5px solid #4D7C0F;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg></span> Jalur Evakuasi</li>
             <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pendidikan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Pendidikan</li>
             <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/peribadatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Peribadatan</li>
           </ul>
-      </div>
-      <div class="border-t border-gray-200 pt-3">
-        <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Layer</div>
-        <div class="space-y-2 text-xs">
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Zona Rawan Longsor</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Guna Lahan</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Sensor IoT</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Laporan Warga</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Historis Titik Longsor</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Titik Kumpul</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="evakuasi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Jalur Evakuasi</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Pendidikan</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Peribadatan</label>
-          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Potensi Desa</label>
+        </div>
+        <div class="border-t border-gray-200 pt-3">
+          <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Layer</div>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Zona Rawan Longsor</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Guna Lahan</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Sensor IoT</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Laporan Warga</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Historis Titik Longsor</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Titik Kumpul</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="evakuasi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Jalur Evakuasi</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Pendidikan</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Peribadatan</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Potensi Desa</label>
         </div>
       </div>
     </div>
