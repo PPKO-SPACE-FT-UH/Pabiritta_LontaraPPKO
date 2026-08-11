@@ -22,7 +22,7 @@ def hitung_status_desa() -> dict:
             "label": "AMAN",
             "warna": "green",
             "warna_hex": "#16A34A",
-            "deskripsi": "Sensor kelembapan dan getaran tanah dalam batas normal.",
+            "deskripsi": "Sensor kelembapan dan kemiringan tanah dalam batas normal.",
             "status_text": "AMAN TERKENDALI",
         },
         DataSensor.STATUS_WASPADA: {

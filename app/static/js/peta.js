@@ -289,7 +289,7 @@ async function fetchAndRenderLayers(map) {
         return L.circleMarker([s.latitude, s.longitude], {
           renderer: pointRenderer, pane: 'markerPane',
           radius: 9, color: stroke, fillColor: fill, fillOpacity: 0.85, weight: 2,
-        }).bindPopup(`<strong>${s.kode} — ${s.nama_lokasi}</strong><br>Status: <b>${s.status}</b><br>Kelembapan: ${s.kelembapan ?? '-'}%<br>Getaran: ${s.getaran ?? '-'}`, { autoPan: false });
+        }).bindPopup(`<strong>${s.kode} — ${s.nama_lokasi}</strong><br>Status: <b>${s.status}</b><br>Kelembapan: ${s.kelembapan != null ? s.kelembapan.toFixed(1) + '%' : '-'}<br>Kemiringan Samping: ${s.roll != null ? s.roll.toFixed(1) + '°' : '-'}<br>Kemiringan Depan-Belakang: ${s.pitch != null ? s.pitch.toFixed(1) + '°' : '-'}`, { autoPan: false });
       })
     );
   } else { LAYERS.sensor = L.layerGroup(); }

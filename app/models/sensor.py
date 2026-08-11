@@ -45,18 +45,19 @@ class DataSensor(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     sensor_id = db.Column(db.Integer, db.ForeignKey("sensor.id"), nullable=False, index=True)
-    kelembapan = db.Column(db.Float, nullable=False)
-    getaran = db.Column(db.String(20), nullable=False)  # Rendah/Sedang/Tinggi/Sangat Tinggi
+    kelembapan = db.Column(db.Float, nullable=False)  # soil moisture (%)
+    roll = db.Column(db.Float, nullable=False)        # kemiringan samping (derajat)
+    pitch = db.Column(db.Float, nullable=False)       # kemiringan depan-belakang (derajat)
     status = db.Column(db.String(20), nullable=False, default=STATUS_NORMAL)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
 
     @staticmethod
-    def hitung_status(kelembapan: float, getaran: str) -> str:
-        """Tentukan status berdasarkan threshold."""
-        getaran_norm = (getaran or "").strip().lower()
-        if kelembapan > 90 or getaran_norm == "sangat tinggi":
+    def hitung_status(kelembapan: float, roll: float, pitch: float) -> str:
+        """Tentukan status berdasarkan kelembapan tanah dan kemiringan maksimum."""
+        kemiringan = max(abs(roll), abs(pitch))
+        if kelembapan > 90 or kemiringan > 25:
             return DataSensor.STATUS_BAHAYA
-        if kelembapan > 80 or getaran_norm == "tinggi":
+        if kelembapan > 80 or kemiringan > 15:
             return DataSensor.STATUS_WASPADA
         return DataSensor.STATUS_NORMAL
 
@@ -65,7 +66,8 @@ class DataSensor(db.Model):
             "id": self.id,
             "sensor_id": self.sensor_id,
             "kelembapan": self.kelembapan,
-            "getaran": self.getaran,
+            "roll": self.roll,
+            "pitch": self.pitch,
             "status": self.status,
             "timestamp": self.timestamp.isoformat() if self.timestamp else None,
         }

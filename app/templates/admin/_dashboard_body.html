@@ -129,8 +129,9 @@
               </span>
             </div>
             {% if latest %}
-              <div class="text-xs text-gray-500">Kelembapan: <span class="text-gray-800 font-medium">{{ latest.kelembapan|int }}%</span></div>
-              <div class="text-xs text-gray-500">Getaran: <span class="text-gray-800 font-medium">{{ latest.getaran }}</span></div>
+              <div class="text-xs text-gray-500">Kelembapan: <span class="text-gray-800 font-medium">{{ latest.kelembapan|round(1) }}%</span></div>
+              <div class="text-xs text-gray-500">Kemiringan Samping: <span class="text-gray-800 font-medium">{{ latest.roll|round(1) }}°</span></div>
+              <div class="text-xs text-gray-500">Kemiringan Depan-Belakang: <span class="text-gray-800 font-medium">{{ latest.pitch|round(1) }}°</span></div>
             {% else %}
               <div class="text-xs text-gray-400">Belum ada data</div>
             {% endif %}

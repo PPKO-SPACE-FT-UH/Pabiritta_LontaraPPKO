@@ -12,38 +12,44 @@ def _validate_api_key() -> bool:
     return key and key == current_app.config["SENSOR_API_KEY"]
 
 
+def _to_float(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 @sensor_bp.route("/data", methods=["POST"])
 def terima_data():
-    """Terima pembacaan dari ESP32.
+    """Terima pembacaan dari ESP32 (Alat A).
 
     Header: X-API-Key: <rahasia>
-    Body JSON: { "sensor_id": "S1", "kelembapan": 45, "getaran": "Rendah" }
+    Body JSON: { "sensor_id": "B", "soil": 45.2, "roll": 2.1, "pitch": -1.4 }
     """
     if not _validate_api_key():
         return jsonify({"error": "API Key tidak valid"}), 401
 
     payload = request.get_json(silent=True) or {}
     kode = (payload.get("sensor_id") or "").strip()
-    kelembapan = payload.get("kelembapan")
-    getaran = (payload.get("getaran") or "").strip()
+    soil = _to_float(payload.get("soil"))
+    roll = _to_float(payload.get("roll"))
+    pitch = _to_float(payload.get("pitch"))
 
-    if not kode or kelembapan is None or not getaran:
-        return jsonify({"error": "Field wajib: sensor_id, kelembapan, getaran"}), 400
-
-    try:
-        kelembapan = float(kelembapan)
-    except (TypeError, ValueError):
-        return jsonify({"error": "Kelembapan harus angka"}), 400
+    if not kode or soil is None or roll is None or pitch is None:
+        return jsonify({
+            "error": "Field wajib: sensor_id, soil, roll, pitch (semua numerik)"
+        }), 400
 
     sensor = Sensor.query.filter_by(kode_sensor=kode).first()
     if not sensor:
         return jsonify({"error": f"Sensor {kode} tidak terdaftar"}), 404
 
-    status = DataSensor.hitung_status(kelembapan, getaran)
+    status = DataSensor.hitung_status(soil, roll, pitch)
     data = DataSensor(
         sensor_id=sensor.id,
-        kelembapan=kelembapan,
-        getaran=getaran,
+        kelembapan=soil,
+        roll=roll,
+        pitch=pitch,
         status=status,
     )
     db.session.add(data)
@@ -70,7 +76,8 @@ def list_sensors():
             "longitude": s.longitude,
             "status": latest.status if latest else "Normal",
             "kelembapan": latest.kelembapan if latest else None,
-            "getaran": latest.getaran if latest else None,
+            "roll": latest.roll if latest else None,
+            "pitch": latest.pitch if latest else None,
         })
     return jsonify(items)
 

@@ -5,16 +5,17 @@ Jalankan dengan:
 
 Menambahkan:
 - 1 akun superadmin & 1 akun admin
-- 4 sensor IoT statis (Tombongi, Galesong, Kampung Beru, Bontoloe)
 - 5 contoh laporan warga dengan status bervariasi
 - Aktivitas sistem contoh
+
+Sensor IoT (Node B & C dari EWS) tidak di-seed di sini — didaftarkan
+langsung di database produksi via migrations/001_ews_integration.sql.
 """
 from datetime import datetime, timedelta
 
 from app import create_app, db
 from app.models.user import User
 from app.models.laporan import Laporan
-from app.models.sensor import Sensor, DataSensor
 from app.models.aktivitas import Aktivitas
 
 
@@ -51,42 +52,6 @@ def seed_users():
     db.session.add_all([superadmin, admin])
     db.session.commit()
     print("✓ Seed users: superadmin@pabiritta.id, admin@pabiritta.id (password: admin123)")
-
-
-# TODO: Hapus seed data sensor ini setelah ESP32 EWS terpasang.
-# Hardware EWS belum tersedia — data berikut hanya untuk demo.
-def seed_sensors():
-    if Sensor.query.count() > 0:
-        print("• Sensor sudah ada — skip.")
-        return
-
-    data = [
-        ("S1", "Tombongi", 45, "Rendah"),
-        ("S2", "Galesong", 82, "Sedang"),  # > 80 → Waspada
-        ("S3", "Kampung Beru", 55, "Rendah"),
-        ("S4", "Bontoloe", 60, "Rendah"),
-    ]
-    for kode, dusun, kelembapan, getaran in data:
-        lat, lng = DUSUN_KOORDINAT[dusun]
-        sensor = Sensor(
-            kode_sensor=kode,
-            nama_lokasi=dusun,
-            latitude=lat,
-            longitude=lng,
-            is_active=True,
-        )
-        db.session.add(sensor)
-        db.session.flush()
-
-        status = DataSensor.hitung_status(kelembapan, getaran)
-        db.session.add(DataSensor(
-            sensor_id=sensor.id,
-            kelembapan=kelembapan,
-            getaran=getaran,
-            status=status,
-        ))
-    db.session.commit()
-    print("✓ Seed 4 sensor + bacaan awal (S2 Galesong → Waspada)")
 
 
 def seed_laporan():
@@ -196,7 +161,6 @@ def main():
         print("▶ Membuat tabel (jika belum ada)...")
         db.create_all()
         seed_users()
-        seed_sensors()
         seed_laporan()
         seed_aktivitas()
         print("\n✅ Seeding selesai.")

@@ -111,36 +111,50 @@ X-API-Key: <SENSOR_API_KEY dari .env>
 **Body:**
 ```json
 {
-  "sensor_id": "S1",
-  "kelembapan": 45,
-  "getaran": "Rendah"
+  "sensor_id": "B",
+  "soil": 45.2,
+  "roll": 2.1,
+  "pitch": -1.4
 }
 ```
+
+- `sensor_id` — kode node (`B` atau `C`)
+- `soil` — kelembapan tanah, satuan persen (%)
+- `roll` — sudut kemiringan samping (°), rentang ±180
+- `pitch` — sudut kemiringan depan-belakang (°), rentang ±180
 
 **Response (201):**
 ```json
 {
   "ok": true,
-  "data": { "id": 12, "sensor_id": 1, "kelembapan": 45, "getaran": "Rendah", "status": "Normal", "timestamp": "2026-06-05T10:00:00" },
-  "sensor": { "id": 1, "kode": "S1" }
+  "data": {
+    "id": 12, "sensor_id": 1, "kelembapan": 45.2,
+    "roll": 2.1, "pitch": -1.4,
+    "status": "Normal", "timestamp": "2026-06-05T10:00:00"
+  },
+  "sensor": { "id": 1, "kode": "B" }
 }
 ```
 
-**Threshold otomatis:**
-| Kondisi                                            | Status   |
-|----------------------------------------------------|----------|
-| `kelembapan > 90` atau `getaran = "Sangat Tinggi"` | Bahaya   |
-| `kelembapan > 80` atau `getaran = "Tinggi"`        | Waspada  |
-| Lainnya                                            | Normal   |
+**Threshold otomatis** (`max_tilt = max(|roll|, |pitch|)`):
+| Kondisi                                    | Status   |
+|--------------------------------------------|----------|
+| `soil > 90%` atau `max_tilt > 25°`         | Bahaya   |
+| `soil > 80%` atau `max_tilt > 15°`         | Waspada  |
+| Lainnya                                    | Normal   |
 
 **Errors:**
 - `401` — API Key tidak valid
 - `404` — `sensor_id` tidak terdaftar
 - `400` — Field tidak lengkap / format salah
 
-> ⚠️ **EWS belum tersedia.** Hardware ESP32 + sensor belum dipasang. Endpoint
-> ini sudah lengkap & berfungsi — tinggal arahkan ESP32 ke URL ini saat sudah
-> siap. Data dummy bisa di-seed via `seed.py`.
+**Firmware:** Kode Arduino untuk Alat A (gateway LoRa → HTTP) ada di
+`firmware/ews_alat_a/ews_alat_a.ino`. Isi konstanta WiFi, `SERVER_URL`,
+dan `SENSOR_API_KEY` sebelum upload ke ESP32.
+
+**Migrasi database:** Skema `data_sensor` diubah oleh
+`migrations/001_ews_integration.sql` — jalankan sekali di Neon SQL Editor
+saat pertama deploy integrasi EWS.
 
 ---
 
