@@ -62,7 +62,44 @@ const POINT_STYLE = {
   potensi:     { fill: '#DB2777', border: '#9D174D' },
 };
 
-// Ambil JSON dgn timeout, aman kalau gagal
+const PALETTE_DEFAULT = {
+  'Permukiman':           { fillColor: '#EF4444', fillOpacity: 0.45 },
+  'Persawahan':           { fillColor: '#22C55E', fillOpacity: 0.45 },
+  'Area Terbuka':         { fillColor: '#FDE68A', fillOpacity: 0.55 },
+  'Pertambangan':         { fillColor: '#78716C', fillOpacity: 0.55 },
+  'Hutan':                { fillColor: '#166534', fillOpacity: 0.55 },
+  'Daerah Aliran Sungai': { fillColor: '#3B82F6', fillOpacity: 0.55 },
+};
+
+const PALETTE_SATELIT = {
+  'Permukiman':           { fillColor: '#EB9B3C', fillOpacity: 0.45 },
+  'Persawahan':           { fillColor: '#A3FF73', fillOpacity: 0.45 },
+  'Area Terbuka':         { fillColor: '#006969', fillOpacity: 0.45 },
+  'Pertambangan':         { fillColor: '#5F7391', fillOpacity: 0.45 },
+  'Hutan':                { fillColor: '#C7E0B0', fillOpacity: 0.45 },
+  'Daerah Aliran Sungai': { fillColor: '#CCFFFF', fillOpacity: 0.45 },
+};
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function applyGunaPalette(palette) {
+  if (LAYERS.gunalahan && LAYERS.gunalahan.setStyle) {
+    LAYERS.gunalahan.setStyle(f => {
+      const s = palette[f.properties.Fungsi] || { fillColor: '#9CA3AF', fillOpacity: 0.35 };
+      return { ...s, weight: 0, stroke: false };
+    });
+  }
+  document.querySelectorAll('[data-guna]').forEach(el => {
+    const s = palette[el.dataset.guna] || { fillColor: '#9CA3AF', fillOpacity: 0.35 };
+    el.style.backgroundColor = hexToRgba(s.fillColor, s.fillOpacity);
+  });
+}
+
 async function safeJson(url, timeoutMs = 15000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -88,10 +125,8 @@ async function fetchAndRenderLayers(map) {
   const polygonRenderer = L.svg({ pane: 'shadowPane' });
   const pointRenderer   = L.svg({ pane: 'markerPane' });
 
-  // Failsafe: max 30s, overlay pasti hilang meski koneksi mati
   const failsafe = setTimeout(() => hideMapLoading(mapId), 30000);
 
-  // Semua fetch berjalan paralel
   const [
     zonaRes, lahanRes, historisRes, kumpulRes, evakuasiRes,
     pendidikanRes, peribadatanRes, potensiRes,
@@ -109,7 +144,6 @@ async function fetchAndRenderLayers(map) {
     safeJson('/api/sensor/laporan-titik'),
   ]);
 
-  // ZONA RAWAN
   if (zonaRes.status === 'fulfilled') {
     const styleKelas = (k) => k === 'Tinggi' ? { fillColor: '#DC2626', fillOpacity: 0.55 }
                             : k === 'Sedang' ? { fillColor: '#F97316', fillOpacity: 0.45 }
@@ -120,22 +154,16 @@ async function fetchAndRenderLayers(map) {
     });
   } else { LAYERS.zona = L.layerGroup(); }
 
-  // GUNA LAHAN
   if (lahanRes.status === 'fulfilled') {
-    const palette = {
-      'Permukiman':           { fillColor: '#EF4444', fillOpacity: 0.45 },
-      'Persawahan':           { fillColor: '#22C55E', fillOpacity: 0.45 },
-      'Area Terbuka':         { fillColor: '#FDE68A', fillOpacity: 0.55 },
-      'Pertambangan':         { fillColor: '#78716C', fillOpacity: 0.55 },
-      'Hutan':                { fillColor: '#166534', fillOpacity: 0.55 },
-      'Daerah Aliran Sungai': { fillColor: '#3B82F6', fillOpacity: 0.55 },
-    };
     LAYERS.gunalahan = L.geoJSON(lahanRes.value, {
       renderer: polygonRenderer, pane: 'shadowPane', interactive: false,
       style: (f) => {
-        const s = palette[f.properties.Fungsi] || { fillColor: '#9CA3AF', fillOpacity: 0.35 };
+        const s = PALETTE_DEFAULT[f.properties.Fungsi] || { fillColor: '#9CA3AF', fillOpacity: 0.35 };
         return { ...s, weight: 0, stroke: false };
       },
+    });
+    map.on('baselayerchange', e => {
+      applyGunaPalette(e.name === 'Satelit' ? PALETTE_SATELIT : PALETTE_DEFAULT);
     });
   } else { LAYERS.gunalahan = L.layerGroup(); }
 
@@ -146,7 +174,16 @@ async function fetchAndRenderLayers(map) {
     popupAnchor: [0, -14],
   });
 
-  const POTENSI_ICON = { bumdes: 'bumdes', kopdes: 'kopdes', lapangan: 'lapangan_desa', pasar: 'pasar', pabrik: 'pabrik', tambang: 'tambang' };
+  const circleIconFor = (name) => L.divIcon({
+    html: `<div style="width:26px;height:26px;background:#9CA3AF;border:2px solid #6B7280;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,0.25);"><img src="/static/img/icons/${name}.svg" style="width:16px;height:16px;"></div>`,
+    className: '',
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
+    popupAnchor: [0, -14],
+  });
+
+  const POTENSI_ICON   = { bumdes: 'bumdes', kopdes: 'kopdes', lapangan: 'lapangan_desa', pasar: 'pasar', pabrik: 'pabrik', tambang: 'tambang' };
+  const POTENSI_CIRCLE = new Set(['pasar', 'tambang']);
 
   LAYERS.historis = historisRes.status === 'fulfilled'
     ? L.geoJSON(historisRes.value, {
@@ -202,7 +239,7 @@ async function fetchAndRenderLayers(map) {
 
   LAYERS.peribadatan = peribadatanRes.status === 'fulfilled'
     ? L.geoJSON(peribadatanRes.value, {
-        pointToLayer: (feat, latlng) => L.marker(latlng, { icon: iconFor('peribadatan'), pane: 'markerPane' }),
+        pointToLayer: (feat, latlng) => L.marker(latlng, { icon: circleIconFor('peribadatan'), pane: 'markerPane' }),
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
           const nama = (p.Keterangan || '').trim();
@@ -217,7 +254,8 @@ async function fetchAndRenderLayers(map) {
         pointToLayer: (feat, latlng) => {
           const k = (feat.properties?.Keterangan || '').toLowerCase();
           const match = Object.keys(POTENSI_ICON).find(key => k.includes(key));
-          return L.marker(latlng, { icon: iconFor(match ? POTENSI_ICON[match] : 'bumdes'), pane: 'markerPane' });
+          const fn = match && POTENSI_CIRCLE.has(match) ? circleIconFor : iconFor;
+          return L.marker(latlng, { icon: fn(match ? POTENSI_ICON[match] : 'bumdes'), pane: 'markerPane' });
         },
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
@@ -230,7 +268,6 @@ async function fetchAndRenderLayers(map) {
       })
     : L.layerGroup();
 
-  // SENSOR IoT
   if (sensorRes.status === 'fulfilled') {
     LAYERS.sensor = L.layerGroup(
       sensorRes.value.map(s => {
@@ -244,7 +281,6 @@ async function fetchAndRenderLayers(map) {
     );
   } else { LAYERS.sensor = L.layerGroup(); }
 
-  // LAPORAN WARGA
   if (laporanRes.status === 'fulfilled') {
     const valid = laporanRes.value.filter(l => l.latitude != null && l.longitude != null);
     const laporanIcon = L.divIcon({
@@ -263,7 +299,6 @@ async function fetchAndRenderLayers(map) {
     }));
   } else { LAYERS.laporan = L.layerGroup(); }
 
-  // Hubungkan checkbox
   document.querySelectorAll('[data-layer]').forEach(cb => {
     const key = cb.dataset.layer;
     if (!LAYERS[key]) return;
