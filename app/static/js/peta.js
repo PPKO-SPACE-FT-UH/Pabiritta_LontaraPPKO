@@ -129,7 +129,7 @@ async function fetchAndRenderLayers(map) {
 
   const [
     zonaRes, lahanRes, historisRes, kumpulRes, evakuasiRes,
-    pendidikanRes, peribadatanRes, potensiRes,
+    pendidikanRes, peribadatanRes, kesehatanRes, potensiRes,
     sensorRes, laporanRes,
   ] = await Promise.allSettled([
     safeJson('/static/data/kelas_rawan_longsor.geojson'),
@@ -139,6 +139,7 @@ async function fetchAndRenderLayers(map) {
     safeJson('/static/data/jalur_evakuasi.geojson'),
     safeJson('/static/data/pendidikan.geojson'),
     safeJson('/static/data/peribadatan.geojson'),
+    safeJson('/static/data/kesehatan.geojson'),
     safeJson('/static/data/potensi_desa.geojson'),
     safeJson('/api/sensor/list'),
     safeJson('/api/sensor/laporan-titik'),
@@ -191,7 +192,7 @@ async function fetchAndRenderLayers(map) {
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
           const tahun = p.Tahun && p.Tahun > 0 ? p.Tahun : '-';
-          layer.bindPopup(`<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Longsor'}</strong><br>Tahun: <b>${tahun}</b><br><span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`, { autoPan: false });
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Longsor'}</strong><br>Tahun: <b>${tahun}</b><br><span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
         },
       })
     : L.layerGroup();
@@ -202,7 +203,7 @@ async function fetchAndRenderLayers(map) {
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
           const dusun = (p.Dusun || '').trim();
-          layer.bindPopup(`<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`, { autoPan: false });
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${p.Keterangan || 'Titik Kumpul'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
         },
       })
     : L.layerGroup();
@@ -220,7 +221,7 @@ async function fetchAndRenderLayers(map) {
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
           const dusun = (p.Dusun || '').trim();
-          layer.bindPopup(`<div style="min-width:180px;"><strong>Titik Jalur Evakuasi</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`, { autoPan: false });
+          layer.bindPopup(`<div style="min-width:180px;"><strong>Titik Jalur Evakuasi</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
         },
       })
     : L.layerGroup();
@@ -232,7 +233,7 @@ async function fetchAndRenderLayers(map) {
           const p = feat.properties || {};
           const nama = (p.Keterangan || '').trim();
           const dusun = (p.Dusun || '').trim();
-          layer.bindPopup(`<div style="min-width:180px;"><strong>${nama || 'Sarana Pendidikan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`, { autoPan: false });
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${nama || 'Sarana Pendidikan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
         },
       })
     : L.layerGroup();
@@ -244,7 +245,19 @@ async function fetchAndRenderLayers(map) {
           const p = feat.properties || {};
           const nama = (p.Keterangan || '').trim();
           const dusun = (p.Dusun || '').trim();
-          layer.bindPopup(`<div style="min-width:180px;"><strong>${nama || 'Sarana Peribadatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`, { autoPan: false });
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${nama || 'Sarana Peribadatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
+        },
+      })
+    : L.layerGroup();
+
+      LAYERS.kesehatan = kesehatanRes.status === 'fulfilled'
+    ? L.geoJSON(kesehatanRes.value, {
+        pointToLayer: (feat, latlng) => L.marker(latlng, { icon: iconFor('kesehatan'), pane: 'markerPane' }),
+        onEachFeature: (feat, layer) => {
+          const p = feat.properties || {};
+          const nama = (p.Keterangan || '').trim();
+          const dusun = (p.Dusun || '').trim();
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${nama || 'Sarana Kesehatan'}</strong><br>${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
         },
       })
     : L.layerGroup();
@@ -263,7 +276,7 @@ async function fetchAndRenderLayers(map) {
           const nama = (p.Nama || '').trim();
           const dusun = (p.Dusun || '').trim();
           const judul = nama || kategori || 'Potensi Desa';
-          layer.bindPopup(`<div style="min-width:180px;"><strong>${judul}</strong><br>${nama && kategori ? `${kategori}<br>` : ''}${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data PWK</span></div>`, { autoPan: false });
+          layer.bindPopup(`<div style="min-width:180px;"><strong>${judul}</strong><br>${nama && kategori ? `${kategori}<br>` : ''}${dusun ? `${dusun}<br>` : ''}<span style="font-size:11px;color:#6b7280;">Sumber: Data Primer</span></div>`, { autoPan: false });
         },
       })
     : L.layerGroup();
