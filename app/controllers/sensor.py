@@ -1,10 +1,15 @@
 """Endpoint API untuk ESP32 mengirim data sensor + endpoint internal untuk peta."""
+from datetime import datetime, timedelta
+
 from flask import Blueprint, request, jsonify, current_app
 
 from app import db
 from app.models.sensor import Sensor, DataSensor
 
 sensor_bp = Blueprint("sensor", __name__)
+
+# Sensor dianggap offline kalau tidak ada bacaan baru dalam window ini.
+STALE_AFTER = timedelta(minutes=10)
 
 
 def _validate_api_key() -> bool:
@@ -66,8 +71,10 @@ def terima_data():
 def list_sensors():
     """Untuk peta — daftar sensor + status terkini (publik)."""
     items = []
+    now = datetime.utcnow()
     for s in Sensor.query.filter_by(is_active=True).all():
         latest = s.latest
+        is_stale = (latest is None) or ((now - latest.timestamp) > STALE_AFTER)
         items.append({
             "id": s.id,
             "kode": s.kode_sensor,
@@ -78,6 +85,8 @@ def list_sensors():
             "kelembapan": latest.kelembapan if latest else None,
             "roll": latest.roll if latest else None,
             "pitch": latest.pitch if latest else None,
+            "is_stale": is_stale,
+            "last_seen": latest.timestamp.isoformat() if latest else None,
         })
     return jsonify(items)
 
