@@ -183,8 +183,7 @@ async function fetchAndRenderLayers(map) {
     popupAnchor: [0, -14],
   });
 
-  const POTENSI_ICON   = { bumdes: 'bumdes', kopdes: 'kopdes', lapangan: 'lapangan_desa', pasar: 'pasar', pabrik: 'pabrik', tambang: 'tambang' };
-  const POTENSI_CIRCLE = new Set(['pasar', 'tambang']);
+  const POTENSI_ICON = { bumdes: 'bumdes', kopdes: 'kopdes', lapangan: 'lapangan_desa', pasar: 'pasar', pabrik: 'pabrik', tambang: 'tambang' };
 
   LAYERS.historis = historisRes.status === 'fulfilled'
     ? L.geoJSON(historisRes.value, {
@@ -240,7 +239,7 @@ async function fetchAndRenderLayers(map) {
 
   LAYERS.peribadatan = peribadatanRes.status === 'fulfilled'
     ? L.geoJSON(peribadatanRes.value, {
-        pointToLayer: (feat, latlng) => L.marker(latlng, { icon: circleIconFor('peribadatan'), pane: 'markerPane' }),
+        pointToLayer: (feat, latlng) => L.marker(latlng, { icon: iconFor('peribadatan'), pane: 'markerPane' }),
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
           const nama = (p.Keterangan || '').trim();
@@ -267,8 +266,7 @@ async function fetchAndRenderLayers(map) {
         pointToLayer: (feat, latlng) => {
           const k = (feat.properties?.Keterangan || '').toLowerCase();
           const match = Object.keys(POTENSI_ICON).find(key => k.includes(key));
-          const fn = match && POTENSI_CIRCLE.has(match) ? circleIconFor : iconFor;
-          return L.marker(latlng, { icon: fn(match ? POTENSI_ICON[match] : 'bumdes'), pane: 'markerPane' });
+          return L.marker(latlng, { icon: iconFor(match ? POTENSI_ICON[match] : 'bumdes'), pane: 'markerPane' });
         },
         onEachFeature: (feat, layer) => {
           const p = feat.properties || {};
@@ -284,12 +282,28 @@ async function fetchAndRenderLayers(map) {
   if (sensorRes.status === 'fulfilled') {
     LAYERS.sensor = L.layerGroup(
       sensorRes.value.map(s => {
-        const fill   = s.status === 'Bahaya' ? '#B91C1C' : s.status === 'Waspada' ? '#EAB308' : POINT_STYLE.sensor.fill;
-        const stroke = s.status === 'Bahaya' ? '#7F1D1D' : s.status === 'Waspada' ? '#854D0E' : POINT_STYLE.sensor.border;
+        const stale = !!s.is_stale;
+        const fill = stale ? '#9CA3AF'
+                    : s.status === 'Bahaya' ? '#B91C1C'
+                    : s.status === 'Waspada' ? '#EAB308'
+                    : POINT_STYLE.sensor.fill;
+        const stroke = stale ? '#4B5563'
+                    : s.status === 'Bahaya' ? '#7F1D1D'
+                    : s.status === 'Waspada' ? '#854D0E'
+                    : POINT_STYLE.sensor.border;
+        let statusLine;
+        if (stale && s.last_seen) {
+          const mins = Math.round((Date.now() - new Date(s.last_seen)) / 60000);
+          statusLine = `Status: <b style="color:#4B5563;">OFFLINE</b><br><span style="color:#EA580C;">Data terakhir ${mins} menit lalu</span>`;
+        } else if (stale) {
+          statusLine = `Status: <b style="color:#4B5563;">OFFLINE</b><br><span style="color:#9CA3AF;">Belum ada data</span>`;
+        } else {
+          statusLine = `Status: <b>${s.status}</b>`;
+        }
         return L.circleMarker([s.latitude, s.longitude], {
           renderer: pointRenderer, pane: 'markerPane',
           radius: 9, color: stroke, fillColor: fill, fillOpacity: 0.85, weight: 2,
-        }).bindPopup(`<strong>${s.kode} — ${s.nama_lokasi}</strong><br>Status: <b>${s.status}</b><br>Kelembapan: ${s.kelembapan != null ? s.kelembapan.toFixed(1) + '%' : '-'}<br>Kemiringan Samping: ${s.roll != null ? s.roll.toFixed(1) + '°' : '-'}<br>Kemiringan Depan-Belakang: ${s.pitch != null ? s.pitch.toFixed(1) + '°' : '-'}`, { autoPan: false });
+        }).bindPopup(`<strong>${s.kode} — ${s.nama_lokasi}</strong><br>${statusLine}<br>Kelembapan: ${s.kelembapan != null ? s.kelembapan.toFixed(1) + '%' : '-'}<br>Kemiringan Samping: ${s.roll != null ? s.roll.toFixed(1) + '°' : '-'}<br>Kemiringan Depan-Belakang: ${s.pitch != null ? s.pitch.toFixed(1) + '°' : '-'}`, { autoPan: false });
       })
     );
   } else { LAYERS.sensor = L.layerGroup(); }

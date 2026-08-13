@@ -1,11 +1,15 @@
 """Blueprint halaman publik (beranda, laporan warga, peta)."""
+from datetime import datetime, timedelta
+
 from flask import Blueprint, render_template
 from sqlalchemy import desc
 
 from app.models.laporan import Laporan
-from app.models.sensor import Sensor
+from app.models.sensor import Sensor, DataSensor
 
 public_bp = Blueprint("public", __name__)
+
+STALE_AFTER = timedelta(minutes=10)
 
 
 @public_bp.route("/")
@@ -38,7 +42,16 @@ def _hitung_statistik_publik():
         Laporan.status.in_([Laporan.STATUS_PROSES, Laporan.STATUS_TINDAK_LANJUT])
     ).count()
     selesai = Laporan.query.filter_by(status=Laporan.STATUS_SELESAI).count()
-    rawan = Sensor.query.filter_by(is_active=True).count()
+
+    now = datetime.utcnow()
+    rawan = 0
+    for s in Sensor.query.filter_by(is_active=True).all():
+        latest = s.latest
+        if not latest or (now - latest.timestamp) > STALE_AFTER:
+            continue  # sensor offline / belum ada data → tidak dihitung
+        if latest.status in (DataSensor.STATUS_WASPADA, DataSensor.STATUS_BAHAYA):
+            rawan += 1
+
     return {
         "total": total,
         "proses": proses,

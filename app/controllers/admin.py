@@ -1,4 +1,5 @@
 """Blueprint area admin: dashboard, manajemen laporan, manajemen pengguna."""
+from datetime import datetime, timedelta
 from functools import wraps
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, abort
@@ -31,17 +32,24 @@ def superadmin_required(f):
 @admin_bp.route("/dashboard")
 @login_required
 def dashboard():
+    now = datetime.utcnow()
+    stale_after = timedelta(minutes=10)
+
+    sensors = Sensor.query.filter_by(is_active=True).all()
+    sensor_online = sum(
+        1 for s in sensors
+        if s.latest and (now - s.latest.timestamp) <= stale_after
+    )
+
     stats = {
         "total": Laporan.query.count(),
         "menunggu": Laporan.query.filter_by(status=Laporan.STATUS_MENUNGGU).count(),
         "selesai": Laporan.query.filter_by(status=Laporan.STATUS_SELESAI).count(),
-        "sensor_aktif": Sensor.query.filter_by(is_active=True).count(),
-        "sensor_total": Sensor.query.count(),
+        "sensor_aktif": sensor_online,
+        "sensor_total": len(sensors),
     }
-    sensors = Sensor.query.filter_by(is_active=True).all()
     aktivitas = Aktivitas.query.order_by(desc(Aktivitas.created_at)).limit(5).all()
 
-    # Distribusi laporan per kategori
     total_kategori = Laporan.query.count() or 1
     distribusi = []
     for kat in Laporan.KATEGORI_CHOICES:
@@ -63,6 +71,7 @@ def dashboard():
         sensors=sensors,
         aktivitas=aktivitas,
         distribusi=distribusi,
+        now=now,
     )
 
 # -------------------- PETA DIGITAL --------------------
