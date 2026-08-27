@@ -1,5 +1,6 @@
 """Blueprint laporan warga (buat & lihat daftar)."""
 import cloudinary.uploader
+import time
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, current_app
 )
@@ -8,6 +9,7 @@ from sqlalchemy import or_, desc
 from app import db
 from app.models.laporan import Laporan
 from app.models.aktivitas import Aktivitas
+from app.services.whatsapp import kirim_notif_fonnte
 
 laporan_bp = Blueprint("laporan", __name__)
 
@@ -109,6 +111,39 @@ def buat():
             status_baru=Laporan.STATUS_MENUNGGU,
         )
         db.session.commit()
+        
+        # Kondisi: HANYA dieksekusi jika laporannya adalah "Potensi Longsor"
+        if kategori == Laporan.KAT_POTENSI:
+            
+            # 1. Notifikasi Japri ke Admin
+            nomor_admin = "6282198571871" # Pastikan format 628...
+            pesan_admin = (
+                f"🔔 *Laporan Warga Baru Masuk*\n\n"
+                f"Kategori: {kategori}\n"
+                f"Lokasi: {lokasi_label or dusun}\n"
+                f"Pelapor: {nama}\n\n"
+                f"Silakan login ke Dashboard Pa'Biritta untuk mengecek."
+            )
+            kirim_notif_fonnte(target=nomor_admin, pesan=pesan_admin)
+            
+            time.sleep(2)
+
+            # 2. Notifikasi ke Grup Warga
+            # Ganti tulisan di bawah dengan ID Grup yang Anda dapatkan dari Fonnte
+            id_grup_warga = "120363423278774016@g.us" 
+            
+            pesan_grup = (
+                f"🚨 *PERINGATAN DINI PA'BIRITTA* 🚨\n\n"
+                f"Terdapat laporan warga terkait: *{kategori}*\n"
+                f"📍 *Lokasi:* {lokasi_label or dusun}\n"
+                f"📝 *Keterangan:* {deskripsi}\n\n"
+                f"Harap warga di sekitar lokasi untuk waspada."
+            )
+            kirim_notif_fonnte(target=id_grup_warga, pesan=pesan_grup)
+        # ==========================================================
+
+        flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
+        return redirect(url_for("laporan.daftar"))
 
         flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
         return redirect(url_for("laporan.daftar"))
