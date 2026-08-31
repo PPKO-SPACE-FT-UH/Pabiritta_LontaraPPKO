@@ -1,6 +1,8 @@
 """Blueprint laporan warga (buat & lihat daftar)."""
 import cloudinary.uploader
 import time
+import os
+from datetime import datetime
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, current_app
 )
@@ -112,44 +114,35 @@ def buat():
         )
         db.session.commit()
         
-        # Kondisi: HANYA dieksekusi jika laporannya adalah "Potensi Longsor"
-        if kategori == Laporan.KAT_POTENSI:
+       # --- MULAI LOGIKA PESAN OTOMATIS WHATSAPP ---
+        if kategori == "Kejadian Longsor":
+            nomor_admin = os.getenv("WA_ADMIN_TARGET")
             
-            # 1. Notifikasi Japri ke Admin
-            nomor_admin = "6282198571871" # Pastikan format 628...
-            pesan_admin = (
-                f"🔔 *Laporan Warga Baru Masuk*\n\n"
-                f"Kategori: {kategori}\n"
-                f"Lokasi: {lokasi_label or dusun}\n"
-                f"Pelapor: {nama}\n\n"
-                f"Silakan login ke Dashboard Pa'Biritta untuk mengecek."
-            )
-            kirim_notif_fonnte(target=nomor_admin, pesan=pesan_admin)
-            
-            time.sleep(2)
-
-            # 2. Notifikasi ke Grup Warga
-            # Ganti tulisan di bawah dengan ID Grup yang Anda dapatkan dari Fonnte
-            id_grup_warga = "120363423278774016@g.us" 
-            
-            pesan_grup = (
-                f"🚨 *PERINGATAN DINI PA'BIRITTA* 🚨\n\n"
-                f"Terdapat laporan warga terkait: *{kategori}*\n"
-                f"📍 *Lokasi:* {lokasi_label or dusun}\n"
-                f"📝 *Keterangan:* {deskripsi}\n\n"
-                f"Harap warga di sekitar lokasi untuk waspada."
-            )
-            kirim_notif_fonnte(target=id_grup_warga, pesan=pesan_grup)
-        # ==========================================================
-
-        flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
-        return redirect(url_for("laporan.daftar"))
+            if nomor_admin:
+                # Menghasilkan waktu saat ini dan link otomatis
+                waktu_laporan = datetime.now().strftime("%d-%m-%Y %H:%M")
+                link_login = url_for('auth.login', _external=True)
+                
+                pesan_admin = (
+                    f"🚨 *INFORMASI ADUAN MASYARAKAT: PA'BIRITTA* 🚨\n\n"
+                    f"Yth. Tim Admin,\n\n"
+                    f"Sistem telah menerima laporan aduan masyarakat terbaru terkait Kejadian Tanah Longsor. Berikut adalah rincian informasi dari pelapor:\n\n"
+                    f"👤 Nama Pelapor: {nama}\n"
+                    f"📍 Titik Lokasi: {lokasi_label or dusun}\n"
+                    f"⏰ Waktu Laporan: {waktu_laporan}\n\n"
+                    f"Mohon untuk segera ditindaklanjuti. Silakan login ke Dashboard Pa'Biritta guna memverifikasi laporan ini, melihat bukti lampiran, serta menentukan status penanganan darurat.\n"
+                    f"🔗 Link Dashboard: {link_login}\n\n"
+                    f"Terima kasih atas respons cepat Anda. Keselamatan warga adalah prioritas utama!\n\n"
+                    f"_Pesan ini dibuat otomatis oleh Sistem Layanan Aduan Bencana Pa'Biritta LONTARA._"
+                )
+                
+                kirim_notif_fonnte(target=nomor_admin, pesan=pesan_admin)
+        # --- AKHIR LOGIKA PESAN OTOMATIS WHATSAPP ---
 
         flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
         return redirect(url_for("laporan.daftar"))
 
     return render_template("publik/buat_laporan.html", form={})
-
 
 @laporan_bp.route("/")
 def daftar():

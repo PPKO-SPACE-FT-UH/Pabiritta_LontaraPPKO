@@ -5,6 +5,7 @@ from flask import Blueprint, request, jsonify, current_app
 
 from app import db
 from app.models.sensor import Sensor, DataSensor
+from app.services.whatsapp import kirim_notifikasi_ews
 
 sensor_bp = Blueprint("sensor", __name__)
 
@@ -49,16 +50,39 @@ def terima_data():
     if not sensor:
         return jsonify({"error": f"Sensor {kode} tidak terdaftar"}), 404
 
-    status = DataSensor.hitung_status(soil, roll, pitch)
+    # 1. Ambil status sebelumnya (LOGIKA ANTI-SPAM)
+    status_sebelumnya = sensor.status_terkini
+
+    # 2. Hitung status terbaru berdasarkan data yang masuk
+    status_terbaru = DataSensor.hitung_status(soil, roll, pitch)
+    
     data = DataSensor(
         sensor_id=sensor.id,
         kelembapan=soil,
         roll=roll,
         pitch=pitch,
-        status=status,
+        status=status_terbaru,
     )
     db.session.add(data)
     db.session.commit()
+
+    # 3. LOGIKA PENGIRIMAN WHATSAPP KE GRUP
+    # Syarat: Hanya kirim WA jika statusnya Waspada/Bahaya DAN statusnya berubah memburuk
+    # Ini penting agar grup WA tidak dibombardir ratusan pesan setiap detik oleh alat sensor
+    if status_terbaru in [DataSensor.STATUS_WASPADA, DataSensor.STATUS_BAHAYA] and status_terbaru != status_sebelumnya:
+        kirim_notifikasi_ews(
+            nama_lokasi=sensor.nama_lokasi,
+            status=status_terbaru,
+            kelembapan=soil,
+            roll=roll,
+            pitch=pitch
+        )
+
+    return jsonify({
+        "ok": True,
+        "data": data.to_dict(),
+        "sensor": {"id": sensor.id, "kode": sensor.kode_sensor},
+    }), 201
 
     return jsonify({
         "ok": True,
