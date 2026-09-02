@@ -1,5 +1,5 @@
 {% extends "base_public.html" %}
-{% block title %}Peta Digital{% endblock %}
+{% block title %}{{ t('titles.map') }}{% endblock %}
 
 {% block content %}
 <!-- Overlay full viewport: menutupi navbar & footer publik agar fokus ke peta -->
@@ -11,13 +11,13 @@
   <div id="map-full-loading"
        class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white transition-opacity duration-300">
     <div class="w-12 h-12 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
-    <p class="text-base font-semibold text-gray-700">Memuat data peta…</p>
+    <p class="text-base font-semibold text-gray-700">{{ t('common.loading_map') }}</p>
   </div>
 
   <!-- BACK BUTTON -->
   <a href="{{ url_for('public.beranda') }}"
      class="map-ctl-btn absolute top-3 left-3 sm:top-4 sm:left-4 z-[10]"
-     title="Kembali ke Beranda" aria-label="Kembali">
+     title="{{ t('map.back_to_home') }}" aria-label="{{ t('map.back') }}">
     <svg class="w-[18px] h-[18px] sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
   </a>
 
@@ -28,65 +28,65 @@
             class="flex items-center justify-between px-3 sm:px-4 h-9 sm:h-10 border-b border-gray-100 shrink-0 hover:bg-gray-50 transition">
       <div class="flex items-center gap-2 min-w-0">
         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>
-        <span class="font-bold text-xs sm:text-sm text-gray-800 truncate">Legenda &amp; Layer</span>
+        <span class="font-bold text-xs sm:text-sm text-gray-800 truncate">{{ t('map.legend_and_layer') }}</span>
       </div>
       <svg id="panel-chevron" class="w-4 h-4 text-gray-500 transition-transform flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
     </button>
 
     <div id="panel-content" class="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-3 sm:p-4 space-y-4 text-sm">
       <div>
-                  <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Legenda</div>
-          <ul class="space-y-1.5 text-xs text-gray-600">
-            <li class="font-medium text-gray-700 mt-1">Zona Rawan Longsor</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(220,38,38,0.55);"></span> Tinggi</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(249,115,22,0.45);"></span> Sedang</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(234,179,8,0.35);"></span> Rendah</li>
-            
-            <li class="font-medium text-gray-700 mt-2">Guna Lahan</li>
-          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Permukiman" style="background-color: rgba(239,68,68,0.45);"></span> Permukiman</li>
-          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Persawahan" style="background-color: rgba(34,197,94,0.45);"></span> Persawahan</li>
-          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Area Terbuka" style="background-color: rgba(253,230,138,0.55);"></span> Area Terbuka</li>
-          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Pertambangan" style="background-color: rgba(120,113,108,0.55);"></span> Pertambangan</li>
-          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Hutan" style="background-color: rgba(22,101,52,0.55);"></span> Hutan</li>
-          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Daerah Aliran Sungai" style="background-color: rgba(59,130,246,0.55);"></span> Daerah Aliran Sungai</li>
-            
-            <li class="font-medium text-gray-700 mt-2">Potensi Desa</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/bumdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Bumdes</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kopdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Kopdes</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/lapangan_desa.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Lapangan Desa</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pasar.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Pasar</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pabrik.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Pabrik</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/tambang.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Tambang</li>
+        <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">{{ t('map.legend.title') }}</div>
+        <ul class="space-y-1.5 text-xs text-gray-600">
+          <li class="font-medium text-gray-700 mt-1">{{ t('map.legend.zone_title') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(220,38,38,0.55);"></span> {{ t('map.legend.zone_high') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(249,115,22,0.45);"></span> {{ t('map.legend.zone_medium') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(234,179,8,0.35);"></span> {{ t('map.legend.zone_low') }}</li>
 
-            <li class="font-medium text-gray-700">Sensor IoT</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #16A34A; border: 2px solid #15803D;"></span> Normal</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #EAB308; border: 2px solid #854D0E;"></span> Waspada</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B91C1C; border: 2px solid #7F1D1D;"></span> Bahaya</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #9CA3AF; border: 2px solid #4B5563;"></span> Offline</li>
+          <li class="font-medium text-gray-700 mt-2">{{ t('map.legend.landuse_title') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Permukiman" style="background-color: rgba(239,68,68,0.45);"></span> {{ t('map.legend.landuse_settlement') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Persawahan" style="background-color: rgba(34,197,94,0.45);"></span> {{ t('map.legend.landuse_paddy') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Area Terbuka" style="background-color: rgba(253,230,138,0.55);"></span> {{ t('map.legend.landuse_open') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Pertambangan" style="background-color: rgba(120,113,108,0.55);"></span> {{ t('map.legend.landuse_mining') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Hutan" style="background-color: rgba(22,101,52,0.55);"></span> {{ t('map.legend.landuse_forest') }}</li>
+          <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Daerah Aliran Sungai" style="background-color: rgba(59,130,246,0.55);"></span> {{ t('map.legend.landuse_river') }}</li>
 
-            <li class="border-t border-gray-200 pt-3 flex items-center gap-2 mt-3 text-gray-700"><span style="width:18px;height:18px;background:#2563EB;border:1.5px solid #1E40AF;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg></span> Laporan Warga</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_longsor.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Historis Titik Longsor</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_kumpul.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Titik Kumpul</li>
-            <li class="flex items-center gap-2 text-gray-700"><span style="width:18px;height:18px;background:#84CC16;border:1.5px solid #4D7C0F;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg></span> Jalur Evakuasi</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pendidikan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Pendidikan</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/peribadatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Peribadatan</li>
-          <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kesehatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Kesehatan</li>
-          </ul>
-        </div>
-        <div class="border-t border-gray-200 pt-3">
-          <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Layer</div>
-          <div class="space-y-2 text-xs">
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Zona Rawan Longsor</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Guna Lahan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Sensor IoT</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Laporan Warga</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Historis Titik Longsor</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Titik Kumpul</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="evakuasi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Jalur Evakuasi</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Pendidikan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Peribadatan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kesehatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Kesehatan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Potensi Desa</label>
+          <li class="font-medium text-gray-700 mt-2">{{ t('map.legend.assets_title') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/bumdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_bumdes') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kopdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_kopdes') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/lapangan_desa.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_field') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pasar.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_market') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pabrik.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_factory') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/tambang.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_mine') }}</li>
+
+          <li class="font-medium text-gray-700">{{ t('map.legend.sensor_title') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #16A34A; border: 2px solid #15803D;"></span> {{ t('map.legend.sensor_normal') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #EAB308; border: 2px solid #854D0E;"></span> {{ t('map.legend.sensor_warning') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B91C1C; border: 2px solid #7F1D1D;"></span> {{ t('map.legend.sensor_danger') }}</li>
+          <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #9CA3AF; border: 2px solid #4B5563;"></span> {{ t('map.legend.sensor_offline') }}</li>
+
+          <li class="border-t border-gray-200 pt-3 flex items-center gap-2 mt-3 text-gray-700"><span style="width:18px;height:18px;background:#2563EB;border:1.5px solid #1E40AF;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg></span> {{ t('map.legend.citizen_reports') }}</li>
+          <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_longsor.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.historic_landslide') }}</li>
+          <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_kumpul.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.evacuation_point') }}</li>
+          <li class="flex items-center gap-2 text-gray-700"><span style="width:18px;height:18px;background:#84CC16;border:1.5px solid #4D7C0F;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg></span> {{ t('map.legend.evacuation_route') }}</li>
+          <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pendidikan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.education') }}</li>
+          <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/peribadatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.worship') }}</li>
+          <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kesehatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.health') }}</li>
+        </ul>
+      </div>
+      <div class="border-t border-gray-200 pt-3">
+        <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">{{ t('map.layers.title') }}</div>
+        <div class="space-y-2 text-xs">
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> {{ t('map.layers.zone') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.landuse') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> {{ t('map.layers.sensor') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> {{ t('map.layers.citizen_reports') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.historic') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.assembly') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="evakuasi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.evacuation') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.education') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.worship') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kesehatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.health') }}</label>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.village_assets') }}</label>
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 {% extends "base_public.html" %}
-{% block title %}Buat Laporan{% endblock %}
+{% block title %}{{ t('titles.submit_report') }}{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
   <div class="mb-6">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Buat Laporan Aduan</h1>
-    <p class="text-gray-500 text-sm mt-1">Laporkan kejadian atau potensi longsor di sekitar Anda</p>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">{{ t('laporan.buat.page_heading') }}</h1>
+    <p class="text-gray-500 text-sm mt-1">{{ t('laporan.buat.page_subheading') }}</p>
   </div>
 
   <!-- Stepper -->
@@ -17,35 +17,35 @@
       <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </div>
-      <div class="mt-2 text-xs text-gray-500 step-label">Foto</div>
+      <div class="mt-2 text-xs text-gray-500 step-label">{{ t('laporan.buat.steps.photo') }}</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="2">
       <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </div>
-      <div class="mt-2 text-xs text-gray-500 step-label">Lokasi</div>
+      <div class="mt-2 text-xs text-gray-500 step-label">{{ t('laporan.buat.steps.location') }}</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="3">
       <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       </div>
-      <div class="mt-2 text-xs text-gray-500 step-label">Detail</div>
+      <div class="mt-2 text-xs text-gray-500 step-label">{{ t('laporan.buat.steps.detail') }}</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="4">
       <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
       </div>
-      <div class="mt-2 text-xs text-gray-500 step-label">Pelapor</div>
+      <div class="mt-2 text-xs text-gray-500 step-label">{{ t('laporan.buat.steps.reporter') }}</div>
     </div>
 
     <div class="flex flex-col items-center z-10" data-step-indicator="5">
       <div class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center text-gray-400 step-circle transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       </div>
-      <div class="mt-2 text-xs text-gray-500 step-label">Review</div>
+      <div class="mt-2 text-xs text-gray-500 step-label">{{ t('laporan.buat.steps.review') }}</div>
     </div>
   </div>
 
@@ -54,15 +54,15 @@
 
     <!-- STEP 1: Foto -->
     <section data-step="1">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Bukti Foto</h2>
-      
+      <h2 class="text-lg font-bold mb-4 text-gray-800">{{ t('laporan.buat.step1.title') }}</h2>
+
       <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-8 text-center hover:border-primary hover:bg-red-50/50 transition-colors group">
-        
+
         <!-- Preview Foto -->
         <div id="foto-preview" class="hidden relative inline-block">
-          <img id="foto-img" class="max-h-64 mx-auto rounded-lg shadow-sm" alt="Preview Foto">
-          
-          <button type="button" id="btn-hapus-foto" class="absolute -top-3 -right-3 bg-red-600 text-white rounded-full p-1.5 shadow-md hover:bg-red-700 transition-colors" title="Hapus Foto">
+          <img id="foto-img" class="max-h-64 mx-auto rounded-lg shadow-sm" alt="Preview">
+
+          <button type="button" id="btn-hapus-foto" class="absolute -top-3 -right-3 bg-red-600 text-white rounded-full p-1.5 shadow-md hover:bg-red-700 transition-colors" title="{{ t('laporan.buat.step1.remove_photo') }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
@@ -70,19 +70,17 @@
         <!-- Area Klik untuk Upload -->
         <div id="foto-placeholder" role="button" tabindex="0" class="block cursor-pointer py-4">
 
-          <!-- UI Teks Upload Default -->
           <div id="foto-ui-default">
             <div class="w-14 h-14 mx-auto mb-3 rounded-full border-2 border-gray-300 group-hover:border-primary group-hover:text-primary flex items-center justify-center text-gray-400 transition-colors">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
             </div>
-            <p class="font-medium text-gray-700 group-hover:text-primary transition-colors">Klik untuk unggah atau ambil foto <span class="text-red-500">*</span></p>
-            <p class="text-xs text-gray-400 mt-1">Wajib. Foto ukuran besar akan dikompres otomatis.</p>
+            <p class="font-medium text-gray-700 group-hover:text-primary transition-colors">{{ t('laporan.buat.step1.upload_cta') }} <span class="text-red-500">*</span></p>
+            <p class="text-xs text-gray-400 mt-1">{{ t('laporan.buat.step1.upload_hint') }}</p>
           </div>
 
-          <!-- UI Efek Loading (Sembunyi secara default) -->
           <div id="foto-ui-loading" class="hidden flex-col items-center justify-center py-4 text-primary">
             <svg class="w-8 h-8 animate-spin mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            <span class="text-sm font-medium">Mengoptimalkan ukuran foto...</span>
+            <span class="text-sm font-medium">{{ t('laporan.buat.step1.optimizing') }}</span>
           </div>
         </div>
 
@@ -91,25 +89,26 @@
         <!-- Modal Pilihan Sumber Foto -->
         <div id="foto-choice-modal" class="hidden fixed inset-0 z-[9999] bg-black/50 items-end sm:items-center justify-center sm:p-4">
           <div class="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-sm p-5 space-y-2 shadow-xl">
-            <h3 class="text-base font-bold text-center text-gray-800 mb-4">Pilih Sumber Foto</h3>
+            <h3 class="text-base font-bold text-center text-gray-800 mb-4">{{ t('laporan.buat.step1.choose_source') }}</h3>
             <button type="button" id="btn-foto-kamera" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200 hover:bg-primary hover:text-white hover:border-primary transition-colors text-left">
               <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               <div>
-                <div class="font-semibold">Ambil Foto</div>
-                <div class="text-xs opacity-80">Gunakan kamera perangkat</div>
+                <div class="font-semibold">{{ t('laporan.buat.step1.take_photo') }}</div>
+                <div class="text-xs opacity-80">{{ t('laporan.buat.step1.take_photo_desc') }}</div>
               </div>
             </button>
             <button type="button" id="btn-foto-galeri" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200 hover:bg-primary hover:text-white hover:border-primary transition-colors text-left">
               <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               <div>
-                <div class="font-semibold">Pilih dari Galeri</div>
-                <div class="text-xs opacity-80">Unggah foto dari perangkat</div>
+                <div class="font-semibold">{{ t('laporan.buat.step1.from_gallery') }}</div>
+                <div class="text-xs opacity-80">{{ t('laporan.buat.step1.from_gallery_desc') }}</div>
               </div>
             </button>
-            <button type="button" id="btn-foto-batal" class="w-full py-2.5 mt-2 text-sm text-gray-500 hover:text-gray-700">Batal</button>
+            <button type="button" id="btn-foto-batal" class="w-full py-2.5 mt-2 text-sm text-gray-500 hover:text-gray-700">{{ t('laporan.buat.step1.cancel') }}</button>
           </div>
         </div>
-        <!-- Modal Kamera Live (untuk desktop & fallback) -->
+
+        <!-- Modal Kamera Live -->
         <div id="camera-modal" class="hidden fixed inset-0 z-[9999] bg-black flex-col">
           <div class="flex-1 relative overflow-hidden">
             <video id="camera-video" autoplay playsinline muted style="transform: none;" class="absolute inset-0 w-full h-full object-cover"></video>
@@ -117,7 +116,7 @@
             <button type="button" id="btn-camera-close" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
-            <button type="button" id="btn-camera-flip" class="absolute top-4 left-4 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80" title="Putar Kamera">
+            <button type="button" id="btn-camera-flip" class="absolute top-4 left-4 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80" title="{{ t('laporan.buat.step1.camera_flip') }}">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 4v5h-.582m0 0a8.001 8.001 0 00-15.356-1.5M19.418 9H15M4 20v-5h.582m0 0a8.003 8.003 0 0015.357 1.5M4.582 15H9"/>
                 <circle cx="12" cy="12" r="2.5"/>
@@ -125,13 +124,13 @@
             </button>
             <div id="camera-error" class="hidden absolute inset-0 flex items-center justify-center p-6 text-center text-white bg-black/80">
               <div>
-                <p class="font-semibold mb-2">Tidak dapat mengakses kamera</p>
+                <p class="font-semibold mb-2">{{ t('laporan.buat.step1.camera_no_access_title') }}</p>
                 <p id="camera-error-msg" class="text-sm text-gray-300"></p>
               </div>
             </div>
           </div>
           <div class="bg-black py-6 flex items-center justify-center">
-            <button type="button" id="btn-camera-snap" class="w-16 h-16 rounded-full bg-white border-4 border-gray-400 active:scale-95 transition-transform" aria-label="Ambil foto"></button>
+            <button type="button" id="btn-camera-snap" class="w-16 h-16 rounded-full bg-white border-4 border-gray-400 active:scale-95 transition-transform" aria-label="{{ t('laporan.buat.step1.camera_snap') }}"></button>
           </div>
         </div>
       </div>
@@ -139,23 +138,23 @@
 
     <!-- STEP 2: Lokasi -->
     <section data-step="2" class="hidden">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Lokasi Kejadian</h2>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">{{ t('laporan.buat.step2.title') }}</h2>
 
       <button type="button" id="btn-lokasi-otomatis"
               class="mb-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors font-medium">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Gunakan Lokasi Saya
+        <span id="btn-lokasi-label">{{ t('laporan.buat.step2.use_my_location') }}</span>
       </button>
 
-      <label class="block text-sm font-medium mb-2 text-gray-700">Label Lokasi <span class="text-red-500">*</span></label>
+      <label class="block text-sm font-medium mb-2 text-gray-700">{{ t('laporan.buat.step2.location_label') }} <span class="text-red-500">*</span></label>
       <input type="text" name="lokasi_label" id="lokasi-label-input" required
-             placeholder="Contoh: Jl. Poros Desa, Dekat Jembatan"
+             placeholder="{{ t('laporan.buat.step2.location_label_placeholder') }}"
              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors mb-4 text-sm"
              value="{{ form.lokasi_label or '' }}">
 
       <div id="lokasi-accuracy-info" class="hidden mt-2 text-xs px-3 py-2 rounded-lg"></div>
 
-      <label class="block text-sm font-medium mb-2 mt-2 text-gray-700">Klik peta untuk tandai lokasi <span class="text-red-500">*</span></label>
+      <label class="block text-sm font-medium mb-2 mt-2 text-gray-700">{{ t('laporan.buat.step2.click_map') }} <span class="text-red-500">*</span></label>
       <div id="map-pilih" class="h-80 rounded-lg border border-gray-300 mb-3 z-0 relative"></div>
       <div class="grid grid-cols-2 gap-3">
         <input type="text" name="latitude" id="lat-field" placeholder="Latitude" readonly
@@ -167,77 +166,77 @@
 
     <!-- STEP 3: Detail -->
     <section data-step="3" class="hidden">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Detail Kejadian</h2>
-      
-      <label class="block text-sm font-medium mb-2 text-gray-700">Kategori Laporan <span class="text-red-500">*</span></label>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">{{ t('laporan.buat.step3.title') }}</h2>
+
+      <label class="block text-sm font-medium mb-2 text-gray-700">{{ t('laporan.buat.step3.category_label') }} <span class="text-red-500">*</span></label>
       <div class="relative w-full custom-dropdown mb-4">
         <input type="hidden" name="kategori" value="{{ form.kategori or '' }}" required>
         <div class="dropdown-selected px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
-          <span class="selected-text truncate text-gray-700">{% if form.kategori %}{{ form.kategori }}{% else %}-- Pilih Kategori --{% endif %}</span>
+          <span class="selected-text truncate text-gray-700">{% if form.kategori %}{{ t('laporan.kategori.' ~ form.kategori) }}{% else %}{{ t('laporan.buat.step3.category_placeholder') }}{% endif %}</span>
           <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </div>
         <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
-          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not form.kategori %}bg-red-50 text-primary font-medium{% endif %}" data-value="">-- Pilih Kategori --</div>
+          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not form.kategori %}bg-red-50 text-primary font-medium{% endif %}" data-value="">{{ t('laporan.buat.step3.category_placeholder') }}</div>
           {% for k in ['Potensi Longsor','Kejadian Longsor','Dampak Longsor'] %}
-            <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if form.kategori == k %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ k }}">{{ k }}</div>
+            <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if form.kategori == k %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ k }}">{{ t('laporan.kategori.' ~ k) }}</div>
           {% endfor %}
         </div>
       </div>
 
-      <label class="block text-sm font-medium mb-2 text-gray-700">Deskripsi Kejadian <span class="text-red-500">*</span></label>
+      <label class="block text-sm font-medium mb-2 text-gray-700">{{ t('laporan.buat.step3.description_label') }} <span class="text-red-500">*</span></label>
       <textarea name="deskripsi" rows="5" required
-                placeholder="Jelaskan kondisi yang Anda lihat secara detail..."
+                placeholder="{{ t('laporan.buat.step3.description_placeholder') }}"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm">{{ form.deskripsi or '' }}</textarea>
     </section>
 
     <!-- STEP 4: Pelapor -->
     <section data-step="4" class="hidden">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Informasi Pelapor</h2>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">{{ t('laporan.buat.step4.title') }}</h2>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-2 text-gray-700">Nama Lengkap <span class="text-red-500">*</span></label>
-          <input type="text" name="nama_pelapor" required 
-                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm" 
+          <label class="block text-sm font-medium mb-2 text-gray-700">{{ t('laporan.buat.step4.name_label') }} <span class="text-red-500">*</span></label>
+          <input type="text" name="nama_pelapor" required
+                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm"
                  value="{{ form.nama_pelapor or '' }}">
         </div>
-        
+
         <div>
-          <label class="block text-sm font-medium mb-2 text-gray-700">Dusun <span class="text-red-500">*</span></label>
+          <label class="block text-sm font-medium mb-2 text-gray-700">{{ t('laporan.buat.step4.dusun_label') }} <span class="text-red-500">*</span></label>
           <div class="relative w-full custom-dropdown">
             <input type="hidden" name="dusun" value="{{ form.dusun or '' }}" required>
             <div class="dropdown-selected px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white hover:border-primary focus:border-primary transition-all cursor-pointer flex justify-between items-center group">
-              <span class="selected-text truncate text-gray-700">{% if form.dusun %}Dusun {{ form.dusun }}{% else %}-- Pilih Dusun --{% endif %}</span>
+              <span class="selected-text truncate text-gray-700">{% if form.dusun %}{{ t('laporan.dusun_prefix') }} {{ form.dusun }}{% else %}{{ t('laporan.buat.step4.dusun_placeholder') }}{% endif %}</span>
               <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </div>
             <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
-              <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not form.dusun %}bg-red-50 text-primary font-medium{% endif %}" data-value="">-- Pilih Dusun --</div>
+              <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not form.dusun %}bg-red-50 text-primary font-medium{% endif %}" data-value="">{{ t('laporan.buat.step4.dusun_placeholder') }}</div>
               {% for d in ['Tombongi','Galesong','Kampung Beru','Bontoloe'] %}
-                <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if form.dusun == d %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ d }}">Dusun {{ d }}</div>
+                <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if form.dusun == d %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ d }}">{{ t('laporan.dusun_prefix') }} {{ d }}</div>
               {% endfor %}
             </div>
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-medium mb-2 text-gray-700">No. HP <span class="text-red-500">*</span></label>
+          <label class="block text-sm font-medium mb-2 text-gray-700">{{ t('laporan.buat.step4.phone_label') }} <span class="text-red-500">*</span></label>
           <input type="tel" name="no_hp" id="input-hp" required
                  inputmode="numeric" maxlength="13" pattern="08[0-9]{8,11}"
-                 placeholder="08xxxxxxxxxx"
+                 placeholder="{{ t('laporan.buat.step4.phone_placeholder') }}"
                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary hover:border-primary transition-colors text-sm"
                  value="{{ form.no_hp or '' }}">
           <p id="hp-error" class="hidden mt-1.5 text-xs text-red-600 font-medium"></p>
-          <p id="hp-hint" class="mt-1.5 text-xs text-gray-500">Hanya angka. Diawali 08, total 10–13 digit. Contoh: 081234567890</p>
+          <p id="hp-hint" class="mt-1.5 text-xs text-gray-500">{{ t('laporan.buat.step4.phone_hint') }}</p>
         </div>
       </div>
     </section>
 
     <!-- STEP 5: Review -->
     <section data-step="5" class="hidden">
-      <h2 class="text-lg font-bold mb-4 text-gray-800">Review Laporan</h2>
+      <h2 class="text-lg font-bold mb-4 text-gray-800">{{ t('laporan.buat.step5.title') }}</h2>
       <div id="review-content" class="space-y-3 text-sm bg-gray-50 rounded-lg p-5 border border-gray-200">
-        <p class="text-gray-500">Periksa kembali laporan Anda sebelum dikirim.</p>
+        <p class="text-gray-500">{{ t('laporan.buat.step5.check_hint') }}</p>
       </div>
-      <p class="mt-4 text-xs text-gray-500 font-medium">Dengan mengirim, Anda menyetujui bahwa informasi yang diberikan adalah benar dan dapat dipertanggungjawabkan.</p>
+      <p class="mt-4 text-xs text-gray-500 font-medium">{{ t('laporan.buat.step5.disclaimer') }}</p>
     </section>
 
     <!-- Error -->
@@ -247,18 +246,18 @@
     <div class="flex flex-row gap-3 mt-8 pt-6 border-t border-gray-200 w-full">
       <button type="button" id="btn-prev"
               class="hidden flex-1 w-full px-2 py-2.5 rounded-lg bg-gray-100 border border-gray-200 text-gray-700 font-medium hover:bg-red-50 hover:text-primary hover:border-primary transition-colors text-sm text-center whitespace-nowrap">
-        Sebelumnya
+        {{ t('laporan.buat.nav.prev') }}
       </button>
-      
+
       <button type="button" id="btn-next"
               class="flex-1 w-full px-2 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors shadow-sm text-sm text-center whitespace-nowrap">
-        Selanjutnya
+        {{ t('laporan.buat.nav.next') }}
       </button>
 
       <button type="submit" id="btn-submit"
               class="hidden flex-1 w-full px-2 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-dark transition-colors shadow-sm text-sm flex items-center justify-center gap-1.5 whitespace-nowrap">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-        <span class="truncate">Kirim Laporan</span>
+        <span class="truncate">{{ t('laporan.buat.nav.submit') }}</span>
       </button>
     </div>
   </form>
@@ -270,13 +269,71 @@
 <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
 
 <script>
+  // Semua string i18n untuk JS dikumpulkan di sini
+  const I18N = {
+    fileTooLarge: {{ t('laporan.buat.errors.file_too_large') | tojson }},
+    photoRequired: {{ t('laporan.buat.errors.photo_required') | tojson }},
+    locationMapRequired: {{ t('laporan.buat.errors.location_map_required') | tojson }},
+    locationLabelRequired: {{ t('laporan.buat.errors.location_label_required') | tojson }},
+    categoryRequired: {{ t('laporan.buat.errors.category_required') | tojson }},
+    descriptionRequired: {{ t('laporan.buat.errors.description_required') | tojson }},
+    nameRequired: {{ t('laporan.buat.errors.name_required') | tojson }},
+    dusunRequired: {{ t('laporan.buat.errors.dusun_required') | tojson }},
+    hpFix: {{ t('laporan.buat.errors.hp_fix') | tojson }},
+    hpRequired: {{ t('laporan.buat.errors.hp_required') | tojson }},
+    hpStart08: {{ t('laporan.buat.errors.hp_start_08') | tojson }},
+    hpTooShort: {{ t('laporan.buat.errors.hp_too_short') | tojson }},
+    hpTooLong: {{ t('laporan.buat.errors.hp_too_long') | tojson }},
+    geoNotSupported: {{ t('laporan.buat.errors.geo_not_supported') | tojson }},
+    geoDenied: {{ t('laporan.buat.errors.geo_denied') | tojson }},
+    geoUnavailable: {{ t('laporan.buat.errors.geo_unavailable') | tojson }},
+    geoTimeout: {{ t('laporan.buat.errors.geo_timeout') | tojson }},
+    geoGeneric: {{ t('laporan.buat.errors.geo_generic') | tojson }},
+    cameraDenied: {{ t('laporan.buat.errors.camera_denied') | tojson }},
+    otherCameraUnavailable: {{ t('laporan.buat.errors.other_camera_unavailable') | tojson }},
+    photoProcessFailed: {{ t('laporan.buat.errors.photo_process_failed') | tojson }},
+
+    takingLocation: {{ t('laporan.buat.step2.taking_location') | tojson }},
+    locationTaken: {{ t('laporan.buat.step2.location_taken') | tojson }},
+    useMyLocation: {{ t('laporan.buat.step2.use_my_location') | tojson }},
+
+    accuracyVeryGood: {{ t('laporan.buat.accuracy.very_good') | tojson }},
+    accuracyGood: {{ t('laporan.buat.accuracy.good') | tojson }},
+    accuracyWeak: {{ t('laporan.buat.accuracy.weak') | tojson }},
+    accuracyWeakPlaceholder: {{ t('laporan.buat.accuracy.weak_label_placeholder') | tojson }},
+
+    reviewLocation: {{ t('laporan.buat.review.location') | tojson }},
+    reviewCoords: {{ t('laporan.buat.review.coords') | tojson }},
+    reviewCategory: {{ t('laporan.buat.review.category') | tojson }},
+    reviewDescription: {{ t('laporan.buat.review.description') | tojson }},
+    reviewReporterName: {{ t('laporan.buat.review.reporter_name') | tojson }},
+    reviewReporterDusun: {{ t('laporan.buat.review.reporter_dusun') | tojson }},
+    reviewReporterPhone: {{ t('laporan.buat.review.reporter_phone') | tojson }},
+    reviewNotFilled: {{ t('laporan.buat.review.not_filled') | tojson }},
+
+    dusunPrefix: {{ t('laporan.dusun_prefix') | tojson }},
+
+    // Peta label mapping: raw DB value -> label terlokalisasi
+    kategoriLabels: {
+      "Potensi Longsor": {{ t('laporan.kategori.Potensi Longsor') | tojson }},
+      "Kejadian Longsor": {{ t('laporan.kategori.Kejadian Longsor') | tojson }},
+      "Dampak Longsor": {{ t('laporan.kategori.Dampak Longsor') | tojson }},
+    },
+
+    currentLang: {{ current_lang | tojson }},
+  };
+
+  function fmt(template, params) {
+    return template.replace(/\{(\w+)\}/g, (_, k) => (k in params ? params[k] : `{${k}}`));
+  }
+
   document.querySelector('form').addEventListener('submit', function(e) {
     const fileInput = document.querySelector('input[type="file"]');
     if (fileInput && fileInput.files.length > 0) {
       const maxBytes = 5 * 1024 * 1024;
       if (fileInput.files[0].size > maxBytes) {
         e.preventDefault();
-        alert('Ukuran file melebihi batas 5MB. Silakan pilih file yang lebih kecil.');
+        alert(I18N.fileTooLarge);
       }
     }
   });
@@ -333,12 +390,12 @@
   function deteksiLokasiOtomatis() {
     const btn = document.getElementById('btn-lokasi-otomatis');
     if (!navigator.geolocation) {
-      showStepError('Browser Anda tidak mendukung geolokasi.');
+      showStepError(I18N.geoNotSupported);
       return;
     }
 
     btn.disabled = true;
-    btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Mengambil lokasi...';
+    btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> ${I18N.takingLocation}`;
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -357,29 +414,31 @@
 
         const infoEl = document.getElementById('lokasi-accuracy-info');
         infoEl.classList.remove('hidden');
+        const m = Math.round(accuracy);
         if (accuracy <= 100) {
           infoEl.className = 'mt-2 text-xs px-3 py-2 rounded-lg bg-green-50 text-green-700 border border-green-200';
-          infoEl.textContent = `Akurasi GPS: ±${Math.round(accuracy)}m (sangat baik)`;
+          infoEl.textContent = fmt(I18N.accuracyVeryGood, { m });
         } else if (accuracy <= 500) {
           infoEl.className = 'mt-2 text-xs px-3 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200';
-          infoEl.textContent = `Akurasi GPS: ±${Math.round(accuracy)}m (cukup baik)`;
+          infoEl.textContent = fmt(I18N.accuracyGood, { m });
         } else {
           infoEl.className = 'mt-2 text-xs px-3 py-2 rounded-lg bg-yellow-50 text-yellow-700 border border-yellow-200';
-          infoEl.textContent = `Akurasi GPS: ±${Math.round(accuracy)}m — sinyal lemah. Geser pin ke lokasi tepat dan ketik label lokasi manual.`;
+          infoEl.textContent = fmt(I18N.accuracyWeak, { m });
         }
 
         btn.disabled = false;
-        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Lokasi berhasil diambil';
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> ${I18N.locationTaken}`;
 
         if (accuracy > 500) {
           const labelInput = document.getElementById('lokasi-label-input');
           labelInput.value = '';
-          labelInput.placeholder = 'Akurasi lemah — ketik nama lokasi manual';
+          labelInput.placeholder = I18N.accuracyWeakPlaceholder;
           labelInput.focus();
           return;
         }
 
-        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`)
+        const nomLang = I18N.currentLang === 'en' ? 'en' : 'id';
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=${nomLang}`)
           .then(r => r.json())
           .then(data => {
             document.getElementById('lokasi-label-input').value = (data.display_name || '').substring(0, 200);
@@ -388,9 +447,9 @@
       },
       (err) => {
         btn.disabled = false;
-        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Gunakan Lokasi Saya';
-        const msgs = { 1: 'Akses lokasi ditolak. Izinkan akses lokasi di pengaturan browser.', 2: 'Lokasi tidak tersedia saat ini.', 3: 'Waktu habis. Coba lagi.' };
-        showStepError(msgs[err.code] || 'Gagal mendapatkan lokasi.');
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> ${I18N.useMyLocation}`;
+        const msgs = { 1: I18N.geoDenied, 2: I18N.geoUnavailable, 3: I18N.geoTimeout };
+        showStepError(msgs[err.code] || I18N.geoGeneric);
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
     );
@@ -409,44 +468,44 @@
     const f = document.forms['form-laporan'];
     if (currentStep === 1) {
       if (!document.getElementById('input-foto').files.length) {
-        showStepError('Foto bukti kejadian wajib diunggah sebelum melanjutkan.');
+        showStepError(I18N.photoRequired);
         return false;
       }
       return true;
     }
     if (currentStep === 2) {
       if (!f.latitude.value || !f.longitude.value) {
-        showStepError('Pilih titik lokasi di peta terlebih dahulu.');
+        showStepError(I18N.locationMapRequired);
         return false;
       }
       if (!f.lokasi_label.value.trim()) {
-        showStepError('Label lokasi wajib diisi. Klik "Gunakan Lokasi Saya" atau ketik manual.');
+        showStepError(I18N.locationLabelRequired);
         return false;
       }
       return true;
     }
     if (currentStep === 3) {
       if (!f.kategori.value) {
-        showStepError('Pilih kategori laporan terlebih dahulu.');
+        showStepError(I18N.categoryRequired);
         return false;
       }
       if (!f.deskripsi.value.trim()) {
-        showStepError('Deskripsi kejadian wajib diisi.');
+        showStepError(I18N.descriptionRequired);
         return false;
       }
       return true;
     }
     if (currentStep === 4) {
       if (!f.nama_pelapor.value.trim()) {
-        showStepError('Nama pelapor wajib diisi.');
+        showStepError(I18N.nameRequired);
         return false;
       }
       if (!f.dusun.value) {
-        showStepError('Pilih dusun terlebih dahulu.');
+        showStepError(I18N.dusunRequired);
         return false;
       }
       if (!validateHp(true)) {
-        showStepError('Perbaiki nomor HP terlebih dahulu.');
+        showStepError(I18N.hpFix);
         hpInput.focus();
         return false;
       }
@@ -477,9 +536,8 @@
     });
     const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
     document.getElementById('stepper-progress').style.width = pct + '%';
-    
+
     document.getElementById('btn-prev').classList.toggle('hidden', currentStep === 1);
-    
     document.getElementById('btn-next').classList.toggle('hidden', currentStep === TOTAL_STEPS);
     document.getElementById('btn-submit').classList.toggle('hidden', currentStep !== TOTAL_STEPS);
 
@@ -497,15 +555,16 @@
 
   function buildReview() {
     const f = document.forms['form-laporan'];
-    const rows = {
-      'Lokasi': f.lokasi_label.value || '(tidak diisi)',
-      'Koordinat': (f.latitude.value || '-') + ', ' + (f.longitude.value || '-'),
-      'Kategori': f.kategori.value || '-',
-      'Deskripsi': f.deskripsi.value || '-',
-      'Nama Pelapor': f.nama_pelapor.value || '-',
-      'Dusun': f.dusun.value || '-',
-      'No. HP': f.no_hp.value || '-',
-    };
+    const dusunVal = f.dusun.value;
+    const kategoriVal = f.kategori.value;
+    const rows = {};
+    rows[I18N.reviewLocation] = f.lokasi_label.value || I18N.reviewNotFilled;
+    rows[I18N.reviewCoords] = (f.latitude.value || '-') + ', ' + (f.longitude.value || '-');
+    rows[I18N.reviewCategory] = kategoriVal ? (I18N.kategoriLabels[kategoriVal] || kategoriVal) : '-';
+    rows[I18N.reviewDescription] = f.deskripsi.value || '-';
+    rows[I18N.reviewReporterName] = f.nama_pelapor.value || '-';
+    rows[I18N.reviewReporterDusun] = dusunVal ? `${I18N.dusunPrefix} ${dusunVal}` : '-';
+    rows[I18N.reviewReporterPhone] = f.no_hp.value || '-';
     document.getElementById('review-content').innerHTML = Object.entries(rows)
       .map(([k, v]) => `<div class="flex flex-col sm:flex-row sm:justify-between border-b border-gray-200 py-3 gap-1"><span class="font-medium text-gray-500">${k}</span><span class="sm:text-right text-gray-800 font-medium">${v}</span></div>`)
       .join('');
@@ -527,13 +586,13 @@
     const v = hpInput.value;
     let msg = '';
     if (!v) {
-      if (showEmpty) msg = 'Nomor HP wajib diisi.';
+      if (showEmpty) msg = I18N.hpRequired;
     } else if (!v.startsWith('08')) {
-      msg = 'Nomor HP harus diawali dengan 08.';
+      msg = I18N.hpStart08;
     } else if (v.length < 10) {
-      msg = `Terlalu pendek (${v.length} digit). Minimal 10 digit.`;
+      msg = fmt(I18N.hpTooShort, { n: v.length });
     } else if (v.length > 13) {
-      msg = `Terlalu panjang (${v.length} digit). Maksimal 13 digit.`;
+      msg = fmt(I18N.hpTooLong, { n: v.length });
     }
     if (msg) {
       hpError.textContent = msg;
@@ -563,7 +622,7 @@
     validateHp(false);
   });
 
-    // === Modal Pilihan Sumber Foto (Kamera / Galeri) ===
+  // === Modal Pilihan Sumber Foto (Kamera / Galeri) ===
   const fotoPlaceholderBtn = document.getElementById('foto-placeholder');
   const fotoChoiceModal = document.getElementById('foto-choice-modal');
   const btnFotoKamera = document.getElementById('btn-foto-kamera');
@@ -584,7 +643,7 @@
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFotoModal(); }
   });
 
-  // Helper: buka kamera pakai getUserMedia (desktop + mobile modern)
+  // Helper: buka kamera pakai getUserMedia
   const cameraModal = document.getElementById('camera-modal');
   const cameraVideo = document.getElementById('camera-video');
   const cameraCanvas = document.getElementById('camera-canvas');
@@ -615,7 +674,7 @@
     try {
       await startCameraStream('environment');
     } catch (err) {
-      cameraErrorMsg.textContent = err.message || 'Izin kamera ditolak atau perangkat tidak mendukung.';
+      cameraErrorMsg.textContent = err.message || I18N.cameraDenied;
       cameraError.classList.remove('hidden');
     }
   }
@@ -625,9 +684,8 @@
     try {
       await startCameraStream(next);
     } catch (err) {
-      // Fallback: kembalikan ke mode sebelumnya
       try { await startCameraStream(currentFacingMode); } catch (_) {}
-      alert('Kamera lain tidak tersedia di perangkat ini.');
+      alert(I18N.otherCameraUnavailable);
     }
   }
 
@@ -683,7 +741,7 @@
     if (e.target === fotoChoiceModal) closeFotoModal();
   });
 
-  // --- LOGIKA KOMPRESI AMAN TANPA MERUSAK INPUT FILE ---
+  // --- LOGIKA KOMPRESI GAMBAR ---
   const inputFoto = document.getElementById('input-foto');
   const fotoPreview = document.getElementById('foto-preview');
   const fotoPlaceholder = document.getElementById('foto-placeholder');
@@ -697,33 +755,29 @@
     const file = e.target.files[0];
     if (!file) return;
 
-    // Tampilkan animasi loading, sembunyikan teks default
     uiDefault.classList.add('hidden');
     uiLoading.classList.remove('hidden');
     uiLoading.style.display = 'flex';
 
     try {
       const options = {
-        maxSizeMB: 1, 
+        maxSizeMB: 1,
         maxWidthOrHeight: 1280,
-        useWebWorker: true 
+        useWebWorker: true
       };
-      
+
       const compressedFile = await imageCompression(file, options);
-      
-      // Masukkan file hasil kompresi ke input file secara aman
+
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(new File([compressedFile], compressedFile.name, { type: compressedFile.type }));
       inputFoto.files = dataTransfer.files;
 
-      // Render Preview Gambar
       const reader = new FileReader();
       reader.onload = ev => {
         fotoImg.src = ev.target.result;
         fotoPreview.classList.remove('hidden');
         fotoPlaceholder.classList.add('hidden');
-        
-        // Kembalikan UI loading ke normal di balik layar
+
         uiLoading.classList.add('hidden');
         uiLoading.style.display = '';
         uiDefault.classList.remove('hidden');
@@ -732,8 +786,8 @@
 
     } catch (error) {
       console.error(error);
-      alert('Gagal memproses foto. Silakan coba unggah foto yang lain.');
-      
+      alert(I18N.photoProcessFailed);
+
       uiLoading.classList.add('hidden');
       uiLoading.style.display = '';
       uiDefault.classList.remove('hidden');

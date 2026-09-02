@@ -1,5 +1,5 @@
 {% extends "base_public.html" %}
-{% block title %}Beranda{% endblock %}
+{% block title %}{{ t('titles.home') }}{% endblock %}
 
 {% block content %}
 <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -7,14 +7,13 @@
   <!-- HERO -->
   <div class="relative bg-gradient-to-l from-red-800 via-red-700 to-red-500 rounded-2xl overflow-hidden p-6 sm:p-10 text-white">
     <div class="relative z-10 max-w-3xl">
-      <h1 class="text-2xl sm:text-4xl font-bold mb-3">Sistem Pemantauan Bencana Longsor</h1>
+      <h1 class="text-2xl sm:text-4xl font-bold mb-3">{{ t('beranda.hero.title') }}</h1>
       <p class="text-sm sm:text-base text-red-100 mb-6 max-w-2xl">
-        Platform partisipasi masyarakat untuk pelaporan dan pemantauan kondisi rawan longsor
-        di wilayah desa. Laporkan segera jika melihat potensi bahaya.
+        {{ t('beranda.hero.description') }}
       </p>
       <a href="{{ url_for('laporan.buat') }}"
          class="inline-flex bg-white text-primary font-semibold px-6 py-3 rounded-lg shadow hover:bg-red-50 transition">
-        Buat Laporan
+        {{ t('beranda.hero.cta') }}
       </a>
     </div>
     <div class="absolute -right-4 -bottom-32 opacity-20 pointer-events-none">
@@ -28,7 +27,7 @@
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="bg-white rounded-xl border border-gray-100 p-4 sm:p-5 flex justify-between items-start shadow-sm">
       <div>
-        <div class="text-xs text-gray-500 mb-1">Total Laporan</div>
+        <div class="text-xs text-gray-500 mb-1">{{ t('beranda.stats.total_reports') }}</div>
         <div class="text-2xl sm:text-3xl font-bold">{{ stats.total }}</div>
       </div>
       <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
@@ -37,7 +36,7 @@
     </div>
     <div class="bg-white rounded-xl border border-gray-100 p-4 sm:p-5 flex justify-between items-start shadow-sm">
       <div>
-        <div class="text-xs text-gray-500 mb-1">Sedang Diproses</div>
+        <div class="text-xs text-gray-500 mb-1">{{ t('beranda.stats.in_progress') }}</div>
         <div class="text-2xl sm:text-3xl font-bold">{{ stats.proses }}</div>
       </div>
       <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-lg flex items-center justify-center">
@@ -46,7 +45,7 @@
     </div>
     <div class="bg-white rounded-xl border border-gray-100 p-4 sm:p-5 flex justify-between items-start shadow-sm">
       <div>
-        <div class="text-xs text-gray-500 mb-1">Selesai Ditangani</div>
+        <div class="text-xs text-gray-500 mb-1">{{ t('beranda.stats.completed') }}</div>
         <div class="text-2xl sm:text-3xl font-bold">{{ stats.selesai }}</div>
       </div>
       <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
@@ -55,8 +54,8 @@
     </div>
     <div class="bg-white rounded-xl border border-gray-100 p-4 sm:p-5 flex justify-between items-start shadow-sm">
       <div>
-        <div class="text-xs text-gray-500 mb-1">Wilayah Rawan</div>
-        <div class="text-2xl sm:text-3xl font-bold">{{ stats.rawan }} Titik</div>
+        <div class="text-xs text-gray-500 mb-1">{{ t('beranda.stats.hazard_zones') }}</div>
+        <div class="text-2xl sm:text-3xl font-bold">{{ stats.rawan }} {{ t('beranda.stats.points') }}</div>
       </div>
       <div class="w-10 h-10 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -69,13 +68,13 @@
     <div class="flex items-center justify-between gap-2 mb-4">
       <div class="flex items-center gap-2">
         <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-        <h2 class="font-bold text-lg">Peta Digital</h2>
+        <h2 class="font-bold text-lg">{{ t('beranda.map_section.title') }}</h2>
       </div>
       <a href="{{ url_for('public.peta') }}"
          class="inline-flex items-center gap-2 bg-primary text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg shadow-sm hover:bg-primary-dark transition"
-         title="Perbesar peta ke tampilan layar penuh">
+         title="{{ t('beranda.map_section.expand_title') }}">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-        Perbesar Peta
+        {{ t('beranda.map_section.expand') }}
       </a>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
@@ -84,63 +83,63 @@
         <div id="map-beranda-loading"
              class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white rounded-lg transition-opacity duration-300">
           <div class="w-10 h-10 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin mb-3"></div>
-          <p class="text-sm font-medium text-gray-700">Memuat data peta…</p>
+          <p class="text-sm font-medium text-gray-700">{{ t('common.loading_map') }}</p>
         </div>
       </div>
       <div class="h-[400px] sm:h-[500px] overflow-y-auto pr-1 space-y-4 text-sm border border-gray-100 rounded-lg p-3 bg-gray-50/50">
         <div>
-          <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Legenda</div>
+          <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">{{ t('map.legend.title') }}</div>
           <ul class="space-y-1.5 text-xs text-gray-600">
-            <li class="font-medium text-gray-700 mt-1">Zona Rawan Longsor</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(220,38,38,0.55);"></span> Tinggi</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(249,115,22,0.45);"></span> Sedang</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(234,179,8,0.35);"></span> Rendah</li>
-            
-            <li class="font-medium text-gray-700 mt-2">Guna Lahan</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Permukiman" style="background-color: rgba(239,68,68,0.45);"></span> Permukiman</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Persawahan" style="background-color: rgba(34,197,94,0.45);"></span> Persawahan</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Area Terbuka" style="background-color: rgba(253,230,138,0.55);"></span> Area Terbuka</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Pertambangan" style="background-color: rgba(120,113,108,0.55);"></span> Pertambangan</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Hutan" style="background-color: rgba(22,101,52,0.55);"></span> Hutan</li>
-            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Daerah Aliran Sungai" style="background-color: rgba(59,130,246,0.55);"></span> Daerah Aliran Sungai</li>
-            
-            <li class="font-medium text-gray-700 mt-2">Potensi Desa</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/bumdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Bumdes</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kopdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Kopdes</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/lapangan_desa.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Lapangan Desa</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pasar.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Pasar</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pabrik.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Pabrik</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/tambang.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Tambang</li>
+            <li class="font-medium text-gray-700 mt-1">{{ t('map.legend.zone_title') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(220,38,38,0.55);"></span> {{ t('map.legend.zone_high') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(249,115,22,0.45);"></span> {{ t('map.legend.zone_medium') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" style="background-color: rgba(234,179,8,0.35);"></span> {{ t('map.legend.zone_low') }}</li>
 
-            <li class="font-medium text-gray-700">Sensor IoT</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #16A34A; border: 2px solid #15803D;"></span> Normal</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #EAB308; border: 2px solid #854D0E;"></span> Waspada</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B91C1C; border: 2px solid #7F1D1D;"></span> Bahaya</li>
-            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #9CA3AF; border: 2px solid #4B5563;"></span> Offline</li>
+            <li class="font-medium text-gray-700 mt-2">{{ t('map.legend.landuse_title') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Permukiman" style="background-color: rgba(239,68,68,0.45);"></span> {{ t('map.legend.landuse_settlement') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Persawahan" style="background-color: rgba(34,197,94,0.45);"></span> {{ t('map.legend.landuse_paddy') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Area Terbuka" style="background-color: rgba(253,230,138,0.55);"></span> {{ t('map.legend.landuse_open') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Pertambangan" style="background-color: rgba(120,113,108,0.55);"></span> {{ t('map.legend.landuse_mining') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Hutan" style="background-color: rgba(22,101,52,0.55);"></span> {{ t('map.legend.landuse_forest') }}</li>
+            <li class="flex items-center gap-2 pl-1"><span class="w-3 h-3 rounded flex-shrink-0" data-guna="Daerah Aliran Sungai" style="background-color: rgba(59,130,246,0.55);"></span> {{ t('map.legend.landuse_river') }}</li>
 
-            <li class="border-t border-gray-200 pt-3 flex items-center gap-2 mt-3 text-gray-700"><span style="width:18px;height:18px;background:#2563EB;border:1.5px solid #1E40AF;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg></span> Laporan Warga</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_longsor.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Historis Titik Longsor</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_kumpul.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Titik Kumpul</li>
-            <li class="flex items-center gap-2 text-gray-700"><span style="width:18px;height:18px;background:#84CC16;border:1.5px solid #4D7C0F;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg></span> Jalur Evakuasi</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pendidikan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Pendidikan</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/peribadatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Peribadatan</li>
-            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kesehatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> Sarana Kesehatan</li>
+            <li class="font-medium text-gray-700 mt-2">{{ t('map.legend.assets_title') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/bumdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_bumdes') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kopdes.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_kopdes') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/lapangan_desa.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_field') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pasar.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_market') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pabrik.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_factory') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><img src="{{ url_for('static', filename='img/icons/tambang.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.assets_mine') }}</li>
+
+            <li class="font-medium text-gray-700">{{ t('map.legend.sensor_title') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #16A34A; border: 2px solid #15803D;"></span> {{ t('map.legend.sensor_normal') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #EAB308; border: 2px solid #854D0E;"></span> {{ t('map.legend.sensor_warning') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B91C1C; border: 2px solid #7F1D1D;"></span> {{ t('map.legend.sensor_danger') }}</li>
+            <li class="flex items-center gap-2 pl-1 text-gray-700"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #9CA3AF; border: 2px solid #4B5563;"></span> {{ t('map.legend.sensor_offline') }}</li>
+
+            <li class="border-t border-gray-200 pt-3 flex items-center gap-2 mt-3 text-gray-700"><span style="width:18px;height:18px;background:#2563EB;border:1.5px solid #1E40AF;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg></span> {{ t('map.legend.citizen_reports') }}</li>
+            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_longsor.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.historic_landslide') }}</li>
+            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/titik_kumpul.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.evacuation_point') }}</li>
+            <li class="flex items-center gap-2 text-gray-700"><span style="width:18px;height:18px;background:#84CC16;border:1.5px solid #4D7C0F;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><svg style="width:10px;height:10px;" fill="white" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg></span> {{ t('map.legend.evacuation_route') }}</li>
+            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/pendidikan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.education') }}</li>
+            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/peribadatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.worship') }}</li>
+            <li class="flex items-center gap-2 text-gray-700"><img src="{{ url_for('static', filename='img/icons/kesehatan.svg') }}" alt="" class="w-4 h-4 flex-shrink-0"> {{ t('map.legend.health') }}</li>
           </ul>
         </div>
         <div class="border-t border-gray-200 pt-3">
-          <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">Layer</div>
+          <div class="font-semibold text-xs uppercase tracking-wide text-gray-500 mb-2">{{ t('map.layers.title') }}</div>
           <div class="space-y-2 text-xs">
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Zona Rawan Longsor</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Guna Lahan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Sensor IoT</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> Laporan Warga</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Historis Titik Longsor</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Titik Kumpul</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="evakuasi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Jalur Evakuasi</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Pendidikan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Peribadatan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kesehatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Sarana Kesehatan</label>
-            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> Potensi Desa</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="zona" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> {{ t('map.layers.zone') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="gunalahan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.landuse') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="sensor" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> {{ t('map.layers.sensor') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="laporan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer" checked> {{ t('map.layers.citizen_reports') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="historis" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.historic') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kumpul" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.assembly') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="evakuasi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.evacuation') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="pendidikan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.education') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="peribadatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.worship') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="kesehatan" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.health') }}</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" data-layer="potensi" class="rounded accent-red-700 w-3.5 h-3.5 cursor-pointer"> {{ t('map.layers.village_assets') }}</label>
           </div>
         </div>
       </div>
@@ -151,8 +150,8 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
     <div class="lg:col-span-2 bg-white rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="font-bold text-lg">Laporan Terbaru</h2>
-        <a href="{{ url_for('laporan.daftar') }}" class="text-primary text-sm font-medium hover:underline">Lihat Semua →</a>
+        <h2 class="font-bold text-lg">{{ t('beranda.latest_reports.title') }}</h2>
+        <a href="{{ url_for('laporan.daftar') }}" class="text-primary text-sm font-medium hover:underline">{{ t('beranda.latest_reports.see_all') }}</a>
       </div>
       <div class="space-y-3">
         {% for l in laporan_terbaru[:3] %}
@@ -179,7 +178,7 @@
           </a>
         {% else %}
           <div class="text-center py-12 text-gray-400">
-            <p>Belum ada laporan.</p>
+            <p>{{ t('beranda.latest_reports.empty') }}</p>
           </div>
         {% endfor %}
       </div>
@@ -189,7 +188,7 @@
     <div class="space-y-6">
       <!-- Status Kondisi Desa -->
       <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm text-center">
-        <h2 class="font-bold text-base mb-3 text-left">Status Kondisi Desa</h2>
+        <h2 class="font-bold text-base mb-3 text-left">{{ t('beranda.village_status.title') }}</h2>
         <div class="relative w-36 h-36 mx-auto mb-3">
           <div class="absolute inset-0 rounded-full border-[3px] border-{{ status_desa.warna }}-400/30"></div>
           <div class="absolute inset-4 rounded-full border-[7px] border-{{ status_desa.warna }}-500 bg-{{ status_desa.warna }}-50"></div>
@@ -207,19 +206,19 @@
           <svg class="w-5 h-5 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd" />
           </svg>
-          <h2 class="font-bold">Kontak Darurat</h2>
+          <h2 class="font-bold">{{ t('beranda.emergency.title') }}</h2>
         </div>
         <ul class="space-y-3 text-sm">
           <li class="flex justify-between items-center gap-2">
-            <span class="text-gray-300">Posko Siaga Desa</span>
+            <span class="text-gray-300">{{ t('beranda.emergency.village_post') }}</span>
             <a href="tel:08112233445" class="text-primary font-semibold hover:underline whitespace-nowrap">0811-2233-4455</a>
           </li>
           <li class="flex justify-between items-center gap-2">
-            <span class="text-gray-300">BPBD Kabupaten</span>
+            <span class="text-gray-300">{{ t('beranda.emergency.bpbd') }}</span>
             <a href="tel:112" class="text-primary font-semibold hover:underline">112</a>
           </li>
           <li class="flex justify-between items-center gap-2">
-            <span class="text-gray-300">Puskesmas</span>
+            <span class="text-gray-300">{{ t('beranda.emergency.puskesmas') }}</span>
             <a href="tel:08223344556" class="text-primary font-semibold hover:underline whitespace-nowrap">0822-3344-5566</a>
           </li>
         </ul>

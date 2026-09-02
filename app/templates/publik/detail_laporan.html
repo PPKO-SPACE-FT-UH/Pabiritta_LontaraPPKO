@@ -1,14 +1,14 @@
 {% extends "base_public.html" %}
-{% block title %}{{ laporan.lokasi_label or laporan.dusun }} – Detail Laporan{% endblock %}
+{% block title %}{{ laporan.lokasi_label or laporan.dusun }} – {{ t('titles.report_detail_suffix') }}{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
   <!-- Breadcrumb -->
   <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6 flex-wrap">
-    <a href="{{ url_for('public.beranda') }}" class="hover:text-primary">Beranda</a>
+    <a href="{{ url_for('public.beranda') }}" class="hover:text-primary">{{ t('nav.home') }}</a>
     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    <a href="{{ url_for('laporan.daftar') }}" class="hover:text-primary">Laporan Warga</a>
+    <a href="{{ url_for('laporan.daftar') }}" class="hover:text-primary">{{ t('nav.reports_list') }}</a>
     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
     <span class="text-gray-700 font-medium truncate max-w-xs">{{ laporan.lokasi_label or laporan.dusun }}</span>
   </nav>
@@ -22,9 +22,9 @@
       <div class="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm">
         {% if laporan.foto_url %}
           {% if laporan.foto_url.startswith('http') %}
-            <img src="{{ laporan.foto_url }}" class="w-full h-72 sm:h-96 object-cover" alt="Foto laporan">
+            <img src="{{ laporan.foto_url }}" class="w-full h-72 sm:h-96 object-cover" alt="{{ t('laporan.detail.photo_alt') }}">
           {% else %}
-            <img src="{{ url_for('static', filename=laporan.foto_url) }}" class="w-full h-72 sm:h-96 object-cover" alt="Foto laporan">
+            <img src="{{ url_for('static', filename=laporan.foto_url) }}" class="w-full h-72 sm:h-96 object-cover" alt="{{ t('laporan.detail.photo_alt') }}">
           {% endif %}
         {% else %}
           <div class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-300">
@@ -33,20 +33,20 @@
         {% endif %}
         <div class="p-6">
           <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-3 py-1 rounded-full text-sm font-medium bg-{{ laporan.kategori_color }}-100 text-{{ laporan.kategori_color }}-700">{{ laporan.kategori }}</span>
-            <span class="px-3 py-1 rounded-full text-sm font-medium bg-{{ laporan.status_color }}-100 text-{{ laporan.status_color }}-700">{{ laporan.status }}</span>
+            <span class="px-3 py-1 rounded-full text-sm font-medium bg-{{ laporan.kategori_color }}-100 text-{{ laporan.kategori_color }}-700">{{ t('laporan.kategori.' ~ laporan.kategori) }}</span>
+            <span class="px-3 py-1 rounded-full text-sm font-medium bg-{{ laporan.status_color }}-100 text-{{ laporan.status_color }}-700">{{ t('laporan.status.' ~ laporan.status) }}</span>
           </div>
           <h1 class="text-xl sm:text-2xl font-bold mb-3">{{ laporan.lokasi_label or laporan.dusun }}</h1>
           <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ laporan.deskripsi }}</p>
         </div>
       </div>
 
-      <!-- RIWAYAT PENANGANAN (Timeline transparansi publik) -->
+      <!-- RIWAYAT PENANGANAN -->
       <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 sm:p-6">
         <div class="flex items-center gap-2 mb-5">
           <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <h3 class="font-bold text-gray-800">Riwayat Penanganan</h3>
-          <span class="ml-auto text-xs text-gray-400">{{ laporan.aktivitas|length }} entri</span>
+          <h3 class="font-bold text-gray-800">{{ t('laporan.detail.history_title') }}</h3>
+          <span class="ml-auto text-xs text-gray-400">{{ t('laporan.detail.history_count', n=laporan.aktivitas|length) }}</span>
         </div>
 
         {% if laporan.aktivitas %}
@@ -57,18 +57,18 @@
 
             <div class="flex flex-wrap items-center gap-2 mb-1">
               {% if r.status_lama %}
-                <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 line-through">{{ r.status_lama }}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 line-through">{{ t('laporan.status.' ~ r.status_lama) }}</span>
                 <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
               {% endif %}
               {% if r.status_baru %}
-                <span class="text-xs px-2 py-0.5 rounded-full bg-{{ r.status_color }}-100 text-{{ r.status_color }}-700 font-semibold">{{ r.status_baru }}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-{{ r.status_color }}-100 text-{{ r.status_color }}-700 font-semibold">{{ t('laporan.status.' ~ r.status_baru) }}</span>
               {% else %}
                 <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">{{ r.aksi }}</span>
               {% endif %}
             </div>
 
             <div class="text-xs text-gray-500 mb-2">
-              oleh <span class="font-medium text-gray-700">{{ r.aktor }}</span>
+              {{ t('laporan.detail.history_by') }} <span class="font-medium text-gray-700">{{ r.aktor }}</span>
               {% if r.peran and r.peran != 'warga' %}
                 <span class="capitalize">({{ r.peran }})</span>
               {% endif %}
@@ -79,19 +79,19 @@
             {% if r.keterangan %}
               <p class="text-sm text-gray-700 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 leading-relaxed whitespace-pre-line">{{ r.keterangan }}</p>
             {% else %}
-              <p class="text-xs text-gray-400 italic">(tanpa catatan tambahan)</p>
+              <p class="text-xs text-gray-400 italic">{{ t('laporan.detail.history_no_note') }}</p>
             {% endif %}
           </li>
           {% endfor %}
         </ol>
         {% else %}
-          <p class="text-sm text-gray-400 text-center py-6">Belum ada riwayat penanganan.</p>
+          <p class="text-sm text-gray-400 text-center py-6">{{ t('laporan.detail.history_empty') }}</p>
         {% endif %}
       </div>
 
       <!-- Mini Map: Titik Lokasi -->
       <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-        <h3 class="font-semibold mb-3">Titik Lokasi</h3>
+        <h3 class="font-semibold mb-3">{{ t('laporan.detail.location_point') }}</h3>
         <div id="map-detail"
              class="h-64 rounded-lg overflow-hidden"
              data-lat="{{ laporan.latitude }}"
@@ -107,33 +107,33 @@
     <div class="space-y-4">
 
       <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 space-y-4 text-sm">
-        <h3 class="font-bold text-base">Informasi Laporan</h3>
+        <h3 class="font-bold text-base">{{ t('laporan.detail.report_info') }}</h3>
         <div class="space-y-3">
           <div class="flex items-start gap-3">
             <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             <div>
-              <div class="text-gray-500 text-xs">Pelapor</div>
+              <div class="text-gray-500 text-xs">{{ t('laporan.detail.reporter') }}</div>
               <div class="font-medium">{{ laporan.nama_pelapor }}</div>
             </div>
           </div>
           <div class="flex items-start gap-3">
             <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             <div>
-              <div class="text-gray-500 text-xs">Dusun</div>
-              <div class="font-medium">Dusun {{ laporan.dusun }}</div>
+              <div class="text-gray-500 text-xs">{{ t('laporan.detail.dusun') }}</div>
+              <div class="font-medium">{{ t('laporan.dusun_prefix') }} {{ laporan.dusun }}</div>
             </div>
           </div>
           <div class="flex items-start gap-3">
             <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             <div>
-              <div class="text-gray-500 text-xs">Tanggal Laporan</div>
+              <div class="text-gray-500 text-xs">{{ t('laporan.detail.report_date') }}</div>
               <div class="font-medium">{{ laporan.created_at|tgl('%-d %B %Y') }}</div>
             </div>
           </div>
           <div class="flex items-start gap-3">
             <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <div>
-              <div class="text-gray-500 text-xs">Terakhir Diperbarui</div>
+              <div class="text-gray-500 text-xs">{{ t('laporan.detail.last_updated') }}</div>
               <div class="font-medium">{{ laporan.updated_at|tgl('%-d %B %Y') }}</div>
             </div>
           </div>
@@ -146,25 +146,24 @@
           <svg class="w-5 h-5 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd" />
           </svg>
-          <h3 class="font-bold">Kontak Darurat</h3>
+          <h3 class="font-bold">{{ t('laporan.detail.emergency_title') }}</h3>
         </div>
         <ul class="space-y-2 text-xs">
-          <li class="flex justify-between items-center"><span class="text-gray-400">Posko Desa</span><a href="tel:08112233445" class="text-primary font-semibold hover:underline">0811-2233-4455</a></li>
-          <li class="flex justify-between items-center"><span class="text-gray-400">BPBD</span><a href="tel:112" class="text-primary font-semibold hover:underline">112</a></li>
-          <li class="flex justify-between items-center"><span class="text-gray-400">Puskesmas</span><a href="tel:08223344556" class="text-primary font-semibold hover:underline">0822-3344-5566</a></li>
+          <li class="flex justify-between items-center"><span class="text-gray-400">{{ t('laporan.detail.emergency_village_post') }}</span><a href="tel:08112233445" class="text-primary font-semibold hover:underline">0811-2233-4455</a></li>
+          <li class="flex justify-between items-center"><span class="text-gray-400">{{ t('laporan.detail.emergency_bpbd') }}</span><a href="tel:112" class="text-primary font-semibold hover:underline">112</a></li>
+          <li class="flex justify-between items-center"><span class="text-gray-400">{{ t('laporan.detail.emergency_puskesmas') }}</span><a href="tel:08223344556" class="text-primary font-semibold hover:underline">0822-3344-5566</a></li>
         </ul>
       </div>
 
       <a href="{{ url_for('laporan.daftar') }}"
          class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-        Kembali ke Daftar Laporan
+        {{ t('laporan.detail.back_to_list') }}
       </a>
     </div>
     <!-- /RIGHT SIDEBAR -->
 
   </div>
-  <!-- /GRID -->
 </div>
 {% endblock %}
 
@@ -176,9 +175,6 @@
     const lng = parseFloat(el.dataset.lng);
     const label = el.dataset.label;
 
-    // Peta dikunci total: tidak bisa digeser, di-zoom, atau di-scroll.
-    // Center digeser ~0.0015° ke utara agar marker tampil di bagian bawah
-    // viewport → popup punya ruang di atasnya (tidak mepet tepi peta).
     const map = L.map('map-detail', {
       zoomControl: false,
       scrollWheelZoom: false,
@@ -196,7 +192,6 @@
       attribution: '© OpenStreetMap',
     }).addTo(map);
 
-    // Pin SVG inline — dijamin muncul walau icon default Leaflet gagal load
     const pinIcon = L.divIcon({
       className: 'custom-pin-icon',
       html: `
@@ -217,7 +212,7 @@
         `<div style="font-weight:600;font-size:13px;color:#1f2937;line-height:1.45;padding:2px 4px;">${label}</div>`,
         {
           autoPan: false,
-          closeButton: false,   // tidak ada tombol X
+          closeButton: false,
           closeOnClick: false,
           autoClose: false,
           maxWidth: 260,
