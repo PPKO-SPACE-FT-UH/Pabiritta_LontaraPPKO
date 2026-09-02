@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
 from config import get_config
+from app.i18n import init_app as init_i18n
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -16,7 +17,7 @@ csrf = CSRFProtect()
 def create_app(config_class=None):
     # 1. Dapatkan lokasi absolut folder 'app'
     base_dir = os.path.abspath(os.path.dirname(__file__))
-    
+
     # 2. Tentukan lokasi absolut untuk static DAN templates
     static_dir = os.path.join(base_dir, 'static')
     template_dir = os.path.join(base_dir, 'templates')
@@ -49,6 +50,9 @@ def create_app(config_class=None):
     login_manager.login_view = "auth.login"
     login_manager.login_message = "Silakan login terlebih dahulu."
     login_manager.login_message_category = "warning"
+
+    # i18n: middleware deteksi bahasa + context processor untuk Jinja
+    init_i18n(app)
 
     # Import models supaya terdaftar ke SQLAlchemy
     from app.models.user import User  # noqa: F401

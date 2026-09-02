@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "site_name": "Pa'Biritta",
+    "site_tagline": "Sistem Pemantauan Bencana Longsor",
+    "html_lang": "id"
+  },
+  "nav": {
+    "home": "Beranda",
+    "report": "Buat Laporan",
+    "reports_list": "Laporan Warga",
+    "admin_login": "Login Admin",
+    "menu": "Menu",
+    "language": "Bahasa"
+  },
+  "footer": {
+    "description": "Sistem Manajemen Bencana Desa berbasis komunitas untuk mitigasi, pemantauan, dan pelaporan potensi bencana longsor.",
+    "quick_links": "Tautan Cepat",
+    "contact": "Kontak",
+    "address": "Balai Desa, Jl. Poros Utama No. 1",
+    "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
+  },
+  "common": {
+    "loading": "Memuat...",
+    "loading_map": "Memuat data peta…",
+    "search": "Cari",
+    "filter": "Filter",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "close": "Tutup",
+    "next": "Lanjut",
+    "previous": "Sebelumnya",
+    "submit": "Kirim",
+    "yes": "Ya",
+    "no": "Tidak",
+    "no_data": "Belum ada data."
+  }
+}

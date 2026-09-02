@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "site_name": "Pa'Biritta",
+    "site_tagline": "Landslide Disaster Monitoring System",
+    "html_lang": "en"
+  },
+  "nav": {
+    "home": "Home",
+    "report": "Submit Report",
+    "reports_list": "Community Reports",
+    "admin_login": "Admin Login",
+    "menu": "Menu",
+    "language": "Language"
+  },
+  "footer": {
+    "description": "A community-based village disaster management system for mitigation, monitoring, and reporting of potential landslide hazards.",
+    "quick_links": "Quick Links",
+    "contact": "Contact",
+    "address": "Village Hall, Jl. Poros Utama No. 1",
+    "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
+  },
+  "common": {
+    "loading": "Loading...",
+    "loading_map": "Loading map data…",
+    "search": "Search",
+    "filter": "Filter",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "yes": "Yes",
+    "no": "No",
+    "no_data": "No data yet."
+  }
+}
