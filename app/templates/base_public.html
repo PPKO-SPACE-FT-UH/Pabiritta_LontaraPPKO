@@ -4,10 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>{% block title %}{{ t('meta.site_name') }}{% endblock %} | {{ t('meta.site_tagline') }}</title>
+  <meta name="description" content="{% block meta_description %}{{ t('seo.default_description') }}{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}{{ t('seo.default_keywords') }}{% endblock %}">
+  <meta name="author" content="PPK Ormawa SPACE FT-UH">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#DC2626">
+
+  <!-- Canonical & hreflang untuk multi-bahasa -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="alternate" hreflang="id" href="{{ alternate_url_id }}">
+  <link rel="alternate" hreflang="en" href="{{ alternate_url_en }}">
+  <link rel="alternate" hreflang="x-default" href="{{ alternate_url_id }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ t('meta.site_name') }}">
+  <meta property="og:title" content="{{ self.title() }} | {{ t('meta.site_tagline') }}">
+  <meta property="og:description" content="{{ self.meta_description() }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:image" content="{{ site_url }}{{ url_for('static', filename='img/logo-lontara.png') }}">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:locale" content="{% if current_lang == 'en' %}en_US{% else %}id_ID{% endif %}">
+  <meta property="og:locale:alternate" content="{% if current_lang == 'en' %}id_ID{% else %}en_US{% endif %}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ self.title() }} | {{ t('meta.site_tagline') }}">
+  <meta name="twitter:description" content="{{ self.meta_description() }}">
+  <meta name="twitter:image" content="{{ site_url }}{{ url_for('static', filename='img/logo-lontara.png') }}">
+
+  <!-- Preconnects & Assets -->
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preconnect" href="https://res.cloudinary.com">
-  <title>{% block title %}{{ t('meta.site_name') }}{% endblock %} | {{ t('meta.site_tagline') }}</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -25,6 +58,38 @@
         }
       }
     }
+  </script>
+
+  <!-- Structured Data (JSON-LD): Government/Community Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "GovernmentOrganization",
+    "name": "Pa'Biritta",
+    "alternateName": {{ t('seo.organization_alt_name') | tojson }},
+    "description": {{ t('seo.default_description') | tojson }},
+    "url": {{ site_url | tojson }},
+    "logo": {{ (site_url + url_for('static', filename='img/logo-lontara.png')) | tojson }},
+    "image": {{ (site_url + url_for('static', filename='img/logo-lontara.png')) | tojson }},
+    "email": "desalonjoboko@desa.id",
+    "telephone": "+62-811-2233-4455",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Balai Desa, Jl. Poros Utama No. 1",
+      "addressLocality": "Desa Lonjoboko",
+      "addressRegion": "Kabupaten Gowa, Sulawesi Selatan",
+      "addressCountry": "ID"
+    },
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": "Desa Lonjoboko, Kabupaten Gowa"
+    },
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "PPK Ormawa SPACE FT-UH",
+      "alternateName": "Student's Physics and Computational Engineering, Fakultas Teknik Universitas Hasanuddin"
+    }
+  }
   </script>
 
   <!-- Vercel Analytics -->
@@ -52,7 +117,6 @@
           <span class="font-bold text-2xl -ml-3 z-10">Pa'<span class="text-primary">Biritta</span></span>
         </a>
 
-        <!-- Desktop menu -->
         <div class="hidden md:flex items-center gap-6">
           {% set active = request.endpoint %}
           <a href="{{ url_for('public.beranda') }}"
@@ -62,7 +126,6 @@
           <a href="{{ url_for('laporan.daftar') }}"
             class="text-sm font-medium {% if active == 'laporan.daftar' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.reports_list') }}</a>
 
-          <!-- Language switcher (desktop) -->
           <div class="inline-flex items-center border border-gray-300 rounded-full text-xs overflow-hidden"
                role="group" aria-label="{{ t('nav.language') }}">
             <a href="{{ switch_lang_url('id') }}"
@@ -85,7 +148,6 @@
           </a>
         </div>
 
-        <!-- Mobile menu button -->
         <button id="mobile-menu-btn"
           class="md:hidden p-2 rounded-md text-gray-600 hover:bg-red-50 hover:text-primary transition-colors relative z-50"
           aria-label="{{ t('nav.menu') }}">
@@ -105,7 +167,6 @@
       <a href="{{ url_for('laporan.daftar') }}"
         class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.reports_list') }}</a>
 
-      <!-- Language switcher (mobile) -->
       <div class="border-t border-gray-100 pt-3 mt-3">
         <div class="px-4 pb-2 text-xs uppercase tracking-wide text-gray-500 font-semibold">{{ t('nav.language') }}</div>
         <div class="px-4 flex gap-2">
@@ -129,11 +190,9 @@
     </div>
   </nav>
 
-  <!-- Overlay Blur untuk seluruh halaman -->
   <div id="mobile-overlay"
     class="hidden md:hidden fixed inset-0 top-16 bg-black/20 backdrop-blur-sm z-40 transition-opacity"></div>
 
-  <!-- FLASH MESSAGES -->
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 pt-4 space-y-2">
@@ -151,7 +210,6 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- FOOTER -->
   <footer class="bg-gray-900 text-gray-300 mt-12">
     <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
@@ -205,7 +263,6 @@
       </div>
     </div>
 
-    <!-- PERBAIKAN: Posisi Teks Copyright Menjadi di Tengah -->
     <div class="border-t border-gray-800">
       <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-xs text-gray-500">
         <p>{{ t('footer.copyright') }}</p>
@@ -225,14 +282,12 @@
         menu.classList.remove('hidden');
         overlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-
         btn.classList.add('bg-red-50', 'text-primary');
         btn.classList.remove('text-gray-600');
       } else {
         menu.classList.add('hidden');
         overlay.classList.add('hidden');
         document.body.style.overflow = '';
-
         btn.classList.remove('bg-red-50', 'text-primary');
         btn.classList.add('text-gray-600');
       }

@@ -1,302 +1,312 @@
 {
-  "meta": {
-    "site_name": "Pa'Biritta",
-    "site_tagline": "Sistem Pemantauan Bencana Longsor",
-    "html_lang": "id"
-  },
-  "nav": {
-    "home": "Beranda",
-    "report": "Buat Laporan",
-    "reports_list": "Laporan Warga",
-    "admin_login": "Login Admin",
-    "menu": "Menu",
-    "language": "Bahasa",
-    "language_switch_to_id": "Ganti ke Bahasa Indonesia",
-    "language_switch_to_en": "Switch to English"
-  },
-  "footer": {
-    "description": "Sistem Manajemen Bencana Desa berbasis komunitas untuk mitigasi, pemantauan, dan pelaporan potensi bencana longsor.",
-    "quick_links": "Tautan Cepat",
-    "contact": "Kontak",
-    "address": "Balai Desa, Jl. Poros Utama No. 1",
-    "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
-  },
-  "admin": {
-    "dashboard": "Dashboard",
-    "report_management": "Manajemen Laporan",
-    "activity_log": "Riwayat Aktivitas",
-    "user_management": "Manajemen Pengguna",
-    "logout": "Keluar Sistem",
-    "logout_short": "Logout",
-    "village_status": "Status Desa",
-    "village_resilient": "Desa Tangguh Bencana",
-    "mobile_page_title": "Dashboard Admin",
-    "desktop_subtitle_default": "Ringkasan sistem manajemen kebencanaan desa",
-    "please_login": "Silakan login terlebih dahulu.",
-    "file_too_large": "Ukuran file melebihi batas {mb}MB.",
-    "system_normal": "Sistem normal."
-  },
-  "common": {
-    "loading": "Memuat...",
-    "loading_map": "Memuat data peta…",
-    "search": "Cari",
-    "filter": "Filter",
-    "save": "Simpan",
-    "cancel": "Batal",
-    "back": "Kembali",
-    "close": "Tutup",
-    "next": "Lanjut",
-    "previous": "Sebelumnya",
-    "submit": "Kirim",
-    "yes": "Ya",
-    "no": "Tidak",
-    "no_data": "Belum ada data."
-  },
-  "titles": {
-    "home": "Beranda",
-    "map": "Peta Digital",
-    "reports_list": "Laporan Warga",
-    "report_detail_suffix": "Detail Laporan",
-    "submit_report": "Buat Laporan"
-  },
-  "beranda": {
-    "hero": {
-      "title": "Sistem Pemantauan Bencana Longsor",
-      "description": "Platform partisipasi masyarakat untuk pelaporan dan pemantauan kondisi rawan longsor di wilayah desa. Laporkan segera jika melihat potensi bahaya.",
-      "cta": "Buat Laporan"
+    "meta": {
+        "site_name": "Pa'Biritta",
+        "site_tagline": "Sistem Pemantauan Bencana Longsor",
+        "html_lang": "id"
     },
-    "stats": {
-      "total_reports": "Total Laporan",
-      "in_progress": "Sedang Diproses",
-      "completed": "Selesai Ditangani",
-      "hazard_zones": "Wilayah Rawan",
-      "points": "Titik"
+    "nav": {
+        "home": "Beranda",
+        "report": "Buat Laporan",
+        "reports_list": "Laporan Warga",
+        "admin_login": "Login Admin",
+        "menu": "Menu",
+        "language": "Bahasa",
+        "language_switch_to_id": "Ganti ke Bahasa Indonesia",
+        "language_switch_to_en": "Switch to English"
     },
-    "map_section": {
-      "title": "Peta Digital",
-      "expand": "Perbesar Peta",
-      "expand_title": "Perbesar peta ke tampilan layar penuh"
+    "footer": {
+        "description": "Sistem Manajemen Bencana Desa berbasis komunitas untuk mitigasi, pemantauan, dan pelaporan potensi bencana longsor.",
+        "quick_links": "Tautan Cepat",
+        "contact": "Kontak",
+        "address": "Balai Desa, Jl. Poros Utama No. 1",
+        "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
     },
-    "latest_reports": {
-      "title": "Laporan Terbaru",
-      "see_all": "Lihat Semua →",
-      "empty": "Belum ada laporan."
+    "admin": {
+        "dashboard": "Dashboard",
+        "report_management": "Manajemen Laporan",
+        "activity_log": "Riwayat Aktivitas",
+        "user_management": "Manajemen Pengguna",
+        "logout": "Keluar Sistem",
+        "logout_short": "Logout",
+        "village_status": "Status Desa",
+        "village_resilient": "Desa Tangguh Bencana",
+        "mobile_page_title": "Dashboard Admin",
+        "desktop_subtitle_default": "Ringkasan sistem manajemen kebencanaan desa",
+        "please_login": "Silakan login terlebih dahulu.",
+        "file_too_large": "Ukuran file melebihi batas {mb}MB.",
+        "system_normal": "Sistem normal."
     },
-    "village_status": {
-      "title": "Status Kondisi Desa"
-    },
-    "emergency": {
-      "title": "Kontak Darurat",
-      "village_post": "Posko Siaga Desa",
-      "bpbd": "BPBD Kabupaten",
-      "puskesmas": "Puskesmas"
-    }
-  },
-  "map": {
-    "back_to_home": "Kembali ke Beranda",
-    "back": "Kembali",
-    "legend_and_layer": "Legenda & Layer",
-    "legend": {
-      "title": "Legenda",
-      "zone_title": "Zona Rawan Longsor",
-      "zone_high": "Tinggi",
-      "zone_medium": "Sedang",
-      "zone_low": "Rendah",
-      "landuse_title": "Guna Lahan",
-      "landuse_settlement": "Permukiman",
-      "landuse_paddy": "Persawahan",
-      "landuse_open": "Area Terbuka",
-      "landuse_mining": "Pertambangan",
-      "landuse_forest": "Hutan",
-      "landuse_river": "Daerah Aliran Sungai",
-      "assets_title": "Potensi Desa",
-      "assets_bumdes": "Bumdes",
-      "assets_kopdes": "Kopdes",
-      "assets_field": "Lapangan Desa",
-      "assets_market": "Pasar",
-      "assets_factory": "Pabrik",
-      "assets_mine": "Tambang",
-      "sensor_title": "Sensor IoT",
-      "sensor_normal": "Normal",
-      "sensor_warning": "Waspada",
-      "sensor_danger": "Bahaya",
-      "sensor_offline": "Offline",
-      "citizen_reports": "Laporan Warga",
-      "historic_landslide": "Historis Titik Longsor",
-      "evacuation_point": "Titik Kumpul",
-      "evacuation_route": "Jalur Evakuasi",
-      "education": "Sarana Pendidikan",
-      "worship": "Sarana Peribadatan",
-      "health": "Sarana Kesehatan"
-    },
-    "layers": {
-      "title": "Layer",
-      "zone": "Zona Rawan Longsor",
-      "landuse": "Guna Lahan",
-      "sensor": "Sensor IoT",
-      "citizen_reports": "Laporan Warga",
-      "historic": "Historis Titik Longsor",
-      "assembly": "Titik Kumpul",
-      "evacuation": "Jalur Evakuasi",
-      "education": "Sarana Pendidikan",
-      "worship": "Sarana Peribadatan",
-      "health": "Sarana Kesehatan",
-      "village_assets": "Potensi Desa"
-    }
-  },
-  "laporan": {
-    "dusun_prefix": "Dusun",
-    "status": {
-      "Menunggu": "Menunggu",
-      "Proses": "Diproses",
-      "Tindak Lanjut": "Tindak Lanjut",
-      "Selesai": "Selesai",
-      "Ditolak": "Ditolak"
-    },
-    "kategori": {
-      "Potensi Longsor": "Potensi Longsor",
-      "Kejadian Longsor": "Kejadian Longsor",
-      "Dampak Longsor": "Dampak Longsor"
-    },
-    "warga": {
-      "title": "Laporan Warga",
-      "subtitle": "Daftar laporan kejadian dan potensi bencana dari masyarakat",
-      "cta_new": "+ Buat Laporan",
-      "search_placeholder": "Cari lokasi atau deskripsi...",
-      "all_categories": "Semua Kategori",
-      "all_status": "Semua Status",
-      "apply": "Terapkan",
-      "reset": "Reset",
-      "showing_prefix": "Menampilkan",
-      "showing_of": "dari",
-      "showing_suffix": "laporan",
-      "page_short": "Halaman",
-      "page_of": "dari",
-      "empty_title": "Belum ada laporan yang cocok.",
-      "empty_hint": "Coba ubah atau reset filter pencarian.",
-      "prev": "← Sebelumnya",
-      "next": "Selanjutnya →"
-    },
-    "detail": {
-      "breadcrumb_current": "Detail Laporan",
-      "photo_alt": "Foto laporan",
-      "history_title": "Riwayat Penanganan",
-      "history_count": "{n} entri",
-      "history_by": "oleh",
-      "history_no_note": "(tanpa catatan tambahan)",
-      "history_empty": "Belum ada riwayat penanganan.",
-      "location_point": "Titik Lokasi",
-      "report_info": "Informasi Laporan",
-      "reporter": "Pelapor",
-      "dusun": "Dusun",
-      "report_date": "Tanggal Laporan",
-      "last_updated": "Terakhir Diperbarui",
-      "emergency_title": "Kontak Darurat",
-      "emergency_village_post": "Posko Desa",
-      "emergency_bpbd": "BPBD",
-      "emergency_puskesmas": "Puskesmas",
-      "back_to_list": "Kembali ke Daftar Laporan"
-    },
-    "buat": {
-      "page_heading": "Buat Laporan Aduan",
-      "page_subheading": "Laporkan kejadian atau potensi longsor di sekitar Anda",
-      "steps": {
-        "photo": "Foto",
-        "location": "Lokasi",
-        "detail": "Detail",
-        "reporter": "Pelapor",
-        "review": "Review"
-      },
-      "step1": {
-        "title": "Bukti Foto",
-        "upload_cta": "Klik untuk unggah atau ambil foto",
-        "upload_hint": "Wajib. Foto ukuran besar akan dikompres otomatis.",
-        "optimizing": "Mengoptimalkan ukuran foto...",
-        "choose_source": "Pilih Sumber Foto",
-        "take_photo": "Ambil Foto",
-        "take_photo_desc": "Gunakan kamera perangkat",
-        "from_gallery": "Pilih dari Galeri",
-        "from_gallery_desc": "Unggah foto dari perangkat",
+    "common": {
+        "loading": "Memuat...",
+        "loading_map": "Memuat data peta…",
+        "search": "Cari",
+        "filter": "Filter",
+        "save": "Simpan",
         "cancel": "Batal",
-        "camera_no_access_title": "Tidak dapat mengakses kamera",
-        "camera_flip": "Putar Kamera",
-        "camera_snap": "Ambil foto",
-        "remove_photo": "Hapus Foto"
-      },
-      "step2": {
-        "title": "Lokasi Kejadian",
-        "use_my_location": "Gunakan Lokasi Saya",
-        "location_label": "Label Lokasi",
-        "location_label_placeholder": "Contoh: Jl. Poros Desa, Dekat Jembatan",
-        "click_map": "Klik peta untuk tandai lokasi",
-        "taking_location": "Mengambil lokasi...",
-        "location_taken": "Lokasi berhasil diambil"
-      },
-      "step3": {
-        "title": "Detail Kejadian",
-        "category_label": "Kategori Laporan",
-        "category_placeholder": "-- Pilih Kategori --",
-        "description_label": "Deskripsi Kejadian",
-        "description_placeholder": "Jelaskan kondisi yang Anda lihat secara detail..."
-      },
-      "step4": {
-        "title": "Informasi Pelapor",
-        "name_label": "Nama Lengkap",
-        "dusun_label": "Dusun",
-        "dusun_placeholder": "-- Pilih Dusun --",
-        "phone_label": "No. HP",
-        "phone_placeholder": "08xxxxxxxxxx",
-        "phone_hint": "Hanya angka. Diawali 08, total 10–13 digit. Contoh: 081234567890"
-      },
-      "step5": {
-        "title": "Review Laporan",
-        "check_hint": "Periksa kembali laporan Anda sebelum dikirim.",
-        "disclaimer": "Dengan mengirim, Anda menyetujui bahwa informasi yang diberikan adalah benar dan dapat dipertanggungjawabkan."
-      },
-      "nav": {
-        "prev": "Sebelumnya",
-        "next": "Selanjutnya",
-        "submit": "Kirim Laporan"
-      },
-      "review": {
-        "location": "Lokasi",
-        "coords": "Koordinat",
-        "category": "Kategori",
-        "description": "Deskripsi",
-        "reporter_name": "Nama Pelapor",
-        "reporter_dusun": "Dusun",
-        "reporter_phone": "No. HP",
-        "not_filled": "(tidak diisi)"
-      },
-      "errors": {
-        "file_too_large": "Ukuran file melebihi batas 5MB. Silakan pilih file yang lebih kecil.",
-        "photo_required": "Foto bukti kejadian wajib diunggah sebelum melanjutkan.",
-        "location_map_required": "Pilih titik lokasi di peta terlebih dahulu.",
-        "location_label_required": "Label lokasi wajib diisi. Klik \"Gunakan Lokasi Saya\" atau ketik manual.",
-        "category_required": "Pilih kategori laporan terlebih dahulu.",
-        "description_required": "Deskripsi kejadian wajib diisi.",
-        "name_required": "Nama pelapor wajib diisi.",
-        "dusun_required": "Pilih dusun terlebih dahulu.",
-        "hp_fix": "Perbaiki nomor HP terlebih dahulu.",
-        "hp_required": "Nomor HP wajib diisi.",
-        "hp_start_08": "Nomor HP harus diawali dengan 08.",
-        "hp_too_short": "Terlalu pendek ({n} digit). Minimal 10 digit.",
-        "hp_too_long": "Terlalu panjang ({n} digit). Maksimal 13 digit.",
-        "geo_not_supported": "Browser Anda tidak mendukung geolokasi.",
-        "geo_denied": "Akses lokasi ditolak. Izinkan akses lokasi di pengaturan browser.",
-        "geo_unavailable": "Lokasi tidak tersedia saat ini.",
-        "geo_timeout": "Waktu habis. Coba lagi.",
-        "geo_generic": "Gagal mendapatkan lokasi.",
-        "camera_denied": "Izin kamera ditolak atau perangkat tidak mendukung.",
-        "other_camera_unavailable": "Kamera lain tidak tersedia di perangkat ini.",
-        "photo_process_failed": "Gagal memproses foto. Silakan coba unggah foto yang lain."
-      },
-      "accuracy": {
-        "very_good": "Akurasi GPS: ±{m}m (sangat baik)",
-        "good": "Akurasi GPS: ±{m}m (cukup baik)",
-        "weak": "Akurasi GPS: ±{m}m — sinyal lemah. Geser pin ke lokasi tepat dan ketik label lokasi manual.",
-        "weak_label_placeholder": "Akurasi lemah — ketik nama lokasi manual"
-      }
+        "back": "Kembali",
+        "close": "Tutup",
+        "next": "Lanjut",
+        "previous": "Sebelumnya",
+        "submit": "Kirim",
+        "yes": "Ya",
+        "no": "Tidak",
+        "no_data": "Belum ada data."
+    },
+    "titles": {
+        "home": "Beranda",
+        "map": "Peta Digital",
+        "reports_list": "Laporan Warga",
+        "report_detail_suffix": "Detail Laporan",
+        "submit_report": "Buat Laporan"
+    },
+    "beranda": {
+        "hero": {
+            "title": "Sistem Pemantauan Bencana Longsor",
+            "description": "Platform partisipasi masyarakat untuk pelaporan dan pemantauan kondisi rawan longsor di wilayah desa. Laporkan segera jika melihat potensi bahaya.",
+            "cta": "Buat Laporan"
+        },
+        "stats": {
+            "total_reports": "Total Laporan",
+            "in_progress": "Sedang Diproses",
+            "completed": "Selesai Ditangani",
+            "hazard_zones": "Wilayah Rawan",
+            "points": "Titik"
+        },
+        "map_section": {
+            "title": "Peta Digital",
+            "expand": "Perbesar Peta",
+            "expand_title": "Perbesar peta ke tampilan layar penuh"
+        },
+        "latest_reports": {
+            "title": "Laporan Terbaru",
+            "see_all": "Lihat Semua →",
+            "empty": "Belum ada laporan."
+        },
+        "village_status": {
+            "title": "Status Kondisi Desa"
+        },
+        "emergency": {
+            "title": "Kontak Darurat",
+            "village_post": "Posko Siaga Desa",
+            "bpbd": "BPBD Kabupaten",
+            "puskesmas": "Puskesmas"
+        }
+    },
+    "map": {
+        "back_to_home": "Kembali ke Beranda",
+        "back": "Kembali",
+        "legend_and_layer": "Legenda & Layer",
+        "legend": {
+            "title": "Legenda",
+            "zone_title": "Zona Rawan Longsor",
+            "zone_high": "Tinggi",
+            "zone_medium": "Sedang",
+            "zone_low": "Rendah",
+            "landuse_title": "Guna Lahan",
+            "landuse_settlement": "Permukiman",
+            "landuse_paddy": "Persawahan",
+            "landuse_open": "Area Terbuka",
+            "landuse_mining": "Pertambangan",
+            "landuse_forest": "Hutan",
+            "landuse_river": "Daerah Aliran Sungai",
+            "assets_title": "Potensi Desa",
+            "assets_bumdes": "Bumdes",
+            "assets_kopdes": "Kopdes",
+            "assets_field": "Lapangan Desa",
+            "assets_market": "Pasar",
+            "assets_factory": "Pabrik",
+            "assets_mine": "Tambang",
+            "sensor_title": "Sensor IoT",
+            "sensor_normal": "Normal",
+            "sensor_warning": "Waspada",
+            "sensor_danger": "Bahaya",
+            "sensor_offline": "Offline",
+            "citizen_reports": "Laporan Warga",
+            "historic_landslide": "Historis Titik Longsor",
+            "evacuation_point": "Titik Kumpul",
+            "evacuation_route": "Jalur Evakuasi",
+            "education": "Sarana Pendidikan",
+            "worship": "Sarana Peribadatan",
+            "health": "Sarana Kesehatan"
+        },
+        "layers": {
+            "title": "Layer",
+            "zone": "Zona Rawan Longsor",
+            "landuse": "Guna Lahan",
+            "sensor": "Sensor IoT",
+            "citizen_reports": "Laporan Warga",
+            "historic": "Historis Titik Longsor",
+            "assembly": "Titik Kumpul",
+            "evacuation": "Jalur Evakuasi",
+            "education": "Sarana Pendidikan",
+            "worship": "Sarana Peribadatan",
+            "health": "Sarana Kesehatan",
+            "village_assets": "Potensi Desa"
+        }
+    },
+    "laporan": {
+        "dusun_prefix": "Dusun",
+        "status": {
+            "Menunggu": "Menunggu",
+            "Proses": "Diproses",
+            "Tindak Lanjut": "Tindak Lanjut",
+            "Selesai": "Selesai",
+            "Ditolak": "Ditolak"
+        },
+        "kategori": {
+            "Potensi Longsor": "Potensi Longsor",
+            "Kejadian Longsor": "Kejadian Longsor",
+            "Dampak Longsor": "Dampak Longsor"
+        },
+        "warga": {
+            "title": "Laporan Warga",
+            "subtitle": "Daftar laporan kejadian dan potensi bencana dari masyarakat",
+            "cta_new": "+ Buat Laporan",
+            "search_placeholder": "Cari lokasi atau deskripsi...",
+            "all_categories": "Semua Kategori",
+            "all_status": "Semua Status",
+            "apply": "Terapkan",
+            "reset": "Reset",
+            "showing_prefix": "Menampilkan",
+            "showing_of": "dari",
+            "showing_suffix": "laporan",
+            "page_short": "Halaman",
+            "page_of": "dari",
+            "empty_title": "Belum ada laporan yang cocok.",
+            "empty_hint": "Coba ubah atau reset filter pencarian.",
+            "prev": "← Sebelumnya",
+            "next": "Selanjutnya →"
+        },
+        "detail": {
+            "breadcrumb_current": "Detail Laporan",
+            "photo_alt": "Foto laporan",
+            "history_title": "Riwayat Penanganan",
+            "history_count": "{n} entri",
+            "history_by": "oleh",
+            "history_no_note": "(tanpa catatan tambahan)",
+            "history_empty": "Belum ada riwayat penanganan.",
+            "location_point": "Titik Lokasi",
+            "report_info": "Informasi Laporan",
+            "reporter": "Pelapor",
+            "dusun": "Dusun",
+            "report_date": "Tanggal Laporan",
+            "last_updated": "Terakhir Diperbarui",
+            "emergency_title": "Kontak Darurat",
+            "emergency_village_post": "Posko Desa",
+            "emergency_bpbd": "BPBD",
+            "emergency_puskesmas": "Puskesmas",
+            "back_to_list": "Kembali ke Daftar Laporan"
+        },
+        "buat": {
+            "page_heading": "Buat Laporan Aduan",
+            "page_subheading": "Laporkan kejadian atau potensi longsor di sekitar Anda",
+            "steps": {
+                "photo": "Foto",
+                "location": "Lokasi",
+                "detail": "Detail",
+                "reporter": "Pelapor",
+                "review": "Review"
+            },
+            "step1": {
+                "title": "Bukti Foto",
+                "upload_cta": "Klik untuk unggah atau ambil foto",
+                "upload_hint": "Wajib. Foto ukuran besar akan dikompres otomatis.",
+                "optimizing": "Mengoptimalkan ukuran foto...",
+                "choose_source": "Pilih Sumber Foto",
+                "take_photo": "Ambil Foto",
+                "take_photo_desc": "Gunakan kamera perangkat",
+                "from_gallery": "Pilih dari Galeri",
+                "from_gallery_desc": "Unggah foto dari perangkat",
+                "cancel": "Batal",
+                "camera_no_access_title": "Tidak dapat mengakses kamera",
+                "camera_flip": "Putar Kamera",
+                "camera_snap": "Ambil foto",
+                "remove_photo": "Hapus Foto"
+            },
+            "step2": {
+                "title": "Lokasi Kejadian",
+                "use_my_location": "Gunakan Lokasi Saya",
+                "location_label": "Label Lokasi",
+                "location_label_placeholder": "Contoh: Jl. Poros Desa, Dekat Jembatan",
+                "click_map": "Klik peta untuk tandai lokasi",
+                "taking_location": "Mengambil lokasi...",
+                "location_taken": "Lokasi berhasil diambil"
+            },
+            "step3": {
+                "title": "Detail Kejadian",
+                "category_label": "Kategori Laporan",
+                "category_placeholder": "-- Pilih Kategori --",
+                "description_label": "Deskripsi Kejadian",
+                "description_placeholder": "Jelaskan kondisi yang Anda lihat secara detail..."
+            },
+            "step4": {
+                "title": "Informasi Pelapor",
+                "name_label": "Nama Lengkap",
+                "dusun_label": "Dusun",
+                "dusun_placeholder": "-- Pilih Dusun --",
+                "phone_label": "No. HP",
+                "phone_placeholder": "08xxxxxxxxxx",
+                "phone_hint": "Hanya angka. Diawali 08, total 10–13 digit. Contoh: 081234567890"
+            },
+            "step5": {
+                "title": "Review Laporan",
+                "check_hint": "Periksa kembali laporan Anda sebelum dikirim.",
+                "disclaimer": "Dengan mengirim, Anda menyetujui bahwa informasi yang diberikan adalah benar dan dapat dipertanggungjawabkan."
+            },
+            "nav": {
+                "prev": "Sebelumnya",
+                "next": "Selanjutnya",
+                "submit": "Kirim Laporan"
+            },
+            "review": {
+                "location": "Lokasi",
+                "coords": "Koordinat",
+                "category": "Kategori",
+                "description": "Deskripsi",
+                "reporter_name": "Nama Pelapor",
+                "reporter_dusun": "Dusun",
+                "reporter_phone": "No. HP",
+                "not_filled": "(tidak diisi)"
+            },
+            "errors": {
+                "file_too_large": "Ukuran file melebihi batas 5MB. Silakan pilih file yang lebih kecil.",
+                "photo_required": "Foto bukti kejadian wajib diunggah sebelum melanjutkan.",
+                "location_map_required": "Pilih titik lokasi di peta terlebih dahulu.",
+                "location_label_required": "Label lokasi wajib diisi. Klik \"Gunakan Lokasi Saya\" atau ketik manual.",
+                "category_required": "Pilih kategori laporan terlebih dahulu.",
+                "description_required": "Deskripsi kejadian wajib diisi.",
+                "name_required": "Nama pelapor wajib diisi.",
+                "dusun_required": "Pilih dusun terlebih dahulu.",
+                "hp_fix": "Perbaiki nomor HP terlebih dahulu.",
+                "hp_required": "Nomor HP wajib diisi.",
+                "hp_start_08": "Nomor HP harus diawali dengan 08.",
+                "hp_too_short": "Terlalu pendek ({n} digit). Minimal 10 digit.",
+                "hp_too_long": "Terlalu panjang ({n} digit). Maksimal 13 digit.",
+                "geo_not_supported": "Browser Anda tidak mendukung geolokasi.",
+                "geo_denied": "Akses lokasi ditolak. Izinkan akses lokasi di pengaturan browser.",
+                "geo_unavailable": "Lokasi tidak tersedia saat ini.",
+                "geo_timeout": "Waktu habis. Coba lagi.",
+                "geo_generic": "Gagal mendapatkan lokasi.",
+                "camera_denied": "Izin kamera ditolak atau perangkat tidak mendukung.",
+                "other_camera_unavailable": "Kamera lain tidak tersedia di perangkat ini.",
+                "photo_process_failed": "Gagal memproses foto. Silakan coba unggah foto yang lain."
+            },
+            "accuracy": {
+                "very_good": "Akurasi GPS: ±{m}m (sangat baik)",
+                "good": "Akurasi GPS: ±{m}m (cukup baik)",
+                "weak": "Akurasi GPS: ±{m}m — sinyal lemah. Geser pin ke lokasi tepat dan ketik label lokasi manual.",
+                "weak_label_placeholder": "Akurasi lemah — ketik nama lokasi manual"
+            }
+        }
+    },
+    "seo": {
+        "default_description": "Pa'Biritta — sistem pemantauan bencana longsor berbasis komunitas untuk Desa Lonjoboko, Kabupaten Gowa. Warga dapat melaporkan potensi longsor, admin desa menindaklanjuti, dan sensor IoT memantau kondisi tanah secara real-time.",
+        "default_keywords": "pabiritta, lonjoboko, gowa, sistem pemantauan longsor, bencana longsor, ews, early warning system, laporan warga, sensor iot, mitigasi bencana, desa tangguh bencana, PPK Ormawa, SPACE FT-UH, unhas",
+        "home_description": "Beranda Pa'Biritta: peta digital zona rawan longsor, status kondisi desa real-time, laporan terbaru warga, dan kontak darurat Desa Lonjoboko Kabupaten Gowa.",
+        "map_description": "Peta digital interaktif Desa Lonjoboko: zona rawan longsor, guna lahan, sensor IoT, laporan warga, jalur evakuasi, dan sarana desa.",
+        "reports_description": "Daftar laporan potensi dan kejadian longsor dari warga Desa Lonjoboko, lengkap dengan status penanganan dan lokasi peta.",
+        "submit_description": "Kirim laporan potensi atau kejadian longsor di Desa Lonjoboko. Lengkap dengan foto, titik lokasi peta, dan detail kejadian.",
+        "detail_description_fallback": "Detail laporan warga di Desa Lonjoboko, dengan foto, lokasi peta, kategori, status penanganan, dan riwayat tindak lanjut.",
+        "organization_alt_name": "Pa'Biritta Lonjoboko"
     }
-  }
 }

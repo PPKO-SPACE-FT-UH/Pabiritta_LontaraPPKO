@@ -1,16 +1,4 @@
-"""i18n helper untuk Pa'Biritta.
-
-Alur singkat:
-- WSGI middleware mendeteksi prefix URL `/en/...` dan menandai request sebagai
-  Bahasa Inggris. Selain itu, request dianggap Bahasa Indonesia (default).
-- `t(key, **fmt)` mengambil terjemahan dengan dot-notation key
-  (mis. `t('nav.home')`). Jika tidak ada, fallback ke Bahasa Indonesia.
-- `localized_url_for(endpoint, **values)` mengembalikan URL yang diberi
-  prefix `/en` bila bahasa aktif adalah EN. Fungsi ini di-expose sebagai
-  `url_for` di Jinja, jadi template lama tetap jalan tanpa perlu diubah.
-- Di mode debug, JSON kamus otomatis di-reload dari disk setiap request,
-  jadi edit `id.json`/`en.json` langsung terlihat tanpa restart server.
-"""
+"""i18n helper untuk Pa'Biritta."""
 import json
 import os
 
@@ -38,24 +26,16 @@ _load_translations()
 
 
 def _get_translations():
-    """Reload JSON dari disk bila app dalam mode debug, supaya edit
-    kamus langsung berlaku tanpa restart server."""
     try:
         from flask import current_app
         if current_app and current_app.debug:
             _load_translations()
     except RuntimeError:
-        pass  # di luar application context
+        pass
     return _translations
 
 
 class LanguageMiddleware:
-    """Rewrite `/en/...` -> `/...` dan simpan bahasa di environ.
-
-    URL routing Flask berjalan pada path yang sudah di-rewrite, jadi kita
-    tidak perlu duplikasi setiap route untuk versi EN.
-    """
-
     def __init__(self, wsgi_app):
         self.wsgi_app = wsgi_app
 
@@ -77,11 +57,6 @@ def get_lang() -> str:
 
 
 def t(key: str, **fmt) -> str:
-    """Ambil terjemahan berdasarkan `key` (dot-notation).
-
-    Fallback: bahasa aktif -> Bahasa Indonesia -> raw key.
-    Kwargs digunakan untuk `str.format` interpolation.
-    """
     lang = get_lang()
     translations = _get_translations()
 
@@ -109,7 +84,6 @@ def t(key: str, **fmt) -> str:
 
 
 def localized_url_for(endpoint: str, **values) -> str:
-    """Wrapper `url_for` yang menambahkan prefix `/en` bila perlu."""
     url = _flask_url_for(endpoint, **values)
     if get_lang() == "en" and url.startswith("/") and not (
         url == EN_PREFIX or url.startswith(EN_PREFIX + "/")
@@ -119,7 +93,6 @@ def localized_url_for(endpoint: str, **values) -> str:
 
 
 def switch_lang_url(target_lang: str) -> str:
-    """URL versi bahasa lain dari halaman yang sedang dilihat."""
     if target_lang not in SUPPORTED_LANGS:
         target_lang = DEFAULT_LANG
     path = request.path or "/"
@@ -128,6 +101,24 @@ def switch_lang_url(target_lang: str) -> str:
     if target_lang == "en":
         return EN_PREFIX + path + suffix
     return path + suffix
+
+
+def canonical_url(site_url: str) -> str:
+    """URL absolut versi bahasa yang sedang aktif."""
+    site_url = (site_url or "").rstrip("/")
+    path = request.path or "/"
+    if get_lang() == "en":
+        return f"{site_url}{EN_PREFIX}{path}"
+    return f"{site_url}{path}"
+
+
+def alternate_url(site_url: str, target_lang: str) -> str:
+    """URL absolut versi bahasa `target_lang` untuk halaman saat ini."""
+    site_url = (site_url or "").rstrip("/")
+    path = request.path or "/"
+    if target_lang == "en":
+        return f"{site_url}{EN_PREFIX}{path}"
+    return f"{site_url}{path}"
 
 
 def init_app(app) -> None:
@@ -139,10 +130,16 @@ def init_app(app) -> None:
 
     @app.context_processor
     def _inject_i18n():
+        from flask import current_app
+        site_url = current_app.config.get("SITE_URL", "")
         return {
             "t": t,
             "current_lang": get_lang(),
             "supported_langs": SUPPORTED_LANGS,
             "switch_lang_url": switch_lang_url,
             "url_for": localized_url_for,
+            "site_url": site_url,
+            "canonical_url": canonical_url(site_url),
+            "alternate_url_id": alternate_url(site_url, "id"),
+            "alternate_url_en": alternate_url(site_url, "en"),
         }

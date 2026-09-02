@@ -13,6 +13,10 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-ganti-di-produksi")
 
+    # Base URL situs produksi (tanpa trailing slash). Dipakai untuk
+    # canonical URL, Open Graph tags, dan sitemap.xml.
+    SITE_URL = os.environ.get("SITE_URL", "https://pabirittalonjoboko.com").rstrip("/")
+
     # Database
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URL",

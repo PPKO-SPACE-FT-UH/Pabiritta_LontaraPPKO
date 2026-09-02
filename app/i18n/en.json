@@ -1,302 +1,312 @@
 {
-  "meta": {
-    "site_name": "Pa'Biritta",
-    "site_tagline": "Landslide Disaster Monitoring System",
-    "html_lang": "en"
-  },
-  "nav": {
-    "home": "Home",
-    "report": "Submit Report",
-    "reports_list": "Community Reports",
-    "admin_login": "Admin Login",
-    "menu": "Menu",
-    "language": "Language",
-    "language_switch_to_id": "Ganti ke Bahasa Indonesia",
-    "language_switch_to_en": "Switch to English"
-  },
-  "footer": {
-    "description": "A community-based village disaster management system for landslide mitigation, monitoring, and reporting.",
-    "quick_links": "Quick Links",
-    "contact": "Contact",
-    "address": "Village Hall, Jl. Poros Utama No. 1",
-    "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
-  },
-  "admin": {
-    "dashboard": "Dashboard",
-    "report_management": "Report Management",
-    "activity_log": "Activity Log",
-    "user_management": "User Management",
-    "logout": "Sign Out",
-    "logout_short": "Logout",
-    "village_status": "Village Status",
-    "village_resilient": "Disaster-Resilient Village",
-    "mobile_page_title": "Admin Dashboard",
-    "desktop_subtitle_default": "Village disaster management system overview",
-    "please_login": "Please log in first.",
-    "file_too_large": "File size exceeds the {mb}MB limit.",
-    "system_normal": "System normal."
-  },
-  "common": {
-    "loading": "Loading...",
-    "loading_map": "Loading map data…",
-    "search": "Search",
-    "filter": "Filter",
-    "save": "Save",
-    "cancel": "Cancel",
-    "back": "Back",
-    "close": "Close",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "Submit",
-    "yes": "Yes",
-    "no": "No",
-    "no_data": "No data yet."
-  },
-  "titles": {
-    "home": "Home",
-    "map": "Digital Map",
-    "reports_list": "Community Reports",
-    "report_detail_suffix": "Report Detail",
-    "submit_report": "Submit Report"
-  },
-  "beranda": {
-    "hero": {
-      "title": "Landslide Disaster Monitoring System",
-      "description": "A community participation platform for reporting and monitoring landslide-prone conditions in the village area. Report immediately if you spot a potential hazard.",
-      "cta": "Submit Report"
+    "meta": {
+        "site_name": "Pa'Biritta",
+        "site_tagline": "Landslide Disaster Monitoring System",
+        "html_lang": "en"
     },
-    "stats": {
-      "total_reports": "Total Reports",
-      "in_progress": "In Progress",
-      "completed": "Resolved",
-      "hazard_zones": "Hazard Zones",
-      "points": "Points"
+    "nav": {
+        "home": "Home",
+        "report": "Submit Report",
+        "reports_list": "Community Reports",
+        "admin_login": "Admin Login",
+        "menu": "Menu",
+        "language": "Language",
+        "language_switch_to_id": "Ganti ke Bahasa Indonesia",
+        "language_switch_to_en": "Switch to English"
     },
-    "map_section": {
-      "title": "Digital Map",
-      "expand": "Expand Map",
-      "expand_title": "Expand map to full screen view"
+    "footer": {
+        "description": "A community-based village disaster management system for landslide mitigation, monitoring, and reporting.",
+        "quick_links": "Quick Links",
+        "contact": "Contact",
+        "address": "Village Hall, Jl. Poros Utama No. 1",
+        "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
     },
-    "latest_reports": {
-      "title": "Latest Reports",
-      "see_all": "See All →",
-      "empty": "No reports yet."
+    "admin": {
+        "dashboard": "Dashboard",
+        "report_management": "Report Management",
+        "activity_log": "Activity Log",
+        "user_management": "User Management",
+        "logout": "Sign Out",
+        "logout_short": "Logout",
+        "village_status": "Village Status",
+        "village_resilient": "Disaster-Resilient Village",
+        "mobile_page_title": "Admin Dashboard",
+        "desktop_subtitle_default": "Village disaster management system overview",
+        "please_login": "Please log in first.",
+        "file_too_large": "File size exceeds the {mb}MB limit.",
+        "system_normal": "System normal."
     },
-    "village_status": {
-      "title": "Village Condition Status"
-    },
-    "emergency": {
-      "title": "Emergency Contact",
-      "village_post": "Village Emergency Post",
-      "bpbd": "Regional Disaster Agency (BPBD)",
-      "puskesmas": "Community Health Center"
-    }
-  },
-  "map": {
-    "back_to_home": "Back to Home",
-    "back": "Back",
-    "legend_and_layer": "Legend & Layers",
-    "legend": {
-      "title": "Legend",
-      "zone_title": "Landslide Hazard Zone",
-      "zone_high": "High",
-      "zone_medium": "Medium",
-      "zone_low": "Low",
-      "landuse_title": "Land Use",
-      "landuse_settlement": "Settlement",
-      "landuse_paddy": "Rice Field",
-      "landuse_open": "Open Area",
-      "landuse_mining": "Mining",
-      "landuse_forest": "Forest",
-      "landuse_river": "River Basin",
-      "assets_title": "Village Assets",
-      "assets_bumdes": "Village Enterprise (Bumdes)",
-      "assets_kopdes": "Village Cooperative (Kopdes)",
-      "assets_field": "Village Field",
-      "assets_market": "Market",
-      "assets_factory": "Factory",
-      "assets_mine": "Mine",
-      "sensor_title": "IoT Sensor",
-      "sensor_normal": "Normal",
-      "sensor_warning": "Warning",
-      "sensor_danger": "Danger",
-      "sensor_offline": "Offline",
-      "citizen_reports": "Community Reports",
-      "historic_landslide": "Historic Landslide Points",
-      "evacuation_point": "Assembly Point",
-      "evacuation_route": "Evacuation Route",
-      "education": "Education Facilities",
-      "worship": "Worship Facilities",
-      "health": "Health Facilities"
-    },
-    "layers": {
-      "title": "Layers",
-      "zone": "Landslide Hazard Zone",
-      "landuse": "Land Use",
-      "sensor": "IoT Sensor",
-      "citizen_reports": "Community Reports",
-      "historic": "Historic Landslide Points",
-      "assembly": "Assembly Point",
-      "evacuation": "Evacuation Route",
-      "education": "Education Facilities",
-      "worship": "Worship Facilities",
-      "health": "Health Facilities",
-      "village_assets": "Village Assets"
-    }
-  },
-  "laporan": {
-    "dusun_prefix": "Hamlet",
-    "status": {
-      "Menunggu": "Pending",
-      "Proses": "In Progress",
-      "Tindak Lanjut": "Follow-up",
-      "Selesai": "Resolved",
-      "Ditolak": "Rejected"
-    },
-    "kategori": {
-      "Potensi Longsor": "Landslide Potential",
-      "Kejadian Longsor": "Landslide Incident",
-      "Dampak Longsor": "Landslide Impact"
-    },
-    "warga": {
-      "title": "Community Reports",
-      "subtitle": "List of incident reports and disaster potential from the community",
-      "cta_new": "+ Submit Report",
-      "search_placeholder": "Search location or description...",
-      "all_categories": "All Categories",
-      "all_status": "All Statuses",
-      "apply": "Apply",
-      "reset": "Reset",
-      "showing_prefix": "Showing",
-      "showing_of": "of",
-      "showing_suffix": "reports",
-      "page_short": "Page",
-      "page_of": "of",
-      "empty_title": "No matching reports.",
-      "empty_hint": "Try changing or resetting your search filters.",
-      "prev": "← Previous",
-      "next": "Next →"
-    },
-    "detail": {
-      "breadcrumb_current": "Report Detail",
-      "photo_alt": "Report photo",
-      "history_title": "Handling History",
-      "history_count": "{n} entries",
-      "history_by": "by",
-      "history_no_note": "(no additional notes)",
-      "history_empty": "No handling history yet.",
-      "location_point": "Location Point",
-      "report_info": "Report Information",
-      "reporter": "Reporter",
-      "dusun": "Hamlet",
-      "report_date": "Report Date",
-      "last_updated": "Last Updated",
-      "emergency_title": "Emergency Contact",
-      "emergency_village_post": "Village Post",
-      "emergency_bpbd": "BPBD",
-      "emergency_puskesmas": "Health Center",
-      "back_to_list": "Back to Reports List"
-    },
-    "buat": {
-      "page_heading": "Submit a Report",
-      "page_subheading": "Report an incident or landslide potential in your area",
-      "steps": {
-        "photo": "Photo",
-        "location": "Location",
-        "detail": "Detail",
-        "reporter": "Reporter",
-        "review": "Review"
-      },
-      "step1": {
-        "title": "Photo Evidence",
-        "upload_cta": "Click to upload or take a photo",
-        "upload_hint": "Required. Large photos will be compressed automatically.",
-        "optimizing": "Optimizing photo size...",
-        "choose_source": "Choose Photo Source",
-        "take_photo": "Take Photo",
-        "take_photo_desc": "Use device camera",
-        "from_gallery": "Choose from Gallery",
-        "from_gallery_desc": "Upload from device",
+    "common": {
+        "loading": "Loading...",
+        "loading_map": "Loading map data…",
+        "search": "Search",
+        "filter": "Filter",
+        "save": "Save",
         "cancel": "Cancel",
-        "camera_no_access_title": "Cannot access camera",
-        "camera_flip": "Flip Camera",
-        "camera_snap": "Take photo",
-        "remove_photo": "Remove Photo"
-      },
-      "step2": {
-        "title": "Incident Location",
-        "use_my_location": "Use My Location",
-        "location_label": "Location Label",
-        "location_label_placeholder": "e.g. Main village road, near the bridge",
-        "click_map": "Click the map to mark the location",
-        "taking_location": "Getting location...",
-        "location_taken": "Location captured"
-      },
-      "step3": {
-        "title": "Incident Detail",
-        "category_label": "Report Category",
-        "category_placeholder": "-- Choose Category --",
-        "description_label": "Incident Description",
-        "description_placeholder": "Describe what you see in detail..."
-      },
-      "step4": {
-        "title": "Reporter Information",
-        "name_label": "Full Name",
-        "dusun_label": "Hamlet",
-        "dusun_placeholder": "-- Choose Hamlet --",
-        "phone_label": "Phone Number",
-        "phone_placeholder": "08xxxxxxxxxx",
-        "phone_hint": "Digits only. Must start with 08, total 10–13 digits. Example: 081234567890"
-      },
-      "step5": {
-        "title": "Review Report",
-        "check_hint": "Please review your report before submitting.",
-        "disclaimer": "By submitting, you agree that the information provided is true and accountable."
-      },
-      "nav": {
-        "prev": "Previous",
+        "back": "Back",
+        "close": "Close",
         "next": "Next",
-        "submit": "Submit Report"
-      },
-      "review": {
-        "location": "Location",
-        "coords": "Coordinates",
-        "category": "Category",
-        "description": "Description",
-        "reporter_name": "Reporter Name",
-        "reporter_dusun": "Hamlet",
-        "reporter_phone": "Phone Number",
-        "not_filled": "(not filled)"
-      },
-      "errors": {
-        "file_too_large": "File size exceeds the 5MB limit. Please choose a smaller file.",
-        "photo_required": "Photo evidence is required before proceeding.",
-        "location_map_required": "Please choose a location point on the map first.",
-        "location_label_required": "Location label is required. Click \"Use My Location\" or type manually.",
-        "category_required": "Please choose a report category first.",
-        "description_required": "Incident description is required.",
-        "name_required": "Reporter name is required.",
-        "dusun_required": "Please choose a hamlet first.",
-        "hp_fix": "Please fix the phone number first.",
-        "hp_required": "Phone number is required.",
-        "hp_start_08": "Phone number must start with 08.",
-        "hp_too_short": "Too short ({n} digits). Minimum 10 digits.",
-        "hp_too_long": "Too long ({n} digits). Maximum 13 digits.",
-        "geo_not_supported": "Your browser does not support geolocation.",
-        "geo_denied": "Location access denied. Please allow location access in your browser settings.",
-        "geo_unavailable": "Location is not available right now.",
-        "geo_timeout": "Request timed out. Please try again.",
-        "geo_generic": "Failed to get location.",
-        "camera_denied": "Camera access denied or device is unsupported.",
-        "other_camera_unavailable": "The other camera is not available on this device.",
-        "photo_process_failed": "Failed to process the photo. Please try uploading a different one."
-      },
-      "accuracy": {
-        "very_good": "GPS accuracy: ±{m}m (excellent)",
-        "good": "GPS accuracy: ±{m}m (good)",
-        "weak": "GPS accuracy: ±{m}m — weak signal. Move the pin to the exact location and type the label manually.",
-        "weak_label_placeholder": "Weak accuracy — type location name manually"
-      }
+        "previous": "Previous",
+        "submit": "Submit",
+        "yes": "Yes",
+        "no": "No",
+        "no_data": "No data yet."
+    },
+    "titles": {
+        "home": "Home",
+        "map": "Digital Map",
+        "reports_list": "Community Reports",
+        "report_detail_suffix": "Report Detail",
+        "submit_report": "Submit Report"
+    },
+    "beranda": {
+        "hero": {
+            "title": "Landslide Disaster Monitoring System",
+            "description": "A community participation platform for reporting and monitoring landslide-prone conditions in the village area. Report immediately if you spot a potential hazard.",
+            "cta": "Submit Report"
+        },
+        "stats": {
+            "total_reports": "Total Reports",
+            "in_progress": "In Progress",
+            "completed": "Resolved",
+            "hazard_zones": "Hazard Zones",
+            "points": "Points"
+        },
+        "map_section": {
+            "title": "Digital Map",
+            "expand": "Expand Map",
+            "expand_title": "Expand map to full screen view"
+        },
+        "latest_reports": {
+            "title": "Latest Reports",
+            "see_all": "See All →",
+            "empty": "No reports yet."
+        },
+        "village_status": {
+            "title": "Village Condition Status"
+        },
+        "emergency": {
+            "title": "Emergency Contact",
+            "village_post": "Village Emergency Post",
+            "bpbd": "Regional Disaster Agency (BPBD)",
+            "puskesmas": "Community Health Center"
+        }
+    },
+    "map": {
+        "back_to_home": "Back to Home",
+        "back": "Back",
+        "legend_and_layer": "Legend & Layers",
+        "legend": {
+            "title": "Legend",
+            "zone_title": "Landslide Hazard Zone",
+            "zone_high": "High",
+            "zone_medium": "Medium",
+            "zone_low": "Low",
+            "landuse_title": "Land Use",
+            "landuse_settlement": "Settlement",
+            "landuse_paddy": "Rice Field",
+            "landuse_open": "Open Area",
+            "landuse_mining": "Mining",
+            "landuse_forest": "Forest",
+            "landuse_river": "River Basin",
+            "assets_title": "Village Assets",
+            "assets_bumdes": "Village Enterprise (Bumdes)",
+            "assets_kopdes": "Village Cooperative (Kopdes)",
+            "assets_field": "Village Field",
+            "assets_market": "Market",
+            "assets_factory": "Factory",
+            "assets_mine": "Mine",
+            "sensor_title": "IoT Sensor",
+            "sensor_normal": "Normal",
+            "sensor_warning": "Warning",
+            "sensor_danger": "Danger",
+            "sensor_offline": "Offline",
+            "citizen_reports": "Community Reports",
+            "historic_landslide": "Historic Landslide Points",
+            "evacuation_point": "Assembly Point",
+            "evacuation_route": "Evacuation Route",
+            "education": "Education Facilities",
+            "worship": "Worship Facilities",
+            "health": "Health Facilities"
+        },
+        "layers": {
+            "title": "Layers",
+            "zone": "Landslide Hazard Zone",
+            "landuse": "Land Use",
+            "sensor": "IoT Sensor",
+            "citizen_reports": "Community Reports",
+            "historic": "Historic Landslide Points",
+            "assembly": "Assembly Point",
+            "evacuation": "Evacuation Route",
+            "education": "Education Facilities",
+            "worship": "Worship Facilities",
+            "health": "Health Facilities",
+            "village_assets": "Village Assets"
+        }
+    },
+    "laporan": {
+        "dusun_prefix": "Hamlet",
+        "status": {
+            "Menunggu": "Pending",
+            "Proses": "In Progress",
+            "Tindak Lanjut": "Follow-up",
+            "Selesai": "Resolved",
+            "Ditolak": "Rejected"
+        },
+        "kategori": {
+            "Potensi Longsor": "Landslide Potential",
+            "Kejadian Longsor": "Landslide Incident",
+            "Dampak Longsor": "Landslide Impact"
+        },
+        "warga": {
+            "title": "Community Reports",
+            "subtitle": "List of incident reports and disaster potential from the community",
+            "cta_new": "+ Submit Report",
+            "search_placeholder": "Search location or description...",
+            "all_categories": "All Categories",
+            "all_status": "All Statuses",
+            "apply": "Apply",
+            "reset": "Reset",
+            "showing_prefix": "Showing",
+            "showing_of": "of",
+            "showing_suffix": "reports",
+            "page_short": "Page",
+            "page_of": "of",
+            "empty_title": "No matching reports.",
+            "empty_hint": "Try changing or resetting your search filters.",
+            "prev": "← Previous",
+            "next": "Next →"
+        },
+        "detail": {
+            "breadcrumb_current": "Report Detail",
+            "photo_alt": "Report photo",
+            "history_title": "Handling History",
+            "history_count": "{n} entries",
+            "history_by": "by",
+            "history_no_note": "(no additional notes)",
+            "history_empty": "No handling history yet.",
+            "location_point": "Location Point",
+            "report_info": "Report Information",
+            "reporter": "Reporter",
+            "dusun": "Hamlet",
+            "report_date": "Report Date",
+            "last_updated": "Last Updated",
+            "emergency_title": "Emergency Contact",
+            "emergency_village_post": "Village Post",
+            "emergency_bpbd": "BPBD",
+            "emergency_puskesmas": "Health Center",
+            "back_to_list": "Back to Reports List"
+        },
+        "buat": {
+            "page_heading": "Submit a Report",
+            "page_subheading": "Report an incident or landslide potential in your area",
+            "steps": {
+                "photo": "Photo",
+                "location": "Location",
+                "detail": "Detail",
+                "reporter": "Reporter",
+                "review": "Review"
+            },
+            "step1": {
+                "title": "Photo Evidence",
+                "upload_cta": "Click to upload or take a photo",
+                "upload_hint": "Required. Large photos will be compressed automatically.",
+                "optimizing": "Optimizing photo size...",
+                "choose_source": "Choose Photo Source",
+                "take_photo": "Take Photo",
+                "take_photo_desc": "Use device camera",
+                "from_gallery": "Choose from Gallery",
+                "from_gallery_desc": "Upload from device",
+                "cancel": "Cancel",
+                "camera_no_access_title": "Cannot access camera",
+                "camera_flip": "Flip Camera",
+                "camera_snap": "Take photo",
+                "remove_photo": "Remove Photo"
+            },
+            "step2": {
+                "title": "Incident Location",
+                "use_my_location": "Use My Location",
+                "location_label": "Location Label",
+                "location_label_placeholder": "e.g. Main village road, near the bridge",
+                "click_map": "Click the map to mark the location",
+                "taking_location": "Getting location...",
+                "location_taken": "Location captured"
+            },
+            "step3": {
+                "title": "Incident Detail",
+                "category_label": "Report Category",
+                "category_placeholder": "-- Choose Category --",
+                "description_label": "Incident Description",
+                "description_placeholder": "Describe what you see in detail..."
+            },
+            "step4": {
+                "title": "Reporter Information",
+                "name_label": "Full Name",
+                "dusun_label": "Hamlet",
+                "dusun_placeholder": "-- Choose Hamlet --",
+                "phone_label": "Phone Number",
+                "phone_placeholder": "08xxxxxxxxxx",
+                "phone_hint": "Digits only. Must start with 08, total 10–13 digits. Example: 081234567890"
+            },
+            "step5": {
+                "title": "Review Report",
+                "check_hint": "Please review your report before submitting.",
+                "disclaimer": "By submitting, you agree that the information provided is true and accountable."
+            },
+            "nav": {
+                "prev": "Previous",
+                "next": "Next",
+                "submit": "Submit Report"
+            },
+            "review": {
+                "location": "Location",
+                "coords": "Coordinates",
+                "category": "Category",
+                "description": "Description",
+                "reporter_name": "Reporter Name",
+                "reporter_dusun": "Hamlet",
+                "reporter_phone": "Phone Number",
+                "not_filled": "(not filled)"
+            },
+            "errors": {
+                "file_too_large": "File size exceeds the 5MB limit. Please choose a smaller file.",
+                "photo_required": "Photo evidence is required before proceeding.",
+                "location_map_required": "Please choose a location point on the map first.",
+                "location_label_required": "Location label is required. Click \"Use My Location\" or type manually.",
+                "category_required": "Please choose a report category first.",
+                "description_required": "Incident description is required.",
+                "name_required": "Reporter name is required.",
+                "dusun_required": "Please choose a hamlet first.",
+                "hp_fix": "Please fix the phone number first.",
+                "hp_required": "Phone number is required.",
+                "hp_start_08": "Phone number must start with 08.",
+                "hp_too_short": "Too short ({n} digits). Minimum 10 digits.",
+                "hp_too_long": "Too long ({n} digits). Maximum 13 digits.",
+                "geo_not_supported": "Your browser does not support geolocation.",
+                "geo_denied": "Location access denied. Please allow location access in your browser settings.",
+                "geo_unavailable": "Location is not available right now.",
+                "geo_timeout": "Request timed out. Please try again.",
+                "geo_generic": "Failed to get location.",
+                "camera_denied": "Camera access denied or device is unsupported.",
+                "other_camera_unavailable": "The other camera is not available on this device.",
+                "photo_process_failed": "Failed to process the photo. Please try uploading a different one."
+            },
+            "accuracy": {
+                "very_good": "GPS accuracy: ±{m}m (excellent)",
+                "good": "GPS accuracy: ±{m}m (good)",
+                "weak": "GPS accuracy: ±{m}m — weak signal. Move the pin to the exact location and type the label manually.",
+                "weak_label_placeholder": "Weak accuracy — type location name manually"
+            }
+        }
+    },
+    "seo": {
+        "default_description": "Pa'Biritta — a community-based landslide monitoring system for Lonjoboko Village, Gowa Regency, South Sulawesi. Residents can report landslide risks, village admins follow up, and IoT sensors monitor soil conditions in real time.",
+        "default_keywords": "pabiritta, lonjoboko village, gowa, landslide monitoring, disaster management, early warning system, ews, community reporting, iot sensor, disaster mitigation, disaster-resilient village, PPK Ormawa, SPACE FT-UH, unhas",
+        "home_description": "Pa'Biritta home: interactive digital map of landslide hazard zones, real-time village status, latest community reports, and emergency contacts for Lonjoboko Village, Gowa Regency.",
+        "map_description": "Interactive digital map of Lonjoboko Village: landslide hazard zones, land use, IoT sensors, community reports, evacuation routes, and village facilities.",
+        "reports_description": "List of landslide potential and incident reports from Lonjoboko Village residents, with handling status and map location.",
+        "submit_description": "Submit a landslide potential or incident report in Lonjoboko Village. Complete with photo, map location, and incident details.",
+        "detail_description_fallback": "Community landslide report detail in Lonjoboko Village, with photo, map location, category, handling status, and follow-up history.",
+        "organization_alt_name": "Pa'Biritta Lonjoboko"
     }
-  }
 }
