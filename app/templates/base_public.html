@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ t('meta.html_lang') }}">
 
 <head>
   <meta charset="UTF-8">
@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preconnect" href="https://res.cloudinary.com">
-  <title>{% block title %}Pa'Biritta{% endblock %} | Sistem Pemantauan Bencana Longsor</title>
+  <title>{% block title %}{{ t('meta.site_name') }}{% endblock %} | {{ t('meta.site_tagline') }}</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -26,7 +26,7 @@
       }
     }
   </script>
-  
+
   <!-- Vercel Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -53,30 +53,42 @@
         </a>
 
         <!-- Desktop menu -->
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-6">
           {% set active = request.endpoint %}
           <a href="{{ url_for('public.beranda') }}"
-            class="text-sm font-medium {% if active == 'public.beranda' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">Beranda</a>
+            class="text-sm font-medium {% if active == 'public.beranda' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.home') }}</a>
           <a href="{{ url_for('laporan.buat') }}"
-            class="text-sm font-medium {% if active == 'laporan.buat' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">Buat
-            Laporan</a>
+            class="text-sm font-medium {% if active == 'laporan.buat' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.report') }}</a>
           <a href="{{ url_for('laporan.daftar') }}"
-            class="text-sm font-medium {% if active == 'laporan.daftar' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">Laporan
-            Warga</a>
+            class="text-sm font-medium {% if active == 'laporan.daftar' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.reports_list') }}</a>
+
+          <!-- Language switcher (desktop) -->
+          <div class="inline-flex items-center border border-gray-300 rounded-full text-xs overflow-hidden"
+               role="group" aria-label="{{ t('nav.language') }}">
+            <a href="{{ switch_lang_url('id') }}"
+               class="px-2.5 py-1 {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
+               title="{{ t('nav.language_switch_to_id') }}"
+               {% if current_lang == 'id' %}aria-current="true"{% endif %}>ID</a>
+            <a href="{{ switch_lang_url('en') }}"
+               class="px-2.5 py-1 {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
+               title="{{ t('nav.language_switch_to_en') }}"
+               {% if current_lang == 'en' %}aria-current="true"{% endif %}>EN</a>
+          </div>
+
           <a href="{{ url_for('auth.login') }}"
             class="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
             </svg>
-            Login Admin
+            {{ t('nav.admin_login') }}
           </a>
         </div>
 
         <!-- Mobile menu button -->
         <button id="mobile-menu-btn"
           class="md:hidden p-2 rounded-md text-gray-600 hover:bg-red-50 hover:text-primary transition-colors relative z-50"
-          aria-label="Menu">
+          aria-label="{{ t('nav.menu') }}">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -87,13 +99,23 @@
     <div id="mobile-menu"
       class="hidden md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-md px-6 py-4 z-50 space-y-2 rounded-b-2xl">
       <a href="{{ url_for('public.beranda') }}"
-        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">Beranda</a>
+        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.home') }}</a>
       <a href="{{ url_for('laporan.buat') }}"
-        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">Buat
-        Laporan</a>
+        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.report') }}</a>
       <a href="{{ url_for('laporan.daftar') }}"
-        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">Laporan
-        Warga</a>
+        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.reports_list') }}</a>
+
+      <!-- Language switcher (mobile) -->
+      <div class="border-t border-gray-100 pt-3 mt-3">
+        <div class="px-4 pb-2 text-xs uppercase tracking-wide text-gray-500 font-semibold">{{ t('nav.language') }}</div>
+        <div class="px-4 flex gap-2">
+          <a href="{{ switch_lang_url('id') }}"
+             class="flex-1 text-center px-3 py-2 rounded-lg text-sm {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">Bahasa Indonesia</a>
+          <a href="{{ switch_lang_url('en') }}"
+             class="flex-1 text-center px-3 py-2 rounded-lg text-sm {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">English</a>
+        </div>
+      </div>
+
       <div class="border-t border-gray-100 pt-3 mt-3">
         <a href="{{ url_for('auth.login') }}"
           class="flex items-center gap-3 px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary font-medium transition-colors">
@@ -101,7 +123,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
           </svg>
-          Login Admin
+          {{ t('nav.admin_login') }}
         </a>
       </div>
     </div>
@@ -138,19 +160,18 @@
             alt="Logo Pa'Biritta" class="w-[136px] h-[136px] object-contain rounded-full -ml-9 z-0">
           <span class="font-bold text-xl text-white -ml-6 z-10">Pa'<span class="text-primary">Biritta</span></span>
         </div>
-        <p class="text-sm text-gray-400 -mt-6">Sistem Manajemen Bencana Desa berbasis komunitas untuk mitigasi,
-          pemantauan, dan pelaporan potensi bencana longsor.</p>
+        <p class="text-sm text-gray-400 -mt-6">{{ t('footer.description') }}</p>
       </div>
       <div>
-        <h4 class="font-semibold text-white mb-4">Tautan Cepat</h4>
+        <h4 class="font-semibold text-white mb-4">{{ t('footer.quick_links') }}</h4>
         <ul class="space-y-2 text-sm">
-          <li><a href="{{ url_for('public.beranda') }}" class="hover:text-primary">Beranda</a></li>
-          <li><a href="{{ url_for('laporan.buat') }}" class="hover:text-primary">Buat Laporan</a></li>
-          <li><a href="{{ url_for('laporan.daftar') }}" class="hover:text-primary">Laporan Warga</a></li>
+          <li><a href="{{ url_for('public.beranda') }}" class="hover:text-primary">{{ t('nav.home') }}</a></li>
+          <li><a href="{{ url_for('laporan.buat') }}" class="hover:text-primary">{{ t('nav.report') }}</a></li>
+          <li><a href="{{ url_for('laporan.daftar') }}" class="hover:text-primary">{{ t('nav.reports_list') }}</a></li>
         </ul>
       </div>
       <div>
-        <h4 class="font-semibold text-white mb-4">Kontak</h4>
+        <h4 class="font-semibold text-white mb-4">{{ t('footer.contact') }}</h4>
         <ul class="space-y-3 text-sm">
           <li class="flex items-start gap-2">
             <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
@@ -178,7 +199,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            Balai Desa, Jl. Poros Utama No. 1
+            {{ t('footer.address') }}
           </li>
         </ul>
       </div>
@@ -187,7 +208,7 @@
     <!-- PERBAIKAN: Posisi Teks Copyright Menjadi di Tengah -->
     <div class="border-t border-gray-800">
       <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-xs text-gray-500">
-        <p>© 2026 PPK Ormawa SPACE FT-UH</p>
+        <p>{{ t('footer.copyright') }}</p>
       </div>
     </div>
   </footer>
@@ -201,29 +222,24 @@
       const isHidden = menu.classList.contains('hidden');
 
       if (isHidden) {
-        // Buka Menu & Overlay, Kunci Scroll
         menu.classList.remove('hidden');
         overlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
 
-        // Ubah gaya tombol hamburger agar terlihat aktif
         btn.classList.add('bg-red-50', 'text-primary');
         btn.classList.remove('text-gray-600');
       } else {
-        // Tutup Menu & Overlay, Lepas Scroll
         menu.classList.add('hidden');
         overlay.classList.add('hidden');
         document.body.style.overflow = '';
 
-        // Kembalikan gaya tombol hamburger
         btn.classList.remove('bg-red-50', 'text-primary');
         btn.classList.add('text-gray-600');
       }
     }
 
-    // Event Listeners
     btn?.addEventListener('click', toggleMenu);
-    overlay?.addEventListener('click', toggleMenu); // Menutup menu jika area blur ditekan
+    overlay?.addEventListener('click', toggleMenu);
   </script>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

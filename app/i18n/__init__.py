@@ -8,6 +8,8 @@ Alur singkat:
 - `localized_url_for(endpoint, **values)` mengembalikan URL yang diberi
   prefix `/en` bila bahasa aktif adalah EN. Fungsi ini di-expose sebagai
   `url_for` di Jinja, jadi template lama tetap jalan tanpa perlu diubah.
+- Di mode debug, JSON kamus otomatis di-reload dari disk setiap request,
+  jadi edit `id.json`/`en.json` langsung terlihat tanpa restart server.
 """
 import json
 import os
@@ -18,7 +20,7 @@ SUPPORTED_LANGS = ("id", "en")
 DEFAULT_LANG = "id"
 EN_PREFIX = "/en"
 
-_translations: dict[str, dict] = {}
+_translations = {}
 
 
 def _load_translations() -> None:
@@ -33,6 +35,18 @@ def _load_translations() -> None:
 
 
 _load_translations()
+
+
+def _get_translations():
+    """Reload JSON dari disk bila app dalam mode debug, supaya edit
+    kamus langsung berlaku tanpa restart server."""
+    try:
+        from flask import current_app
+        if current_app and current_app.debug:
+            _load_translations()
+    except RuntimeError:
+        pass  # di luar application context
+    return _translations
 
 
 class LanguageMiddleware:
@@ -69,6 +83,7 @@ def t(key: str, **fmt) -> str:
     Kwargs digunakan untuk `str.format` interpolation.
     """
     lang = get_lang()
+    translations = _get_translations()
 
     def _lookup(source):
         node = source
@@ -79,9 +94,9 @@ def t(key: str, **fmt) -> str:
                 return None
         return node if isinstance(node, str) else None
 
-    value = _lookup(_translations.get(lang, {}))
+    value = _lookup(translations.get(lang, {}))
     if value is None and lang != DEFAULT_LANG:
-        value = _lookup(_translations.get(DEFAULT_LANG, {}))
+        value = _lookup(translations.get(DEFAULT_LANG, {}))
     if value is None:
         return key
 

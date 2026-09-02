@@ -10,14 +10,31 @@
     "reports_list": "Community Reports",
     "admin_login": "Admin Login",
     "menu": "Menu",
-    "language": "Language"
+    "language": "Language",
+    "language_switch_to_id": "Ganti ke Bahasa Indonesia",
+    "language_switch_to_en": "Switch to English"
   },
   "footer": {
-    "description": "A community-based village disaster management system for mitigation, monitoring, and reporting of potential landslide hazards.",
+    "description": "A community-based village disaster management system for landslide mitigation, monitoring, and reporting.",
     "quick_links": "Quick Links",
     "contact": "Contact",
     "address": "Village Hall, Jl. Poros Utama No. 1",
     "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "report_management": "Report Management",
+    "activity_log": "Activity Log",
+    "user_management": "User Management",
+    "logout": "Sign Out",
+    "logout_short": "Logout",
+    "village_status": "Village Status",
+    "village_resilient": "Disaster-Resilient Village",
+    "mobile_page_title": "Admin Dashboard",
+    "desktop_subtitle_default": "Village disaster management system overview",
+    "please_login": "Please log in first.",
+    "file_too_large": "File size exceeds the {mb}MB limit.",
+    "system_normal": "System normal."
   },
   "common": {
     "loading": "Loading...",
