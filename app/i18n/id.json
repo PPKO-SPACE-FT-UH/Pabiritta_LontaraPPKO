@@ -142,10 +142,33 @@
             "worship": "Sarana Peribadatan",
             "health": "Sarana Kesehatan",
             "village_assets": "Potensi Desa"
+        },
+        "popup": {
+            "longsor_point": "Titik Longsor",
+            "assembly_point": "Titik Kumpul",
+            "evacuation_route_point": "Titik Jalur Evakuasi",
+            "education_facility": "Sarana Pendidikan",
+            "worship_facility": "Sarana Peribadatan",
+            "health_facility": "Sarana Kesehatan",
+            "village_asset": "Potensi Desa",
+            "year": "Tahun",
+            "source_primary": "Sumber: Data Primer",
+            "status": "Status",
+            "moisture": "Kelembapan",
+            "side_tilt": "Kemiringan Samping",
+            "front_back_tilt": "Kemiringan Depan-Belakang",
+            "view_details": "Lihat Detail →",
+            "offline": "OFFLINE",
+            "last_data_ago": "Data terakhir {n} menit lalu",
+            "no_data_yet": "Belum ada data",
+            "sensor_normal": "Normal",
+            "sensor_warning": "Waspada",
+            "sensor_danger": "Bahaya"
         }
     },
     "laporan": {
         "dusun_prefix": "Dusun",
+        "user_content_notice": "Konten dari warga (deskripsi, lokasi, nama pelapor) ditulis dalam Bahasa Indonesia.",
         "status": {
             "Menunggu": "Menunggu",
             "Proses": "Diproses",
@@ -308,5 +331,17 @@
         "submit_description": "Kirim laporan potensi atau kejadian longsor di Desa Lonjoboko. Lengkap dengan foto, titik lokasi peta, dan detail kejadian.",
         "detail_description_fallback": "Detail laporan warga di Desa Lonjoboko, dengan foto, lokasi peta, kategori, status penanganan, dan riwayat tindak lanjut.",
         "organization_alt_name": "Pa'Biritta Lonjoboko"
+    },
+    "status_desa": {
+        "label": {
+            "aman": "AMAN",
+            "waspada": "WASPADA",
+            "bahaya": "BAHAYA"
+        },
+        "description": {
+            "aman": "Sensor kelembapan dan kemiringan tanah dalam batas normal.",
+            "waspada": "Beberapa sensor menunjukkan nilai tinggi. Pantau terus kondisi.",
+            "bahaya": "Sensor mendeteksi kondisi berbahaya. Segera evakuasi bila perlu."
+        }
     }
 }

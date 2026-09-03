@@ -2,11 +2,15 @@
 import json
 import os
 
-from flask import g, request, url_for as _flask_url_for
+from flask import g, request, url_for as _flask_url_for, redirect
 
 SUPPORTED_LANGS = ("id", "en")
 DEFAULT_LANG = "id"
 EN_PREFIX = "/en"
+
+# Prefix URL yang selalu dipaksa Bahasa Indonesia (tidak ada versi EN).
+# Kalau user akses /en/admin/... → di-redirect 301 ke /admin/...
+ID_ONLY_PATH_PREFIXES = ("/admin",)
 
 _translations = {}
 
@@ -56,6 +60,10 @@ def get_lang() -> str:
     return DEFAULT_LANG
 
 
+def _is_id_only_path(path: str) -> bool:
+    return any(path.startswith(p) for p in ID_ONLY_PATH_PREFIXES)
+
+
 def t(key: str, **fmt) -> str:
     lang = get_lang()
     translations = _get_translations()
@@ -84,12 +92,21 @@ def t(key: str, **fmt) -> str:
 
 
 def localized_url_for(endpoint: str, **values) -> str:
+    """Wrapper `url_for` yang menambahkan prefix `/en` bila perlu.
+
+    Skip untuk URL yang tidak boleh diterjemahkan (mis. `/admin/*`) — link ke
+    halaman admin selalu tanpa prefix `/en`, apapun bahasa aktif.
+    """
     url = _flask_url_for(endpoint, **values)
-    if get_lang() == "en" and url.startswith("/") and not (
-        url == EN_PREFIX or url.startswith(EN_PREFIX + "/")
-    ):
-        return EN_PREFIX + url
-    return url
+    if get_lang() != "en":
+        return url
+    if not url.startswith("/"):
+        return url
+    if url == EN_PREFIX or url.startswith(EN_PREFIX + "/"):
+        return url
+    if _is_id_only_path(url):
+        return url
+    return EN_PREFIX + url
 
 
 def switch_lang_url(target_lang: str) -> str:
@@ -98,27 +115,35 @@ def switch_lang_url(target_lang: str) -> str:
     path = request.path or "/"
     query = request.query_string.decode("utf-8") if request.query_string else ""
     suffix = f"?{query}" if query else ""
+    # Path admin selalu Bahasa Indonesia, jadi switcher balik ke non-/en
+    if _is_id_only_path(path):
+        return path + suffix
     if target_lang == "en":
         return EN_PREFIX + path + suffix
     return path + suffix
 
 
 def canonical_url(site_url: str) -> str:
-    """URL absolut versi bahasa yang sedang aktif."""
     site_url = (site_url or "").rstrip("/")
     path = request.path or "/"
-    if get_lang() == "en":
+    if get_lang() == "en" and not _is_id_only_path(path):
         return f"{site_url}{EN_PREFIX}{path}"
     return f"{site_url}{path}"
 
 
 def alternate_url(site_url: str, target_lang: str) -> str:
-    """URL absolut versi bahasa `target_lang` untuk halaman saat ini."""
     site_url = (site_url or "").rstrip("/")
     path = request.path or "/"
+    if _is_id_only_path(path):
+        return f"{site_url}{path}"
     if target_lang == "en":
         return f"{site_url}{EN_PREFIX}{path}"
     return f"{site_url}{path}"
+
+
+def url_prefix_for_current_lang() -> str:
+    """Returns '/en' bila lang aktif = EN, else ''. Dipakai JS untuk build URL."""
+    return EN_PREFIX if get_lang() == "en" else ""
 
 
 def init_app(app) -> None:
@@ -127,6 +152,18 @@ def init_app(app) -> None:
     @app.before_request
     def _set_lang():
         g.lang = request.environ.get("pabiritta.lang", DEFAULT_LANG)
+
+    @app.before_request
+    def _force_id_for_admin():
+        """Kalau user akses /en/admin/... → redirect 301 ke /admin/... 
+        supaya URL admin selalu canonical tanpa prefix bahasa."""
+        if get_lang() == "en" and _is_id_only_path(request.path):
+            query = request.query_string.decode("utf-8") if request.query_string else ""
+            target = request.path + (f"?{query}" if query else "")
+            return redirect(target, code=301)
+        # Safety net: paksa lang=id di semua path admin
+        if _is_id_only_path(request.path):
+            g.lang = DEFAULT_LANG
 
     @app.context_processor
     def _inject_i18n():
@@ -142,4 +179,5 @@ def init_app(app) -> None:
             "canonical_url": canonical_url(site_url),
             "alternate_url_id": alternate_url(site_url, "id"),
             "alternate_url_en": alternate_url(site_url, "en"),
+            "url_prefix": url_prefix_for_current_lang(),
         }

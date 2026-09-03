@@ -142,10 +142,33 @@
             "worship": "Worship Facilities",
             "health": "Health Facilities",
             "village_assets": "Village Assets"
+        },
+        "popup": {
+            "longsor_point": "Landslide Point",
+            "assembly_point": "Assembly Point",
+            "evacuation_route_point": "Evacuation Route Point",
+            "education_facility": "Education Facility",
+            "worship_facility": "Worship Facility",
+            "health_facility": "Health Facility",
+            "village_asset": "Village Asset",
+            "year": "Year",
+            "source_primary": "Source: Primary Data",
+            "status": "Status",
+            "moisture": "Moisture",
+            "side_tilt": "Side Tilt",
+            "front_back_tilt": "Front-Back Tilt",
+            "view_details": "View Details →",
+            "offline": "OFFLINE",
+            "last_data_ago": "Last data {n} minutes ago",
+            "no_data_yet": "No data yet",
+            "sensor_normal": "Normal",
+            "sensor_warning": "Warning",
+            "sensor_danger": "Danger"
         }
     },
     "laporan": {
         "dusun_prefix": "Hamlet",
+        "user_content_notice": "Community-submitted content (report descriptions, locations, and reporter names) is written in Indonesian. Right-click any text and select 'Translate to English', or use your browser's built-in translate feature.",
         "status": {
             "Menunggu": "Pending",
             "Proses": "In Progress",
@@ -308,5 +331,17 @@
         "submit_description": "Submit a landslide potential or incident report in Lonjoboko Village. Complete with photo, map location, and incident details.",
         "detail_description_fallback": "Community landslide report detail in Lonjoboko Village, with photo, map location, category, handling status, and follow-up history.",
         "organization_alt_name": "Pa'Biritta Lonjoboko"
+    },
+    "status_desa": {
+        "label": {
+            "aman": "SAFE",
+            "waspada": "WARNING",
+            "bahaya": "DANGER"
+        },
+        "description": {
+            "aman": "Soil moisture and tilt sensors are within normal range.",
+            "waspada": "Some sensors show elevated readings. Keep monitoring the situation.",
+            "bahaya": "Sensors detect dangerous conditions. Evacuate immediately if needed."
+        }
     }
 }

@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Primary Meta Tags -->
   <title>{% block title %}{{ t('meta.site_name') }}{% endblock %} | {{ t('meta.site_tagline') }}</title>
   <meta name="description" content="{% block meta_description %}{{ t('seo.default_description') }}{% endblock %}">
   <meta name="keywords" content="{% block meta_keywords %}{{ t('seo.default_keywords') }}{% endblock %}">
@@ -13,13 +12,11 @@
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#DC2626">
 
-  <!-- Canonical & hreflang untuk multi-bahasa -->
   <link rel="canonical" href="{{ canonical_url }}">
   <link rel="alternate" hreflang="id" href="{{ alternate_url_id }}">
   <link rel="alternate" hreflang="en" href="{{ alternate_url_en }}">
   <link rel="alternate" hreflang="x-default" href="{{ alternate_url_id }}">
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{{ t('meta.site_name') }}">
   <meta property="og:title" content="{{ self.title() }} | {{ t('meta.site_tagline') }}">
@@ -31,13 +28,11 @@
   <meta property="og:locale" content="{% if current_lang == 'en' %}en_US{% else %}id_ID{% endif %}">
   <meta property="og:locale:alternate" content="{% if current_lang == 'en' %}id_ID{% else %}en_US{% endif %}">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ self.title() }} | {{ t('meta.site_tagline') }}">
   <meta name="twitter:description" content="{{ self.meta_description() }}">
   <meta name="twitter:image" content="{{ site_url }}{{ url_for('static', filename='img/logo-lontara.png') }}">
 
-  <!-- Preconnects & Assets -->
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preconnect" href="https://res.cloudinary.com">
@@ -60,7 +55,6 @@
     }
   </script>
 
-  <!-- Structured Data (JSON-LD): Government/Community Organization -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -92,13 +86,11 @@
   }
   </script>
 
-  <!-- Vercel Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
 
-  <!-- Vercel Speed Insights -->
   <script>
     window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
   </script>
@@ -107,7 +99,6 @@
 
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col relative">
 
-  <!-- NAVBAR -->
   <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 relative">
     <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
@@ -120,22 +111,25 @@
         <div class="hidden md:flex items-center gap-6">
           {% set active = request.endpoint %}
           <a href="{{ url_for('public.beranda') }}"
-            class="text-sm font-medium {% if active == 'public.beranda' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.home') }}</a>
+            class="text-sm font-medium {% if active == 'public.beranda' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{
+            t('nav.home') }}</a>
           <a href="{{ url_for('laporan.buat') }}"
-            class="text-sm font-medium {% if active == 'laporan.buat' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.report') }}</a>
+            class="text-sm font-medium {% if active == 'laporan.buat' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{
+            t('nav.report') }}</a>
           <a href="{{ url_for('laporan.daftar') }}"
-            class="text-sm font-medium {% if active == 'laporan.daftar' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{ t('nav.reports_list') }}</a>
+            class="text-sm font-medium {% if active == 'laporan.daftar' %}text-primary border-b-2 border-primary pb-1{% else %}text-gray-600 hover:text-primary{% endif %}">{{
+            t('nav.reports_list') }}</a>
 
-          <div class="inline-flex items-center border border-gray-300 rounded-full text-xs overflow-hidden"
-               role="group" aria-label="{{ t('nav.language') }}">
+          <div class="inline-flex items-center border border-gray-300 rounded-full text-xs overflow-hidden" role="group"
+            aria-label="{{ t('nav.language') }}">
             <a href="{{ switch_lang_url('id') }}"
-               class="px-2.5 py-1 {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
-               title="{{ t('nav.language_switch_to_id') }}"
-               {% if current_lang == 'id' %}aria-current="true"{% endif %}>ID</a>
+              class="px-2.5 py-1 {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
+              title="{{ t('nav.language_switch_to_id') }}" {% if current_lang=='id' %}aria-current="true" {% endif
+              %}>ID</a>
             <a href="{{ switch_lang_url('en') }}"
-               class="px-2.5 py-1 {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
-               title="{{ t('nav.language_switch_to_en') }}"
-               {% if current_lang == 'en' %}aria-current="true"{% endif %}>EN</a>
+              class="px-2.5 py-1 {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
+              title="{{ t('nav.language_switch_to_en') }}" {% if current_lang=='en' %}aria-current="true" {% endif
+              %}>EN</a>
           </div>
 
           <a href="{{ url_for('auth.login') }}"
@@ -161,19 +155,23 @@
     <div id="mobile-menu"
       class="hidden md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-md px-6 py-4 z-50 space-y-2 rounded-b-2xl">
       <a href="{{ url_for('public.beranda') }}"
-        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.home') }}</a>
+        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{
+        t('nav.home') }}</a>
       <a href="{{ url_for('laporan.buat') }}"
-        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.report') }}</a>
+        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{
+        t('nav.report') }}</a>
       <a href="{{ url_for('laporan.daftar') }}"
-        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{ t('nav.reports_list') }}</a>
+        class="block px-4 py-3 rounded-lg text-base text-gray-700 hover:bg-red-50 hover:text-primary transition-colors">{{
+        t('nav.reports_list') }}</a>
 
       <div class="border-t border-gray-100 pt-3 mt-3">
         <div class="px-4 pb-2 text-xs uppercase tracking-wide text-gray-500 font-semibold">{{ t('nav.language') }}</div>
         <div class="px-4 flex gap-2">
           <a href="{{ switch_lang_url('id') }}"
-             class="flex-1 text-center px-3 py-2 rounded-lg text-sm {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">Bahasa Indonesia</a>
+            class="flex-1 text-center px-3 py-2 rounded-lg text-sm {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">Bahasa
+            Indonesia</a>
           <a href="{{ switch_lang_url('en') }}"
-             class="flex-1 text-center px-3 py-2 rounded-lg text-sm {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">English</a>
+            class="flex-1 text-center px-3 py-2 rounded-lg text-sm {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">English</a>
         </div>
       </div>
 
@@ -296,6 +294,46 @@
     btn?.addEventListener('click', toggleMenu);
     overlay?.addEventListener('click', toggleMenu);
   </script>
+
+  {# ==== Payload i18n untuk popup peta — dibaca oleh peta.js ==== #}
+  {% set map_i18n = {
+  'urlPrefix': url_prefix,
+  'longsorPoint': t('map.popup.longsor_point'),
+  'assemblyPoint': t('map.popup.assembly_point'),
+  'evacuationRoutePoint': t('map.popup.evacuation_route_point'),
+  'educationFacility': t('map.popup.education_facility'),
+  'worshipFacility': t('map.popup.worship_facility'),
+  'healthFacility': t('map.popup.health_facility'),
+  'villageAsset': t('map.popup.village_asset'),
+  'year': t('map.popup.year'),
+  'sourcePrimary': t('map.popup.source_primary'),
+  'status': t('map.popup.status'),
+  'moisture': t('map.popup.moisture'),
+  'sideTilt': t('map.popup.side_tilt'),
+  'frontBackTilt': t('map.popup.front_back_tilt'),
+  'viewDetails': t('map.popup.view_details'),
+  'offline': t('map.popup.offline'),
+  'lastDataAgo': t('map.popup.last_data_ago'),
+  'noDataYet': t('map.popup.no_data_yet'),
+  'sensorStatus': {
+  'Normal': t('map.popup.sensor_normal'),
+  'Waspada': t('map.popup.sensor_warning'),
+  'Bahaya': t('map.popup.sensor_danger')
+  },
+  'laporanStatus': {
+  'Menunggu': t('laporan.status.Menunggu'),
+  'Proses': t('laporan.status.Proses'),
+  'Tindak Lanjut': t('laporan.status.Tindak Lanjut'),
+  'Selesai': t('laporan.status.Selesai'),
+  'Ditolak': t('laporan.status.Ditolak')
+  },
+  'laporanKategori': {
+  'Potensi Longsor': t('laporan.kategori.Potensi Longsor'),
+  'Kejadian Longsor': t('laporan.kategori.Kejadian Longsor'),
+  'Dampak Longsor': t('laporan.kategori.Dampak Longsor')
+  }
+  } %}
+  <script id="pab-map-i18n" type="application/json">{{ map_i18n | tojson }}</script>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="{{ url_for('static', filename='js/form-guard.js') }}"></script>

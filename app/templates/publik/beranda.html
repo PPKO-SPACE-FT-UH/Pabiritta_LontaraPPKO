@@ -1,5 +1,6 @@
 {% extends "base_public.html" %}
 {% block title %}{{ t('titles.home') }}{% endblock %}
+{% block meta_description %}{{ t('seo.home_description') }}{% endblock %}
 
 {% block content %}
 <div class="max-w-[96%] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -153,6 +154,16 @@
         <h2 class="font-bold text-lg">{{ t('beranda.latest_reports.title') }}</h2>
         <a href="{{ url_for('laporan.daftar') }}" class="text-primary text-sm font-medium hover:underline">{{ t('beranda.latest_reports.see_all') }}</a>
       </div>
+
+      {% if current_lang == 'en' %}
+      <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800 flex items-start gap-2 mb-4">
+        <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <p>{{ t('laporan.user_content_notice') }}</p>
+      </div>
+      {% endif %}
+
       <div class="space-y-3">
         {% for l in laporan_terbaru[:3] %}
           <a href="{{ url_for('laporan.detail', laporan_id=l.id) }}" class="flex gap-3 p-3 rounded-lg hover:bg-gray-50 border border-gray-100">
@@ -169,11 +180,11 @@
             {% endif %}
             <div class="flex-1 min-w-0">
               <div class="flex justify-between gap-2">
-                <h3 class="font-semibold truncate">{{ l.lokasi_label or l.dusun }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-{{ l.status_color }}-100 text-{{ l.status_color }}-700 whitespace-nowrap">{{ l.status }}</span>
+                <h3 class="font-semibold truncate" lang="id" translate="yes">{{ l.lokasi_label or l.dusun }}</h3>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-{{ l.status_color }}-100 text-{{ l.status_color }}-700 whitespace-nowrap">{{ t('laporan.status.' ~ l.status) }}</span>
               </div>
-              <div class="text-xs text-gray-500 mt-0.5">{{ l.kategori }} • {{ l.created_at|tgl('%-d/%-m/%Y') }}</div>
-              <p class="text-sm text-gray-600 mt-1 line-clamp-1">{{ l.deskripsi }}</p>
+              <div class="text-xs text-gray-500 mt-0.5">{{ t('laporan.kategori.' ~ l.kategori) }} • {{ l.created_at|tgl('%-d/%-m/%Y') }}</div>
+              <p class="text-sm text-gray-600 mt-1 line-clamp-1" lang="id" translate="yes">{{ l.deskripsi }}</p>
             </div>
           </a>
         {% else %}
@@ -184,9 +195,8 @@
       </div>
     </div>
 
-    <!-- Kolom kanan: tinggi natural, tidak stretched -->
+    <!-- Kolom kanan -->
     <div class="space-y-6">
-      <!-- Status Kondisi Desa -->
       <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm text-center">
         <h2 class="font-bold text-base mb-3 text-left">{{ t('beranda.village_status.title') }}</h2>
         <div class="relative w-36 h-36 mx-auto mb-3">
@@ -196,11 +206,10 @@
             <svg class="w-11 h-11 text-{{ status_desa.warna }}-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001z" clip-rule="evenodd"/></svg>
           </div>
         </div>
-        <div class="text-xl font-bold text-{{ status_desa.warna }}-600 mb-1">{{ status_desa.label }}</div>
-        <p class="text-xs text-gray-500 leading-relaxed">{{ status_desa.deskripsi }}</p>
+        <div class="text-xl font-bold text-{{ status_desa.warna }}-600 mb-1">{{ t('status_desa.label.' ~ (status_desa.key|default('aman'))) }}</div>
+        <p class="text-xs text-gray-500 leading-relaxed">{{ t('status_desa.description.' ~ (status_desa.key|default('aman'))) }}</p>
       </div>
 
-      <!-- Kontak Darurat -->
       <div class="bg-gray-900 rounded-xl p-5 text-white">
         <div class="flex items-center gap-2 mb-4">
           <svg class="w-5 h-5 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">

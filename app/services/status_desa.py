@@ -19,6 +19,7 @@ def hitung_status_desa() -> dict:
 
     mapping = {
         DataSensor.STATUS_NORMAL: {
+            "key": "aman",
             "label": "AMAN",
             "warna": "green",
             "warna_hex": "#16A34A",
@@ -26,6 +27,7 @@ def hitung_status_desa() -> dict:
             "status_text": "AMAN TERKENDALI",
         },
         DataSensor.STATUS_WASPADA: {
+            "key": "waspada",
             "label": "WASPADA",
             "warna": "yellow",
             "warna_hex": "#EAB308",
@@ -33,6 +35,7 @@ def hitung_status_desa() -> dict:
             "status_text": "WASPADA",
         },
         DataSensor.STATUS_BAHAYA: {
+            "key": "bahaya",
             "label": "BAHAYA",
             "warna": "red",
             "warna_hex": "#DC2626",

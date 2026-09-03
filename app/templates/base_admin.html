@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ t('meta.html_lang') }}">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preconnect" href="https://res.cloudinary.com">
-  <title>{% block title %}Admin{% endblock %} | {{ t('meta.site_name') }}</title>
+  <title>{% block title %}Admin{% endblock %} | Pa'Biritta</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png', v='1.0') }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -55,7 +55,7 @@
 
           <div class="min-w-0">
             <div class="font-bold text-xl md:text-2xl leading-tight">Pa'<span class="text-red-200">Biritta</span></div>
-            <div class="text-[10px] md:text-[11px] text-red-200 mt-0.5 md:mt-1">{{ t('admin.village_resilient') }}</div>
+            <div class="text-[10px] md:text-[11px] text-red-200 mt-0.5 md:mt-1">Desa Tangguh Bencana</div>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
-          {{ t('admin.dashboard') }}
+          Dashboard
         </a>
         <a href="{{ url_for('admin.manajemen_laporan') }}"
           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep in ['admin.manajemen_laporan','admin.detail_laporan'] %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
@@ -76,7 +76,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          {{ t('admin.report_management') }}
+          Manajemen Laporan
         </a>
         <a href="{{ url_for('admin.riwayat_aktivitas') }}"
           class="flex items-center gap-3 px-3 py-2.5 rounded-lg {% if ep == 'admin.riwayat_aktivitas' %}bg-primary{% else %}hover:bg-red-800/50{% endif %}">
@@ -84,7 +84,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          {{ t('admin.activity_log') }}
+          Riwayat Aktivitas
         </a>
         {% if current_user.is_superadmin %}
         <a href="{{ url_for('admin.manajemen_pengguna') }}"
@@ -93,7 +93,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-          {{ t('admin.user_management') }}
+          Manajemen Pengguna
         </a>
         {% endif %}
       </nav>
@@ -115,7 +115,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          {{ t('admin.logout') }}
+          Keluar Sistem
         </a>
         <div class="bg-yellow-50/10 border border-yellow-300/30 rounded-lg p-3">
           <div class="flex items-center gap-2 text-yellow-200 text-xs font-semibold mb-2">
@@ -123,7 +123,7 @@
               <path
                 d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" />
             </svg>
-            {{ t('admin.village_status') }}
+            Status Desa
           </div>
           <div class="bg-{{ status_desa.warna }}-600 text-white text-center font-bold py-2 rounded text-sm">
             {{ status_desa.status_text }}
@@ -139,25 +139,16 @@
       <header class="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10 box-border h-16">
         <div class="px-4 h-full flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <button id="sidebar-toggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100" aria-label="{{ t('nav.menu') }}">
+            <button id="sidebar-toggle" class="p-2 rounded-md text-gray-600 hover:bg-gray-100" aria-label="Menu">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h1 class="text-lg font-bold truncate">{% block page_title %}{{ t('admin.mobile_page_title') }}{% endblock %}</h1>
+            <h1 class="text-lg font-bold truncate">{% block page_title %}Dashboard Admin{% endblock %}</h1>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
-            {# Language switcher (mobile navbar) — sementara disembunyikan sampai translation admin selesai
-            <div class="inline-flex items-center border border-gray-300 rounded-full text-[11px] overflow-hidden"
-                 role="group" aria-label="{{ t('nav.language') }}">
-              <a href="{{ switch_lang_url('id') }}"
-                 class="px-2 py-1 {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}">ID</a>
-              <a href="{{ switch_lang_url('en') }}"
-                 class="px-2 py-1 {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}">EN</a>
-            </div>
-            #}
             <a href="{{ url_for('auth.logout') }}" class="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md"
-              title="{{ t('admin.logout_short') }}">
+              title="Logout">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -172,21 +163,8 @@
         class="hidden md:flex items-center justify-between px-8 h-20 bg-white border-b border-gray-200 sticky top-0 z-20 box-border">
         <div class="min-w-0">
           <h1 class="text-2xl font-bold truncate">{{ self.page_title() }}</h1>
-          <p class="text-xs text-gray-500 mt-0.5">{% block page_subtitle %}{{ t('admin.desktop_subtitle_default') }}{% endblock %}</p>
+          <p class="text-xs text-gray-500 mt-0.5">{% block page_subtitle %}Ringkasan sistem manajemen kebencanaan desa{% endblock %}</p>
         </div>
-        {# Language switcher (desktop navbar) — sementara disembunyikan sampai translation admin selesai
-        <div class="inline-flex items-center border border-gray-300 rounded-full text-xs overflow-hidden flex-shrink-0 ml-4"
-             role="group" aria-label="{{ t('nav.language') }}">
-          <a href="{{ switch_lang_url('id') }}"
-             class="px-3 py-1.5 {% if current_lang == 'id' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
-             title="{{ t('nav.language_switch_to_id') }}"
-             {% if current_lang == 'id' %}aria-current="true"{% endif %}>ID</a>
-          <a href="{{ switch_lang_url('en') }}"
-             class="px-3 py-1.5 {% if current_lang == 'en' %}bg-primary text-white font-semibold{% else %}text-gray-600 hover:bg-gray-100{% endif %}"
-             title="{{ t('nav.language_switch_to_en') }}"
-             {% if current_lang == 'en' %}aria-current="true"{% endif %}>EN</a>
-        </div>
-        #}
       </div>
 
       {% with messages = get_flashed_messages(with_categories=true) %}
