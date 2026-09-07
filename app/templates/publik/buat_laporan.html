@@ -367,6 +367,7 @@
   });
 
   let marker = null;
+  let accuracyCircle = null;
 
   function setMarker(lat, lng) {
     const latlng = L.latLng(lat, lng);
@@ -376,7 +377,45 @@
     document.getElementById('lng-field').value = lng.toFixed(6);
   }
 
-  mapPilih.on('click', (e) => setMarker(e.latlng.lat, e.latlng.lng));
+  function isInLonjobokoBounds(lat, lng) {
+    return LONJOBOKO_BOUNDS.contains(L.latLng(lat, lng));
+  }
+
+  function showAccuracyInfo(kind, text) {
+    const el = document.getElementById('lokasi-accuracy-info');
+    const styleMap = {
+      ok:    'bg-green-50 text-green-700 border border-green-200',
+      info:  'bg-blue-50 text-blue-700 border border-blue-200',
+      warn:  'bg-yellow-50 text-yellow-700 border border-yellow-200',
+      error: 'bg-red-50 text-red-700 border border-red-200',
+    };
+    el.classList.remove('hidden');
+    el.className = 'mt-2 text-xs px-3 py-2 rounded-lg ' + (styleMap[kind] || styleMap.info);
+    el.textContent = text;
+  }
+
+  async function reverseGeocode(lat, lng) {
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`);
+      const data = await r.json();
+      return (data.display_name || '').substring(0, 200);
+    } catch (_) {
+      return '';
+    }
+  }
+
+  async function autoFillLabel(lat, lng, { force }) {
+    const labelInput = document.getElementById('lokasi-label-input');
+    // Kalau user sudah ketik manual dan bukan force (dari GPS), jangan timpa
+    if (!force && labelInput.value.trim()) return;
+    const label = await reverseGeocode(lat, lng);
+    if (label) labelInput.value = label;
+  }
+
+  mapPilih.on('click', (e) => {
+    setMarker(e.latlng.lat, e.latlng.lng);
+    autoFillLabel(e.latlng.lat, e.latlng.lng, { force: false });
+  });
 
   const _lat0 = document.getElementById('lat-field').value;
   const _lng0 = document.getElementById('lng-field').value;
@@ -385,17 +424,15 @@
     mapPilih.setView([_lat0, _lng0], 15);
   }
 
-  let accuracyCircle = null;
-
   function deteksiLokasiOtomatis() {
     const btn = document.getElementById('btn-lokasi-otomatis');
     if (!navigator.geolocation) {
-      showStepError(I18N.geoNotSupported);
+      showStepError('Browser Anda tidak mendukung geolokasi.');
       return;
     }
 
     btn.disabled = true;
-    btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> ${I18N.takingLocation}`;
+    btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Mengambil lokasi...';
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -403,6 +440,22 @@
         const lng = pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
 
+        btn.disabled = false;
+
+        // Pastikan tile map sudah render benar sebelum setView
+        mapPilih.invalidateSize();
+
+        // Kasus 1: lokasi di LUAR area Desa Lonjoboko → jangan set marker, minta user klik peta
+        if (!isInLonjobokoBounds(lat, lng)) {
+          btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Gunakan Lokasi Saya';
+          showAccuracyInfo(
+            'error',
+            'Lokasi Anda terdeteksi di luar area Desa Lonjoboko. Silakan klik langsung di peta untuk menandai titik lokasi kejadian.'
+          );
+          return;
+        }
+
+        // Kasus 2: lokasi di DALAM bounds → set marker + view + info akurasi + auto label
         setMarker(lat, lng);
         mapPilih.setView([lat, lng], 16);
 
@@ -412,44 +465,23 @@
           radius: accuracy, color: circleColor, fillColor: circleColor, fillOpacity: 0.15, weight: 1.5,
         }).addTo(mapPilih);
 
-        const infoEl = document.getElementById('lokasi-accuracy-info');
-        infoEl.classList.remove('hidden');
-        const m = Math.round(accuracy);
         if (accuracy <= 100) {
-          infoEl.className = 'mt-2 text-xs px-3 py-2 rounded-lg bg-green-50 text-green-700 border border-green-200';
-          infoEl.textContent = fmt(I18N.accuracyVeryGood, { m });
+          showAccuracyInfo('ok', `Akurasi GPS: ±${Math.round(accuracy)}m (sangat baik). Label diambil dari lokasi terdekat — silakan edit jika kurang tepat.`);
         } else if (accuracy <= 500) {
-          infoEl.className = 'mt-2 text-xs px-3 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200';
-          infoEl.textContent = fmt(I18N.accuracyGood, { m });
+          showAccuracyInfo('info', `Akurasi GPS: ±${Math.round(accuracy)}m (cukup baik). Label diambil dari lokasi terdekat — silakan edit jika kurang tepat.`);
         } else {
-          infoEl.className = 'mt-2 text-xs px-3 py-2 rounded-lg bg-yellow-50 text-yellow-700 border border-yellow-200';
-          infoEl.textContent = fmt(I18N.accuracyWeak, { m });
+          showAccuracyInfo('warn', `Akurasi GPS: ±${Math.round(accuracy)}m — sinyal lemah. Geser pin dengan klik peta untuk titik yang lebih tepat. Label diambil dari lokasi terdekat — silakan edit jika kurang tepat.`);
         }
 
-        btn.disabled = false;
-        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> ${I18N.locationTaken}`;
+        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Lokasi berhasil diambil';
 
-        if (accuracy > 500) {
-          const labelInput = document.getElementById('lokasi-label-input');
-          labelInput.value = '';
-          labelInput.placeholder = I18N.accuracyWeakPlaceholder;
-          labelInput.focus();
-          return;
-        }
-
-        const nomLang = I18N.currentLang === 'en' ? 'en' : 'id';
-        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=${nomLang}`)
-          .then(r => r.json())
-          .then(data => {
-            document.getElementById('lokasi-label-input').value = (data.display_name || '').substring(0, 200);
-          })
-          .catch(() => {});
+        autoFillLabel(lat, lng, { force: true });
       },
       (err) => {
         btn.disabled = false;
-        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> ${I18N.useMyLocation}`;
-        const msgs = { 1: I18N.geoDenied, 2: I18N.geoUnavailable, 3: I18N.geoTimeout };
-        showStepError(msgs[err.code] || I18N.geoGeneric);
+        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Gunakan Lokasi Saya';
+        const msgs = { 1: 'Akses lokasi ditolak. Izinkan akses lokasi di pengaturan browser.', 2: 'Lokasi tidak tersedia saat ini.', 3: 'Waktu habis. Coba lagi.' };
+        showStepError(msgs[err.code] || 'Gagal mendapatkan lokasi.');
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
     );
