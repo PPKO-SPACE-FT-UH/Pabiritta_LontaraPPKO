@@ -33,17 +33,18 @@ def seed_users():
     if User.query.count() > 0:
         print("• Users sudah ada — skip.")
         return
+
     superadmin = User(
-        email="superadmin@pabiritta.id",
-        nama="Super Admin",
+        username="superadmin",
+        no_hp="081234567890",
         role=User.ROLE_SUPERADMIN,
         is_active=True,
     )
     superadmin.set_password("admin123")
 
     admin = User(
-        email="admin@pabiritta.id",
-        nama="Admin Budi",
+        username="admin_ppko",
+        no_hp="081234567891",
         role=User.ROLE_ADMIN,
         is_active=True,
     )
@@ -51,7 +52,10 @@ def seed_users():
 
     db.session.add_all([superadmin, admin])
     db.session.commit()
-    print("✓ Seed users: superadmin@pabiritta.id, admin@pabiritta.id (password: admin123)")
+    print("✓ Seed users:")
+    print("  Super Admin → username: superadmin      / password: admin123")
+    print("  Admin       → username: admin_ppko      / password: admin123")
+    print("  (Ganti no_hp di database sesuai nomor WA asli setelah seeding)")
 
 
 def seed_laporan():
@@ -114,7 +118,6 @@ def seed_laporan():
 
     for c in contoh:
         lat, lng = DUSUN_KOORDINAT[c["dusun"]]
-        # Sebar titik supaya tidak menumpuk
         lat += (hash(c["lokasi_label"]) % 100) / 10000
         lng += (hash(c["nama_pelapor"]) % 100) / 10000
         laporan = Laporan(
@@ -140,11 +143,11 @@ def seed_aktivitas():
         print("• Aktivitas sudah ada — skip.")
         return
     items = [
-        ("Admin Budi", "Mengubah Status Laporan (Ditolak)", "Laporan #5", 1),
+        ("admin_ppko", "Mengubah Status Laporan (Ditolak)", "Laporan #5", 1),
         ("Sistem", "Menerima Laporan Baru", "Laporan dari Dewi Lestari", 3),
-        ("Admin Joko", "Mengubah Status Laporan (Proses)", "Laporan #3", 5),
-        ("Super Admin", "Menonaktifkan Pengguna", "Admin Joko", 8),
-        ("Admin Siti", "Menambahkan Catatan Tindak Lanjut", "Laporan #2", 10),
+        ("admin_ppko", "Mengubah Status Laporan (Proses)", "Laporan #3", 5),
+        ("superadmin", "Menonaktifkan Pengguna", "admin_lama", 8),
+        ("admin_ppko", "Menambahkan Catatan Tindak Lanjut", "Laporan #2", 10),
     ]
     for aktor, aksi, ket, days in items:
         db.session.add(Aktivitas(
@@ -164,9 +167,6 @@ def main():
         seed_laporan()
         seed_aktivitas()
         print("\n✅ Seeding selesai.")
-        print("\nLogin:")
-        print("  Super Admin → superadmin@pabiritta.id / admin123")
-        print("  Admin       → admin@pabiritta.id      / admin123")
 
 
 if __name__ == "__main__":
