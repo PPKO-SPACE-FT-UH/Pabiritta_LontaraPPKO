@@ -81,10 +81,10 @@
             <div class="font-medium text-gray-800">{{ l.lokasi_label or l.dusun }}</div>
             <div class="text-xs text-gray-500 mt-0.5">Dusun {{ l.dusun }}</div>
           </td>
-          <td class="px-4 py-3"><span class="inline-block text-xs px-2.5 py-1 rounded-full bg-{{ l.kategori_color }}-50 text-{{ l.kategori_color }}-700 font-medium border border-{{ l.kategori_color }}-100">{{ l.kategori }}</span></td>
+          <td class="px-4 py-3"><span class="inline-block text-xs px-3 py-1 rounded-full whitespace-nowrap bg-{{ l.kategori_color }}-100 text-{{ l.kategori_color }}-700 font-medium border border-{{ l.kategori_color }}-200">{{ l.kategori }}</span></td>
           <td class="px-4 py-3 font-medium text-gray-700">{{ l.nama_pelapor }}</td>
           <td class="px-4 py-3 text-gray-500">{{ l.created_at|tgl('%-d %b %Y') }}</td>
-          <td class="px-4 py-3"><span class="inline-block text-xs px-2.5 py-1 rounded-full bg-{{ l.status_color }}-50 text-{{ l.status_color }}-700 font-medium border border-{{ l.status_color }}-100">{{ l.status }}</span></td>
+          <td class="px-4 py-3"><span class="inline-block text-xs px-3 py-1 rounded-full whitespace-nowrap bg-{{ l.status_color }}-100 text-{{ l.status_color }}-700 font-medium border border-{{ l.status_color }}-200">{{ l.status }}</span></td>
           <td class="px-4 py-3 text-right">
             <a href="{{ url_for('admin.detail_laporan', laporan_id=l.id) }}"
                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary text-white text-xs font-medium hover:bg-primary-dark transition-colors shadow-sm">
@@ -158,10 +158,8 @@
     function saveSearchHistory(query) {
       if (!query.trim()) return;
       let history = getSearchHistory();
-      // Hapus jika sudah ada agar naik ke urutan pertama
       history = history.filter(item => item.toLowerCase() !== query.toLowerCase());
       history.unshift(query.trim());
-      // Batasi maksimal 6 pencarian terakhir
       if (history.length > 6) history.pop();
       localStorage.setItem('paBirittaSearchHistory', JSON.stringify(history));
     }
@@ -184,7 +182,7 @@
         div.onclick = () => {
           searchInput.value = item;
           historyDropdown.classList.add('hidden');
-          searchForm.submit(); // Langsung submit form saat di-klik
+          searchForm.submit();
         };
         historyList.appendChild(div);
       });
@@ -193,7 +191,6 @@
 
     searchInput.addEventListener('focus', renderHistory);
     
-    // Simpan pencarian ke riwayat saat form disubmit
     searchForm.addEventListener('submit', () => {
       saveSearchHistory(searchInput.value);
     });
@@ -208,41 +205,34 @@
       const selectedText = dropdown.querySelector('.selected-text');
       const options = dropdown.querySelectorAll('.option-item');
 
-      // Buka/Tutup dropdown saat di-klik
       selectedArea.addEventListener('click', (e) => {
-        e.stopPropagation(); // Mencegah event klik menyebar ke dokumen
+        e.stopPropagation();
         
-        // Tutup semua dropdown lain terlebih dahulu
         document.querySelectorAll('.dropdown-options').forEach(opt => {
           if (opt !== optionsArea) opt.classList.add('hidden');
         });
-        historyDropdown.classList.add('hidden'); // Tutup juga riwayat search
+        historyDropdown.classList.add('hidden');
 
-        // Toggle dropdown ini
         optionsArea.classList.toggle('hidden');
         selectedArea.classList.toggle('border-primary');
         selectedArea.classList.toggle('ring-1');
         selectedArea.classList.toggle('ring-primary');
       });
 
-      // Pilih opsi
       options.forEach(option => {
         option.addEventListener('click', (e) => {
           e.stopPropagation();
           const value = option.getAttribute('data-value');
           const text = option.textContent;
 
-          // Update teks & nilai input tersembunyi
           selectedText.textContent = text;
           hiddenInput.value = value;
 
-          // Hapus gaya aktif dari semua opsi, berikan ke opsi terpilih
           options.forEach(opt => {
             opt.classList.remove('bg-red-50', 'text-primary', 'font-medium');
           });
           option.classList.add('bg-red-50', 'text-primary', 'font-medium');
 
-          // Tutup dropdown dan hilangkan gaya border aktif
           optionsArea.classList.add('hidden');
           selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
         });
@@ -251,11 +241,9 @@
 
     // --- 3. TUTUP SEMUA DROPDOWN JIKA KLIK DI LUAR AREA ---
     document.addEventListener('click', (e) => {
-      // Tutup riwayat pencarian
       if (!searchInput.contains(e.target) && !historyDropdown.contains(e.target)) {
         historyDropdown.classList.add('hidden');
       }
-      // Tutup kustom select
       customDropdowns.forEach(dropdown => {
         if (!dropdown.contains(e.target)) {
           dropdown.querySelector('.dropdown-options').classList.add('hidden');
