@@ -13,20 +13,20 @@ def login():
         return redirect(url_for("admin.dashboard"))
 
     if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
+        username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
         remember = bool(request.form.get("remember"))
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username).first()
         if not user or not user.check_password(password):
-            flash("Email atau password salah.", "error")
-            return render_template("admin/login.html", email=email)
+            flash("Username atau password salah.", "error")
+            return render_template("admin/login.html", username=username)
         if not user.is_active:
             flash("Akun Anda telah dinonaktifkan. Hubungi Super Admin.", "error")
-            return render_template("admin/login.html", email=email)
+            return render_template("admin/login.html", username=username)
 
         login_user(user, remember=remember)
-        flash(f"Selamat datang, {user.nama}!", "success")
+        flash(f"Selamat datang, {user.username}!", "success")
         next_url = request.args.get("next")
         return redirect(next_url or url_for("admin.dashboard"))
 
