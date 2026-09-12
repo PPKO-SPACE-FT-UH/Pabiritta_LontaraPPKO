@@ -1,7 +1,7 @@
 """Blueprint laporan warga (buat & lihat daftar)."""
 import cloudinary.uploader
 import time
-import os
+import re
 from datetime import datetime, timedelta
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, current_app
@@ -11,6 +11,7 @@ from sqlalchemy import or_, desc
 from app import db
 from app.models.laporan import Laporan
 from app.models.aktivitas import Aktivitas
+from app.models.user import User
 from app.services.whatsapp import kirim_notif_fonnte
 
 laporan_bp = Blueprint("laporan", __name__)
@@ -28,7 +29,6 @@ def _allowed_file(filename: str) -> bool:
 @laporan_bp.route("/buat", methods=["GET", "POST"])
 def buat():
     if request.method == "POST":
-        # Validasi field wajib
         kategori = request.form.get("kategori", "").strip()
         deskripsi = request.form.get("deskripsi", "").strip()
         lokasi_label = request.form.get("lokasi_label", "").strip() or None
@@ -37,8 +37,6 @@ def buat():
         nama = request.form.get("nama_pelapor", "").strip()
         dusun = request.form.get("dusun", "").strip()
         no_hp = request.form.get("no_hp", "").strip() or None
-
-        import re
 
         errors = []
         if kategori not in Laporan.KATEGORI_CHOICES:
@@ -115,8 +113,6 @@ def buat():
         db.session.commit()
 
         if kategori == "Kejadian Longsor":
-            nomor_admin = os.getenv("WA_ADMIN_TARGET")
-
             ambang_waktu = datetime.utcnow() - timedelta(minutes=WA_COOLDOWN_MENIT)
             laporan_terbaru_lain = Laporan.query.filter(
                 Laporan.kategori == "Kejadian Longsor",
@@ -129,41 +125,48 @@ def buat():
                     f"[WA Skip] Ada {laporan_terbaru_lain} laporan longsor lain "
                     f"dalam {WA_COOLDOWN_MENIT} menit terakhir. Anti-spam aktif."
                 )
-            elif nomor_admin:
-                total_menunggu = Laporan.query.filter(
-                    Laporan.kategori == "Kejadian Longsor",
-                    Laporan.status == Laporan.STATUS_MENUNGGU,
-                ).count()
+            else:
+                admins_aktif = User.query.filter_by(is_active=True).all()
+                nomor_admins = [u.no_hp for u in admins_aktif if u.no_hp]
 
-                waktu_laporan = datetime.now().strftime("%d-%m-%Y %H:%M")
-                site_url = current_app.config.get("SITE_URL", "").rstrip("/")
-                link_login = f"{site_url}{url_for('auth.login')}"
+                if not nomor_admins:
+                    print("[WA Skip] Tidak ada admin aktif dengan nomor HP terdaftar.")
+                else:
+                    total_menunggu = Laporan.query.filter(
+                        Laporan.kategori == "Kejadian Longsor",
+                        Laporan.status == Laporan.STATUS_MENUNGGU,
+                    ).count()
 
-                pesan_admin = (
-                    f"🚨 *INFORMASI ADUAN MASYARAKAT: PA'BIRITTA* 🚨\n\n"
-                    f"Yth. Tim Admin,\n\n"
-                    f"Sistem telah menerima laporan aduan masyarakat terkait Kejadian Tanah Longsor. "
-                    f"Berikut adalah rincian informasi dari pelapor:\n\n"
-                    f"👤 Nama Pelapor: {nama}\n"
-                    f"📍 Titik Lokasi: {lokasi_label or dusun}\n"
-                    f"⏰ Waktu Laporan: {waktu_laporan}\n\n"
-                    f"Mohon untuk segera ditindaklanjuti. Silakan login ke Dashboard Pa'Biritta "
-                    f"guna memverifikasi laporan ini, melihat bukti lampiran, serta menentukan "
-                    f"status penanganan darurat.\n\n"
-                    f"🔗 Link Dashboard: {link_login}\n\n"
-                    f"━━━━━━━━━━━━━━━━━━━━\n"
-                    f"📊 *Ringkasan Antrian Verifikasi*\n"
-                    f"Saat ini terdapat *{total_menunggu} laporan longsor* yang berstatus menunggu "
-                    f"verifikasi admin di dashboard.\n\n"
-                    f"_Catatan: Untuk menjaga fokus penanganan dan menghindari notifikasi berulang "
-                    f"atas kejadian yang sama, WhatsApp susulan tidak akan dikirim selama "
-                    f"{WA_COOLDOWN_MENIT} menit ke depan. Mohon pantau dashboard secara berkala "
-                    f"untuk laporan tambahan yang mungkin masuk._\n\n"
-                    f"Terima kasih atas respons cepat Anda. Keselamatan warga adalah prioritas utama!\n\n"
-                    f"_Pesan ini dibuat otomatis oleh Sistem Layanan Aduan Bencana Pa'Biritta LONTARA._"
-                )
+                    waktu_laporan = datetime.now().strftime("%d-%m-%Y %H:%M")
+                    site_url = current_app.config.get("SITE_URL", "").rstrip("/")
+                    link_login = f"{site_url}{url_for('auth.login')}"
 
-                kirim_notif_fonnte(target=nomor_admin, pesan=pesan_admin)
+                    pesan_admin = (
+                        f"🚨 *INFORMASI ADUAN MASYARAKAT: PA'BIRITTA* 🚨\n\n"
+                        f"Yth. Tim Admin,\n\n"
+                        f"Sistem telah menerima laporan aduan masyarakat terkait Kejadian Tanah Longsor. "
+                        f"Berikut adalah rincian informasi dari pelapor:\n\n"
+                        f"👤 Nama Pelapor: {nama}\n"
+                        f"📍 Titik Lokasi: {lokasi_label or dusun}\n"
+                        f"⏰ Waktu Laporan: {waktu_laporan}\n\n"
+                        f"Mohon untuk segera ditindaklanjuti. Silakan login ke Dashboard Pa'Biritta "
+                        f"guna memverifikasi laporan ini, melihat bukti lampiran, serta menentukan "
+                        f"status penanganan darurat.\n\n"
+                        f"🔗 Link Dashboard: {link_login}\n\n"
+                        f"━━━━━━━━━━━━━━━━━━━━\n"
+                        f"📊 *Ringkasan Antrian Verifikasi*\n"
+                        f"Saat ini terdapat *{total_menunggu} laporan longsor* yang berstatus menunggu "
+                        f"verifikasi admin di dashboard.\n\n"
+                        f"_Catatan: Untuk menjaga fokus penanganan dan menghindari notifikasi berulang "
+                        f"atas kejadian yang sama, WhatsApp susulan tidak akan dikirim selama "
+                        f"{WA_COOLDOWN_MENIT} menit ke depan. Mohon pantau dashboard secara berkala "
+                        f"untuk laporan tambahan yang mungkin masuk._\n\n"
+                        f"Terima kasih atas respons cepat Anda. Keselamatan warga adalah prioritas utama!\n\n"
+                        f"_Pesan ini dibuat otomatis oleh Sistem Layanan Aduan Bencana Pa'Biritta LONTARA._"
+                    )
+
+                    for nomor in nomor_admins:
+                        kirim_notif_fonnte(target=nomor, pesan=pesan_admin)
 
         flash("Laporan berhasil dikirim. Terima kasih telah melapor!", "success")
         return redirect(url_for("laporan.daftar"))
