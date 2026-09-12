@@ -16,28 +16,54 @@
   </div>
 
   <!-- Filter -->
-  <form method="get" class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm flex flex-col md:flex-row gap-3">
-    <div class="relative flex-1">
+  <form method="get" id="filterForm" class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm flex flex-col md:flex-row gap-3 items-start md:items-center">
+
+    <!-- Search -->
+    <div class="relative flex-1 w-full">
       <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       <input type="text" name="q" value="{{ q }}" placeholder="{{ t('laporan.warga.search_placeholder') }}"
-             class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary">
+             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm hover:border-primary focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white">
     </div>
-    <select name="kategori" class="px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white">
-      <option value="">{{ t('laporan.warga.all_categories') }}</option>
-      {% for k in kategori_choices %}
-        <option value="{{ k }}" {% if kategori == k %}selected{% endif %}>{{ t('laporan.kategori.' ~ k) }}</option>
-      {% endfor %}
-    </select>
-    <select name="status" class="px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white">
-      <option value="">{{ t('laporan.warga.all_status') }}</option>
-      {% for s in status_choices %}
-        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ t('laporan.status.' ~ s) }}</option>
-      {% endfor %}
-    </select>
-    <button type="submit" class="px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark">{{ t('laporan.warga.apply') }}</button>
+
+    <!-- Kustom Select Kategori -->
+    <div class="relative w-full md:w-52 custom-dropdown">
+      <input type="hidden" name="kategori" value="{{ kategori }}">
+      <div class="dropdown-selected px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white hover:border-primary transition-all cursor-pointer flex justify-between items-center group">
+        <span class="selected-text truncate text-gray-700">
+          {% if kategori %}{{ t('laporan.kategori.' ~ kategori) }}{% else %}{{ t('laporan.warga.all_categories') }}{% endif %}
+        </span>
+        <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+        <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not kategori %}bg-red-50 text-primary font-medium{% endif %}" data-value="">{{ t('laporan.warga.all_categories') }}</div>
+        {% for k in kategori_choices %}
+          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if kategori == k %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ k }}">{{ t('laporan.kategori.' ~ k) }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Kustom Select Status -->
+    <div class="relative w-full md:w-40 custom-dropdown">
+      <input type="hidden" name="status" value="{{ status }}">
+      <div class="dropdown-selected px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white hover:border-primary transition-all cursor-pointer flex justify-between items-center group">
+        <span class="selected-text truncate text-gray-700">
+          {% if status %}{{ t('laporan.status.' ~ status) }}{% else %}{{ t('laporan.warga.all_status') }}{% endif %}
+        </span>
+        <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="dropdown-options hidden absolute left-0 right-0 top-[calc(100%+4px)] bg-white border border-gray-100 rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+        <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if not status %}bg-red-50 text-primary font-medium{% endif %}" data-value="">{{ t('laporan.warga.all_status') }}</div>
+        {% for s in status_choices %}
+          <div class="option-item px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-primary cursor-pointer transition-colors {% if status == s %}bg-red-50 text-primary font-medium{% endif %}" data-value="{{ s }}">{{ t('laporan.status.' ~ s) }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button type="submit" class="w-full md:w-auto px-6 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors shadow-sm">{{ t('laporan.warga.apply') }}</button>
+
     {% if q or kategori or status %}
       <a href="{{ url_for('laporan.daftar') }}"
-         class="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 text-center">
+         class="w-full md:w-auto px-5 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 text-center transition-colors">
         {{ t('laporan.warga.reset') }}
       </a>
     {% endif %}
@@ -155,4 +181,59 @@
   {% endif %}
 
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const customDropdowns = document.querySelectorAll('.custom-dropdown');
+
+    customDropdowns.forEach(dropdown => {
+      const selectedArea = dropdown.querySelector('.dropdown-selected');
+      const optionsArea = dropdown.querySelector('.dropdown-options');
+      const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+      const selectedText = dropdown.querySelector('.selected-text');
+      const options = dropdown.querySelectorAll('.option-item');
+
+      selectedArea.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.dropdown-options').forEach(opt => {
+          if (opt !== optionsArea) opt.classList.add('hidden');
+        });
+        optionsArea.classList.toggle('hidden');
+        selectedArea.classList.toggle('border-primary');
+        selectedArea.classList.toggle('ring-1');
+        selectedArea.classList.toggle('ring-primary');
+      });
+
+      options.forEach(option => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const value = option.getAttribute('data-value');
+          const text = option.textContent.trim();
+
+          selectedText.textContent = text;
+          hiddenInput.value = value;
+
+          options.forEach(opt => opt.classList.remove('bg-red-50', 'text-primary', 'font-medium'));
+          option.classList.add('bg-red-50', 'text-primary', 'font-medium');
+
+          optionsArea.classList.add('hidden');
+          selectedArea.classList.remove('border-primary', 'ring-1', 'ring-primary');
+
+          document.getElementById('filterForm').submit();
+        });
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      customDropdowns.forEach(dropdown => {
+        if (!dropdown.contains(e.target)) {
+          dropdown.querySelector('.dropdown-options').classList.add('hidden');
+          dropdown.querySelector('.dropdown-selected').classList.remove('border-primary', 'ring-1', 'ring-primary');
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}
