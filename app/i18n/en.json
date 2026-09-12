@@ -1,7 +1,7 @@
 {
     "meta": {
         "site_name": "Pa'Biritta",
-        "site_tagline": "Landslide Disaster Monitoring System",
+        "site_tagline": "Landslide Monitoring System — Lonjoboko Village, Gowa",
         "html_lang": "en"
     },
     "nav": {
@@ -15,10 +15,10 @@
         "language_switch_to_en": "Switch to English"
     },
     "footer": {
-        "description": "A community-based village disaster management system for landslide mitigation, monitoring, and reporting.",
+        "description": "A community-based village disaster management system for landslide mitigation, monitoring, and reporting in Lonjoboko Village, Gowa Regency, South Sulawesi.",
         "quick_links": "Quick Links",
         "contact": "Contact",
-        "address": "Village Hall, Jl. Poros Utama No. 1",
+        "address": "Lonjoboko Village Hall, Jl. Poros Utama No. 1",
         "copyright": "© 2026 PPK Ormawa SPACE FT-UH"
     },
     "admin": {
@@ -61,8 +61,8 @@
     },
     "beranda": {
         "hero": {
-            "title": "Landslide Disaster Monitoring System",
-            "description": "A community participation platform for reporting and monitoring landslide-prone conditions in the village area. Report immediately if you spot a potential hazard.",
+            "title": "Landslide Disaster Monitoring System — Lonjoboko Village, Gowa",
+            "description": "A community participation platform for reporting and monitoring landslide-prone conditions in Lonjoboko Village, Gowa Regency. Report immediately if you spot a potential hazard.",
             "cta": "Submit Report"
         },
         "stats": {
@@ -217,12 +217,12 @@
             "emergency_title": "Emergency Contact",
             "emergency_village_post": "Village Post",
             "emergency_bpbd": "BPBD",
-            "emergency_puskesmas": "Health Center",
+            "emergency_puskesmas": "Puskesmas",
             "back_to_list": "Back to Reports List"
         },
         "buat": {
             "page_heading": "Submit a Report",
-            "page_subheading": "Report an incident or landslide potential in your area",
+            "page_subheading": "Report a landslide incident or potential hazard near you",
             "steps": {
                 "photo": "Photo",
                 "location": "Location",
@@ -233,13 +233,13 @@
             "step1": {
                 "title": "Photo Evidence",
                 "upload_cta": "Click to upload or take a photo",
-                "upload_hint": "Required. Large photos will be compressed automatically.",
+                "upload_hint": "Required. Large photos will be automatically compressed.",
                 "optimizing": "Optimizing photo size...",
                 "choose_source": "Choose Photo Source",
                 "take_photo": "Take Photo",
                 "take_photo_desc": "Use device camera",
                 "from_gallery": "Choose from Gallery",
-                "from_gallery_desc": "Upload from device",
+                "from_gallery_desc": "Upload photo from device",
                 "cancel": "Cancel",
                 "camera_no_access_title": "Cannot access camera",
                 "camera_flip": "Flip Camera",
@@ -250,23 +250,23 @@
                 "title": "Incident Location",
                 "use_my_location": "Use My Location",
                 "location_label": "Location Label",
-                "location_label_placeholder": "e.g. Main village road, near the bridge",
+                "location_label_placeholder": "Example: Main Village Road, Near the Bridge",
                 "click_map": "Click the map to mark the location",
                 "taking_location": "Getting location...",
-                "location_taken": "Location captured"
+                "location_taken": "Location successfully obtained"
             },
             "step3": {
-                "title": "Incident Detail",
+                "title": "Incident Details",
                 "category_label": "Report Category",
-                "category_placeholder": "-- Choose Category --",
+                "category_placeholder": "-- Select Category --",
                 "description_label": "Incident Description",
-                "description_placeholder": "Describe what you see in detail..."
+                "description_placeholder": "Describe in detail the conditions you observed..."
             },
             "step4": {
                 "title": "Reporter Information",
                 "name_label": "Full Name",
                 "dusun_label": "Hamlet",
-                "dusun_placeholder": "-- Choose Hamlet --",
+                "dusun_placeholder": "-- Select Hamlet --",
                 "phone_label": "Phone Number",
                 "phone_placeholder": "08xxxxxxxxxx",
                 "phone_hint": "Digits only. Must start with 08, total 10–13 digits. Example: 081234567890"
@@ -323,14 +323,14 @@
         }
     },
     "seo": {
-        "default_description": "Pa'Biritta — a community-based landslide monitoring system for Lonjoboko Village, Gowa Regency, South Sulawesi. Residents can report landslide risks, village admins follow up, and IoT sensors monitor soil conditions in real time.",
-        "default_keywords": "pabiritta, lonjoboko village, gowa, landslide monitoring, disaster management, early warning system, ews, community reporting, iot sensor, disaster mitigation, disaster-resilient village, PPK Ormawa, SPACE FT-UH, unhas",
-        "home_description": "Pa'Biritta home: interactive digital map of landslide hazard zones, real-time village status, latest community reports, and emergency contacts for Lonjoboko Village, Gowa Regency.",
+        "default_description": "Pa'Biritta Lonjoboko — a community-based landslide monitoring system for Lonjoboko Village, Gowa Regency, South Sulawesi. Residents can report landslide risks, village admins follow up, and IoT sensors monitor soil conditions in real time.",
+        "default_keywords": "pabiritta lonjoboko, pabiritta, pa'biritta lonjoboko, lonjoboko village, gowa, landslide monitoring, disaster management, early warning system, ews, community reporting, iot sensor, disaster mitigation, disaster-resilient village, PPK Ormawa, SPACE FT-UH, unhas",
+        "home_description": "Pa'Biritta Lonjoboko — interactive digital map of landslide hazard zones, real-time village status, latest community reports, and emergency contacts for Lonjoboko Village, Gowa Regency.",
         "map_description": "Interactive digital map of Lonjoboko Village: landslide hazard zones, land use, IoT sensors, community reports, evacuation routes, and village facilities.",
         "reports_description": "List of landslide potential and incident reports from Lonjoboko Village residents, with handling status and map location.",
         "submit_description": "Submit a landslide potential or incident report in Lonjoboko Village. Complete with photo, map location, and incident details.",
         "detail_description_fallback": "Community landslide report detail in Lonjoboko Village, with photo, map location, category, handling status, and follow-up history.",
-        "organization_alt_name": "Pa'Biritta Lonjoboko"
+        "organization_alt_name": ["Pa'Biritta Lonjoboko", "Pabiritta Lonjoboko", "Pabiritta"]
     },
     "status_desa": {
         "label": {

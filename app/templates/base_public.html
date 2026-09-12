@@ -86,6 +86,33 @@
   }
   </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Pa'Biritta",
+    "alternateName": ["Pabiritta Lonjoboko", "Pa'Biritta Lonjoboko", "Pabiritta"],
+    "url": {{ site_url | tojson }},
+    "description": {{ t('seo.default_description') | tojson }},
+    "inLanguage": ["id", "en"],
+    "about": {
+      "@type": "Place",
+      "name": "Desa Lonjoboko",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Desa Lonjoboko",
+        "addressRegion": "Kabupaten Gowa, Sulawesi Selatan",
+        "addressCountry": "ID"
+      }
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "PPK Ormawa SPACE FT-UH",
+      "url": {{ site_url | tojson }}
+    }
+  }
+  </script>
+
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
