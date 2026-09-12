@@ -136,7 +136,8 @@ def buat():
                 ).count()
 
                 waktu_laporan = datetime.now().strftime("%d-%m-%Y %H:%M")
-                link_login = url_for('auth.login', _external=True)
+                site_url = current_app.config.get("SITE_URL", "").rstrip("/")
+                link_login = f"{site_url}{url_for('auth.login')}"
 
                 pesan_admin = (
                     f"🚨 *INFORMASI ADUAN MASYARAKAT: PA'BIRITTA* 🚨\n\n"
