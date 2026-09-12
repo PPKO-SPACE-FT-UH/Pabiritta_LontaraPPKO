@@ -1,4 +1,5 @@
 """Blueprint area admin: dashboard, manajemen laporan, manajemen pengguna."""
+import re
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import (
@@ -161,17 +162,15 @@ def ubah_status(laporan_id):
         return redirect(url_for("admin.detail_laporan", laporan_id=laporan_id))
 
     laporan.status = new_status
-    laporan.catatan_admin = catatan or None  # snapshot catatan terbaru
+    laporan.catatan_admin = catatan or None
 
-    # SATU entry log — otomatis jadi entri timeline laporan
-    # DAN muncul di feed "Riwayat Aktivitas" admin.
     aksi = (
         f"Mengubah Status Laporan ({old_status} → {new_status})"
         if new_status != old_status
         else "Menambah Catatan pada Laporan"
     )
     Aktivitas.log(
-        aktor=current_user.nama,
+        aktor=current_user.username,
         peran=current_user.role,
         aksi=aksi,
         keterangan=catatan or None,
@@ -270,7 +269,7 @@ def riwayat_aktivitas():
 def hapus_laporan(laporan_id):
     laporan = Laporan.query.get_or_404(laporan_id)
     Aktivitas.log(
-        current_user.nama,
+        current_user.username,
         "Menghapus Laporan",
         f"Laporan #{laporan.id} ({laporan.kategori}) dari {laporan.nama_pelapor}",
     )
@@ -295,29 +294,38 @@ def manajemen_pengguna():
 @admin_bp.route("/pengguna/tambah", methods=["POST"])
 @superadmin_required
 def tambah_pengguna():
-    email = request.form.get("email", "").strip().lower()
-    nama = request.form.get("nama", "").strip()
+    username = request.form.get("username", "").strip()
+    no_hp = request.form.get("no_hp", "").strip()
     password = request.form.get("password", "")
     role = request.form.get("role", User.ROLE_ADMIN)
 
-    if not email or not nama or not password:
+    if not username or not no_hp or not password:
         flash("Semua field wajib diisi.", "error")
         return redirect(url_for("admin.manajemen_pengguna"))
     if len(password) < 6:
         flash("Password minimal 6 karakter.", "error")
         return redirect(url_for("admin.manajemen_pengguna"))
-    if User.query.filter_by(email=email).first():
-        flash("Email sudah terdaftar.", "error")
+
+    hp_clean = re.sub(r'[\s\-]', '', no_hp)
+    if not re.match(r'^08\d{8,11}$', hp_clean):
+        flash("Format nomor HP tidak valid. Contoh: 081234567890", "error")
+        return redirect(url_for("admin.manajemen_pengguna"))
+
+    if User.query.filter_by(username=username).first():
+        flash("Username sudah digunakan.", "error")
+        return redirect(url_for("admin.manajemen_pengguna"))
+    if User.query.filter_by(no_hp=hp_clean).first():
+        flash("Nomor HP sudah terdaftar.", "error")
         return redirect(url_for("admin.manajemen_pengguna"))
     if role not in (User.ROLE_ADMIN, User.ROLE_SUPERADMIN):
         role = User.ROLE_ADMIN
 
-    user = User(email=email, nama=nama, role=role, is_active=True)
+    user = User(username=username, no_hp=hp_clean, role=role, is_active=True)
     user.set_password(password)
     db.session.add(user)
-    Aktivitas.log(current_user.nama, "Menambah Pengguna", f"{nama} ({role})")
+    Aktivitas.log(current_user.username, "Menambah Pengguna", f"{username} ({role})")
     db.session.commit()
-    flash(f"Pengguna {nama} berhasil ditambahkan.", "success")
+    flash(f"Pengguna {username} berhasil ditambahkan.", "success")
     return redirect(url_for("admin.manajemen_pengguna"))
 
 
@@ -330,7 +338,7 @@ def toggle_pengguna(user_id):
         return redirect(url_for("admin.manajemen_pengguna"))
     user.is_active = not user.is_active
     aksi = "Mengaktifkan Pengguna" if user.is_active else "Menonaktifkan Pengguna"
-    Aktivitas.log(current_user.nama, aksi, user.nama)
+    Aktivitas.log(current_user.username, aksi, user.username)
     db.session.commit()
-    flash(f"Status pengguna {user.nama} berhasil diubah.", "success")
+    flash(f"Status pengguna {user.username} berhasil diubah.", "success")
     return redirect(url_for("admin.manajemen_pengguna"))
