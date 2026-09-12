@@ -1,6 +1,5 @@
 """Blueprint laporan warga (buat & lihat daftar)."""
 import cloudinary.uploader
-import time
 import re
 from datetime import datetime, timedelta
 from flask import (
@@ -24,6 +23,13 @@ def _allowed_file(filename: str) -> bool:
         return False
     ext = filename.rsplit(".", 1)[1].lower()
     return ext in current_app.config["ALLOWED_EXTENSIONS"]
+
+
+def _format_wa(nomor: str) -> str:
+    nomor = re.sub(r'[\s\-]', '', nomor)
+    if nomor.startswith('0'):
+        nomor = '62' + nomor[1:]
+    return nomor
 
 
 @laporan_bp.route("/buat", methods=["GET", "POST"])
@@ -60,7 +66,6 @@ def buat():
         else:
             errors.append("Nomor HP wajib diisi.")
 
-        # Upload foto ke Cloudinary (wajib)
         foto_url = None
         file = request.files.get("foto")
         if not file or not file.filename:
@@ -127,7 +132,7 @@ def buat():
                 )
             else:
                 admins_aktif = User.query.filter_by(is_active=True).all()
-                nomor_admins = [u.no_hp for u in admins_aktif if u.no_hp]
+                nomor_admins = [_format_wa(u.no_hp) for u in admins_aktif if u.no_hp]
 
                 if not nomor_admins:
                     print("[WA Skip] Tidak ada admin aktif dengan nomor HP terdaftar.")
@@ -172,6 +177,7 @@ def buat():
         return redirect(url_for("laporan.daftar"))
 
     return render_template("publik/buat_laporan.html", form={})
+
 
 @laporan_bp.route("/")
 def daftar():
