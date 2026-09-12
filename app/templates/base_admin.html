@@ -102,10 +102,10 @@
         <div class="flex items-center gap-3 px-2 py-2 rounded-lg bg-white/10">
           <div
             class="w-9 h-9 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
-            {{ current_user.nama[0]|upper }}
+            {{ current_user.username[0]|upper }}
           </div>
           <div class="min-w-0">
-            <div class="text-sm font-semibold truncate">{{ current_user.nama }}</div>
+            <div class="text-sm font-semibold truncate">{{ current_user.username }}</div>
             <div class="text-xs text-red-200 capitalize">{{ current_user.role }}</div>
           </div>
         </div>
