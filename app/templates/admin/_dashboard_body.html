@@ -121,7 +121,8 @@
         {% for s in sensors %}
           {% set latest = s.latest %}
           {% set st = latest.status if latest else 'Normal' %}
-          {% set stale = latest is none or (now - latest.timestamp).total_seconds() > 600 %}
+          {% set is_pinned = s.kode_sensor in (pinned or []) %}
+          {% set stale = (not is_pinned) and (latest is none or (now - latest.timestamp).total_seconds() > 600) %}
           {% set color = 'gray' if stale else {'Normal':'green','Waspada':'yellow','Bahaya':'red'}.get(st, 'gray') %}
           <div class="border-b pb-3 last:border-0">
             <div class="flex justify-between items-center mb-1">

@@ -40,6 +40,14 @@ class Config:
     # API Key untuk endpoint sensor (ESP32)
     SENSOR_API_KEY = os.environ.get("SENSOR_API_KEY", "ganti-api-key-ini")
 
+    # Daftar kode sensor "pinned": statusnya selalu ditampilkan menggunakan
+    # bacaan terakhir yang diketahui, tanpa dianggap stale oleh pengecekan window.
+    # Berguna untuk sensor utama yang tampilannya ingin tetap persisten di
+    # peta & dashboard. Kosongkan ("" atau []) untuk menonaktifkan.
+    SENSOR_PINNED = [
+        k.strip() for k in os.environ.get("SENSOR_PINNED", "B,C").split(",") if k.strip()
+    ]
+
     # Threshold sensor (longsor)
     THRESHOLD_KELEMBAPAN_WASPADA = 80
     THRESHOLD_KELEMBAPAN_BAHAYA = 90
