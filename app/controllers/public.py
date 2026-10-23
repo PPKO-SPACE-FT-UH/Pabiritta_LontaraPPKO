@@ -119,10 +119,17 @@ def _hitung_statistik_publik():
     selesai = Laporan.query.filter_by(status=Laporan.STATUS_SELESAI).count()
 
     now = datetime.utcnow()
+    pinned = set(current_app.config.get("SENSOR_PINNED") or [])
     rawan = 0
     for s in Sensor.query.filter_by(is_active=True).all():
         latest = s.latest
-        if not latest or (now - latest.timestamp) > STALE_AFTER:
+        if not latest:
+            continue
+        is_fresh = (
+            s.kode_sensor in pinned
+            or (now - latest.timestamp) <= STALE_AFTER
+        )
+        if not is_fresh:
             continue
         if latest.status in (DataSensor.STATUS_WASPADA, DataSensor.STATUS_BAHAYA):
             rawan += 1

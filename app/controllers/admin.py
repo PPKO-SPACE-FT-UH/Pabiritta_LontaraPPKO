@@ -3,7 +3,8 @@ import re
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, flash, abort
+    Blueprint, render_template, request, redirect, url_for, flash, abort,
+    current_app,
 )
 from flask_login import login_required, current_user
 from sqlalchemy import desc, or_
@@ -37,9 +38,11 @@ def dashboard():
     stale_after = timedelta(minutes=10)
 
     sensors = Sensor.query.filter_by(is_active=True).all()
+    pinned = set(current_app.config.get("SENSOR_PINNED") or [])
     sensor_online = sum(
         1 for s in sensors
-        if s.latest and (now - s.latest.timestamp) <= stale_after
+        if s.kode_sensor in pinned
+        or (s.latest and (now - s.latest.timestamp) <= stale_after)
     )
 
     stats = {
@@ -73,6 +76,7 @@ def dashboard():
         aktivitas=aktivitas,
         distribusi=distribusi,
         now=now,
+        pinned=pinned,
     )
 
 # -------------------- PETA DIGITAL --------------------

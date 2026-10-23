@@ -96,9 +96,14 @@ def list_sensors():
     """Untuk peta — daftar sensor + status terkini (publik)."""
     items = []
     now = datetime.utcnow()
+    pinned = set(current_app.config.get("SENSOR_PINNED") or [])
     for s in Sensor.query.filter_by(is_active=True).all():
         latest = s.latest
-        is_stale = (latest is None) or ((now - latest.timestamp) > STALE_AFTER)
+        is_pinned = s.kode_sensor in pinned
+        is_stale = (
+            False if is_pinned
+            else ((latest is None) or ((now - latest.timestamp) > STALE_AFTER))
+        )
         items.append({
             "id": s.id,
             "kode": s.kode_sensor,
@@ -106,9 +111,9 @@ def list_sensors():
             "latitude": s.latitude,
             "longitude": s.longitude,
             "status": latest.status if latest else "Normal",
-            "kelembapan": latest.kelembapan if latest else None,
-            "roll": latest.roll if latest else None,
-            "pitch": latest.pitch if latest else None,
+            "kelembapan": latest.kelembapan if latest else (0.0 if is_pinned else None),
+            "roll": latest.roll if latest else (0.0 if is_pinned else None),
+            "pitch": latest.pitch if latest else (0.0 if is_pinned else None),
             "is_stale": is_stale,
             "last_seen": latest.timestamp.isoformat() if latest else None,
         })
